@@ -1,5 +1,7 @@
 # my-apps-portal
 
+[![Keyway Secrets](https://www.keyway.sh/badge.svg?repo=tktk7l9/my-apps-portal)](https://www.keyway.sh/vaults/tktk7l9/my-apps-portal)
+
 個人で作成した Web アプリの一覧・管理ポータル。依存パッケージのバージョン状態や最終コミット日を自動取得し、アップデートが必要なアプリを一目で把握できる。
 
 ## Features

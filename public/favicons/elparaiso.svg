@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#0c1a0c"/>
+  <!-- palm tree trunk -->
+  <path d="M16 28 Q15 22 14 17" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- palm leaves -->
+  <path d="M14 17 Q8 12 5 8 Q9 9 13 14" fill="#16a34a" stroke="none"/>
+  <path d="M14 17 Q10 10 11 5 Q14 8 15 14" fill="#15803d" stroke="none"/>
+  <path d="M14 17 Q16 9 20 6 Q19 10 16 15" fill="#16a34a" stroke="none"/>
+  <path d="M14 17 Q20 11 26 10 Q23 13 16 16" fill="#15803d" stroke="none"/>
+  <path d="M14 17 Q22 15 27 18 Q23 18 16 17" fill="#16a34a" stroke="none"/>
+  <!-- sun -->
+  <circle cx="24" cy="8" r="3.5" fill="#fbbf24"/>
+  <circle cx="24" cy="8" r="3.5" fill="none" stroke="#fde68a" stroke-width="0.8" opacity="0.6"/>
+</svg>

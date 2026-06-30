@@ -99,7 +99,7 @@ export async function enrichProjectsWithVersions(
 ): Promise<Project[]> {
   const pkgs = await Promise.all(
     rawProjects.map((p) =>
-      p.trackedPackages.length === 0
+      p.staticTech || p.trackedPackages.length === 0
         ? Promise.resolve<PackageJson | null>(null)
         : fetchPackageJson(p.githubUrl, p.githubVisibility === "private")
     )
@@ -107,6 +107,7 @@ export async function enrichProjectsWithVersions(
 
   return rawProjects.map((p, i) => ({
     ...p,
-    techVersions: buildTechVersions(p.trackedPackages, pkgs[i]),
+    // Apps that declare staticTech (e.g. native Swift) bypass npm monitoring.
+    techVersions: p.staticTech ?? buildTechVersions(p.trackedPackages, pkgs[i]),
   }));
 }

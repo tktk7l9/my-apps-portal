@@ -8,6 +8,7 @@ import {
   type Category,
   type GithubVisibility,
   type LighthouseScores,
+  type NativeQuality,
   type Platform,
   type Project,
   type TestCoverage,
@@ -271,7 +272,7 @@ export function ProjectTable({
               <Th>アプリ</Th>
               <SortTh label="カテゴリ" col="category" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
               <Th>主要技術・バージョン</Th>
-              <Th>Lighthouse</Th>
+              <Th>Lighthouse / Native</Th>
               <Th>Vitest</Th>
               <Th>Security</Th>
               <SortTh label="作成日 / 更新日" col="updatedAt" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
@@ -516,6 +517,8 @@ function ProjectRow({
       <td className="px-4 py-3">
         {project.lighthouseScores ? (
           <LighthouseCell scores={project.lighthouseScores} />
+        ) : project.nativeQuality ? (
+          <NativeQualityCell quality={project.nativeQuality} />
         ) : (
           <span className="text-slate-700">—</span>
         )}
@@ -601,6 +604,7 @@ function ProjectCard({
 
   const hasMetrics =
     project.lighthouseScores ||
+    project.nativeQuality ||
     project.testCoverage ||
     project.securityScores ||
     project.secretScan ||
@@ -642,6 +646,11 @@ function ProjectCard({
           {project.lighthouseScores && (
             <MetricBox label="Lighthouse">
               <LighthouseCell scores={project.lighthouseScores} />
+            </MetricBox>
+          )}
+          {!project.lighthouseScores && project.nativeQuality && (
+            <MetricBox label="Native">
+              <NativeQualityCell quality={project.nativeQuality} />
             </MetricBox>
           )}
           {project.testCoverage && (
@@ -774,6 +783,25 @@ function lighthouseColor(score: number): string {
   if (score >= 90) return "text-emerald-400";
   if (score >= 50) return "text-amber-400";
   return "text-red-400";
+}
+
+function NativeQualityCell({ quality }: { quality: NativeQuality }) {
+  const pass = quality.checks.filter((c) => c.status === "pass").length;
+  const warn = quality.checks.filter((c) => c.status === "warn").length;
+  const fail = quality.checks.filter((c) => c.status === "fail").length;
+  const title = quality.checks
+    .map((c) => `${c.status === "pass" ? "✓" : c.status === "warn" ? "⚠" : "✕"} ${c.label}${c.detail ? `: ${c.detail}` : ""}`)
+    .join("\n");
+  return (
+    <div className="inline-flex flex-col gap-0.5" title={`${title}\n計測日: ${quality.measuredAt}`}>
+      <span className="text-[10px] text-slate-500">Native</span>
+      <span className="flex gap-1.5 text-xs tabular-nums font-semibold">
+        <span className="text-emerald-400">✓{pass}</span>
+        {warn > 0 && <span className="text-amber-400">⚠{warn}</span>}
+        {fail > 0 && <span className="text-red-400">✕{fail}</span>}
+      </span>
+    </div>
+  );
 }
 
 function LighthouseCell({ scores }: { scores: LighthouseScores }) {

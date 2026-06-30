@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, Fragment } from "react";
 import Image from "next/image";
-import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
+import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type NativeQuality, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
 import { getActionableIssues, buildClaudePrompt } from "@/lib/claude-prompt";
 
@@ -292,6 +292,23 @@ export function ProjectDetailModal({
             </>
           )}
 
+          {/* Native quality (Lighthouse 非該当のネイティブアプリ向け) */}
+          {!project.lighthouseScores && project.nativeQuality && (
+            <>
+              <div className="my-5 border-t border-white/5" />
+              <div>
+                <p className="mb-3 text-xs font-medium text-slate-500">
+                  Native 品質チェック
+                  <span className="ml-2 text-slate-700">({project.nativeQuality.measuredAt} 計測)</span>
+                </p>
+                <NativeQualityDetail quality={project.nativeQuality} />
+                {project.nativeQuality.notes && (
+                  <p className="mt-3 text-xs leading-relaxed text-slate-500">{project.nativeQuality.notes}</p>
+                )}
+              </div>
+            </>
+          )}
+
           {/* Test coverage */}
           {project.testCoverage && (
             <>
@@ -413,6 +430,26 @@ function lighthouseBg(score: number): string {
   if (score >= 90) return "bg-emerald-500";
   if (score >= 50) return "bg-amber-500";
   return "bg-red-500";
+}
+
+function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
+  const mark = { pass: "✓", warn: "⚠", fail: "✕" } as const;
+  const color = {
+    pass: "text-emerald-400",
+    warn: "text-amber-400",
+    fail: "text-red-400",
+  } as const;
+  return (
+    <div className="space-y-2">
+      {quality.checks.map((c) => (
+        <div key={c.label} className="flex items-start gap-2 text-xs sm:text-sm">
+          <span className={`shrink-0 font-semibold ${color[c.status]}`}>{mark[c.status]}</span>
+          <span className="w-28 shrink-0 text-slate-300 sm:w-36">{c.label}</span>
+          {c.detail && <span className="text-slate-500">{c.detail}</span>}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function LighthouseScoresDetail({ scores }: { scores: LighthouseScores }) {

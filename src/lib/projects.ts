@@ -76,6 +76,23 @@ export type SecurityHeaders = {
   notes?: string;
 };
 
+/** ネイティブ/CLI アプリ向けの品質チェック（Lighthouse の代替）。
+ *  Web ページを持たないアプリで、客観的に検証可能な項目のみを pass/warn/fail で示す。 */
+export type NativeCheckStatus = "pass" | "warn" | "fail";
+
+export type NativeCheck = {
+  label: string;
+  status: NativeCheckStatus;
+  detail?: string;
+};
+
+export type NativeQuality = {
+  checks: NativeCheck[];
+  /** ISO 日付 */
+  measuredAt: string;
+  notes?: string;
+};
+
 /** システム構成図のノード種別。色分け・凡例に使用 */
 export type ArchNodeKind = "client" | "edge" | "server" | "external" | "storage" | "build";
 
@@ -103,6 +120,9 @@ export type RawProject = {
   name: string;
   description: string;
   trackedPackages: string[];
+  /** 主要技術を直接宣言する（npm に無い技術＝Swift 等向け）。
+   *  設定時は trackedPackages の npm バージョン監視より優先される。 */
+  staticTech?: TechVersion[];
   category: Exclude<Category, "All">;
   platform: Platform;
   services: string[];
@@ -114,6 +134,8 @@ export type RawProject = {
   favicon?: string;
   emoji: string;
   lighthouseScores?: LighthouseScores;
+  /** Web を持たないネイティブ/CLI アプリの品質指標（Lighthouse の代替）。 */
+  nativeQuality?: NativeQuality;
   testCoverage?: TestCoverage;
   securityScores?: SecurityScores;
   secretScan?: SecretScan;
@@ -697,6 +719,12 @@ export const rawProjects: RawProject[] = [
     description:
       "macOS のメニューバーに Claude プランの使用率（セッション=5時間 / 週間）を常時表示する常駐アプリ。Claude Code の /usage と同じ数値をリアルタイムにグランスでき、クリックで詳細・リセット時刻（分単位）・プラン/モデル/effort・組織情報を確認できる。",
     trackedPackages: [],
+    staticTech: [
+      { name: "Swift", docsUrl: "https://www.swift.org/documentation/", version: "6.3" },
+      { name: "SwiftUI", docsUrl: "https://developer.apple.com/documentation/swiftui", version: "—" },
+      { name: "AppKit", docsUrl: "https://developer.apple.com/documentation/appkit", version: "—" },
+      { name: "macOS", docsUrl: "https://developer.apple.com/documentation/", version: "14+" },
+    ],
     category: "Tool",
     platform: "other",
     services: ["Anthropic Claude"],
@@ -717,6 +745,22 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "📊",
+    nativeQuality: {
+      checks: [
+        { label: "ビルド", status: "pass", detail: "swift build 警告0・エラー0" },
+        { label: "CI", status: "pass", detail: "GitHub Actions: build + selftest(65)" },
+        { label: "コード署名", status: "pass", detail: "自己署名・安定identity (ClaudeUsageBar Self-Signed)" },
+        { label: "常駐フットプリント", status: "pass", detail: "LSUIElement / Dockアイコンなし・release 477KB" },
+        { label: "配布", status: "warn", detail: "自己署名・未公証（個人/ローカル配布前提）" },
+      ],
+      measuredAt: "2026-06-30",
+      notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse 非該当。客観的に検証できる項目のみを掲載。",
+    },
+    testCoverage: {
+      statements: 92.38, branches: 92.38, functions: 100, lines: 99.27,
+      tests: 65, measuredAt: "2026-06-30",
+      notes: "swift build + llvm-cov を --selftest 実行で計測。lib層(Formatting/Models=整形・パース・色判定・JSONデコード)を網羅し functions 100% / lines 99%。UI/Keychain/UsageClient/UsageStore は表示・副作用層のため対象外。statements/branches は Swift の region coverage（XCTest/Vitest 非対応の CLT 環境のため依存ゼロの自前ランナー）",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 0, tool: "none", measuredAt: "2026-06-30",

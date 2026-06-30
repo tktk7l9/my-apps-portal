@@ -691,6 +691,39 @@ export const rawProjects: RawProject[] = [
       notes: "メインは厳格CSP（unsafe-inline/eval 不使用・script-src 'self'）+ HSTS/XFO/Referrer/Permissions。/sandbox.html のみ不透明オリジン内に緩和CSP(connect-src none)を限定。Observatory はサイトルート評価のため A+ 維持",
     },
   },
+  {
+    id: "claude-usage-bar",
+    name: "Claude Usage Bar",
+    description:
+      "macOS のメニューバーに Claude プランの使用率（セッション=5時間 / 週間）を常時表示する常駐アプリ。Claude Code の /usage と同じ数値をリアルタイムにグランスでき、クリックで詳細・リセット時刻（分単位）・プラン/モデル/effort・組織情報を確認できる。",
+    trackedPackages: [],
+    category: "Tool",
+    platform: "other",
+    services: ["Anthropic Claude"],
+    createdAt: "2026-06-30",
+    updatedAt: "2026-06-30",
+    githubUrl: "https://github.com/tktk7l9/claude-usage-bar",
+    githubVisibility: "public",
+    technicalOverview:
+      "Swift / SwiftUI 製の常駐メニューバーアプリ（AppKit NSStatusItem + NSPopover）。macOS Keychain から Claude Code の OAuth トークンを読み、Anthropic の OAuth エンドポイント /api/oauth/usage を 60 秒ごとにポーリングして使用率を表示する（使用量を消費しないメタデータ取得）。トークン失効はローテーション事故を避けるため自動更新せず、失効前に再認証を促す。整形・パース等の純ロジックは依存ゼロのセルフテスト（52 checks）でカバーし、GitHub Actions で build + selftest を実行。SwiftPM ビルドで .app 化し、自己署名で署名を固定。",
+    architecture: {
+      layers: [
+        { nodes: [{ label: "メニューバーアプリ (Swift/AppKit)", sublabel: "NSStatusItem 2行表示 / NSPopover / 60秒ポーリング", kind: "client" }], connector: "ローカル読取 + API取得" },
+        { nodes: [
+          { label: "macOS Keychain", sublabel: "Claude Code-credentials (OAuthトークン)", kind: "storage" },
+          { label: "~/.claude/settings.json", sublabel: "モデル / effort", kind: "storage" },
+          { label: "Anthropic OAuth API", sublabel: "/api/oauth/usage ・ /api/oauth/profile (Bearer, HTTPS)", kind: "external" },
+        ] },
+      ],
+    },
+    emoji: "📊",
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 0, tool: "none", measuredAt: "2026-06-30",
+      notes: "外部依存なし（SwiftPM・Apple標準フレームワークのみ）。OAuthトークンはKeychainから都度読み取り・非永続・非ログ",
+    },
+    secretScan: { leaks: 0, commits: 8, measuredAt: "2026-06-30" },
+  },
 ];
 
 export const categories: Category[] = ["All", "Game", "Simulator", "Tool", "Other"];

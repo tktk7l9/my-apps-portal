@@ -268,7 +268,7 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 68, measuredAt: "2026-07-01",
+      tests: 71, measuredAt: "2026-07-01",
       notes: "lib層(aggregate/csv/domain/export/utils)を100%閾値ゲート。supabase.ts(ネットワーク)とUIは対象外",
     },
     securityScores: {

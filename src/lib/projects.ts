@@ -230,6 +230,50 @@ export const serviceUrls: Record<string, string> = {
 
 export const rawProjects: RawProject[] = [
   {
+    id: "utility-tracker",
+    name: "光熱費トラッカー",
+    description:
+      "電気(TEPCO)・ガス(LPIO)・水道(東京都水道局)の料金と使用量を1か所に集約し、月別料金の推移・合計、使用量と実効単価、前年同月比・季節性をグラフで可視化する個人用ダッシュボード。CSV取込＋手入力で登録し、Supabase にクラウド同期。",
+    trackedPackages: ["next", "react", "typescript", "@supabase/supabase-js"],
+    category: "Tool",
+    platform: "web",
+    services: ["Vercel", "Vercel Analytics", "Supabase"],
+    createdAt: "2026-07-01",
+    updatedAt: "2026-07-01",
+    githubUrl: "https://github.com/tktk7l9/utility-tracker",
+    githubVisibility: "public",
+    liveUrl: "https://utility-tracker-sigma.vercel.app",
+    emoji: "💡",
+    technicalOverview:
+      "Next.js App Router（クライアント描画のデータ端末、noindex）。集計の心臓部は src/lib の純関数（Vitest 100%）で、隔月請求の水道はカレンダー月へ日割り按分して月次系列に正規化する。CSV は文字コード選択(UTF-8/Shift_JIS)＋列マッピングで正規化し、unique(種別,期間)で冪等取込。保存は Supabase(Postgres)、認証はメール+パスワードの単一ユーザーで RLS を適用。グラフは recharts。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            { label: "ブラウザ (React 19)", sublabel: "recharts / CSV正規化 / supabase-js", kind: "client" },
+          ],
+          connector: "REST / Auth (HTTPS)",
+        },
+        {
+          nodes: [
+            { label: "Next.js · Vercel", sublabel: "静的配信 / CSP(connect-src supabase)", kind: "edge" },
+            { label: "Supabase", sublabel: "Postgres(readings) / Auth / RLS", kind: "storage" },
+          ],
+        },
+      ],
+    },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 50, measuredAt: "2026-07-01",
+      notes: "lib層(aggregate/csv/domain/utils)を100%閾値ゲート。supabase.ts(ネットワーク)とUIは対象外",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 521, tool: "npm", measuredAt: "2026-07-01",
+      notes: "npm audit 0件。postcss/undici を overrides で更新",
+    },
+  },
+  {
     id: "lifeplan-simulator",
     name: "ライフプランシミュレーター",
     description: "収入・支出・住宅・ライフイベント・投資を入力して老後（100歳まで）の資産推移をシミュレーション。",

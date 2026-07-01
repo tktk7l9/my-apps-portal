@@ -263,20 +263,20 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 100, accessibility: 95, bestPractices: 96, seo: 60,
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 60,
       measuredAt: "2026-07-01",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 52, measuredAt: "2026-07-01",
-      notes: "lib層(aggregate/csv/domain/utils)を100%閾値ゲート。supabase.ts(ネットワーク)とUIは対象外",
+      tests: 68, measuredAt: "2026-07-01",
+      notes: "lib層(aggregate/csv/domain/export/utils)を100%閾値ゲート。supabase.ts(ネットワーク)とUIは対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 522, tool: "npm", measuredAt: "2026-07-01",
       notes: "npm audit 0件（TypeScript 6.0.3 / supabase-js 2.110.0 更新後も維持）。postcss/undici を overrides で更新",
     },
-    secretScan: { leaks: 0, commits: 6, measuredAt: "2026-07-01" },
+    secretScan: { leaks: 0, commits: 8, measuredAt: "2026-07-01" },
     securityHeaders: {
       grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-07-01",
       notes: "Mozilla Observatory v2 で 9/10。CSP は recharts / Next のインライン用に script-src 'unsafe-inline' を許容しており CSP 項目で減点（A+ 化には nonce 化が必要）",

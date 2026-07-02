@@ -221,6 +221,7 @@ export const packageMeta: Record<string, PackageMeta> = {
 
 export const serviceUrls: Record<string, string> = {
   Vercel:            "https://vercel.com",
+  "GitHub Actions":  "https://github.com/features/actions",
   Supabase:          "https://supabase.com",
   "Anthropic Claude": "https://anthropic.com",
   "Google Gemini":   "https://ai.google.dev",
@@ -229,6 +230,68 @@ export const serviceUrls: Record<string, string> = {
 };
 
 export const rawProjects: RawProject[] = [
+  {
+    id: "roba-hud",
+    name: "RoBaHUD",
+    description:
+      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。ホストからは見えないレイヤーをキーコード逆引き＋トラックボール検知で推定する。打鍵ヒートマップに加え、GUI からキーを選んで .keymap を書き換え → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
+    trackedPackages: [],
+    staticTech: [
+      { name: "Swift", docsUrl: "https://www.swift.org/documentation/", version: "6.3" },
+      { name: "SwiftUI", docsUrl: "https://developer.apple.com/documentation/swiftui", version: "—" },
+      { name: "IOKit HID", docsUrl: "https://developer.apple.com/documentation/iokit", version: "—" },
+      { name: "macOS", docsUrl: "https://developer.apple.com/documentation/", version: "14+" },
+    ],
+    category: "Tool",
+    platform: "other",
+    services: ["GitHub Actions"],
+    createdAt: "2026-07-02",
+    updatedAt: "2026-07-02",
+    githubUrl: "https://github.com/tktk7l9/roba-hud",
+    githubVisibility: "public",
+    emoji: "🖲️",
+    technicalOverview:
+      "Swift / SwiftUI 製（依存ゼロ・SwiftPM）。非アクティブ化 NSPanel を全 Spaces / フルスクリーン上に常時最前面表示する。zmk-config-roBa の .keymap（devicetree）を独自トークナイザでソース範囲付きパースし、roBa.json の座標（親指キーの回転含む）で描画。IOHIDManager が roBa デバイスのみ購読し（Product 文字列で識別・BLE 単一デバイス）、(page,usage)→(layer,pos) 逆引き＋トラックボール移動/スクロール検知＋暗黙シフト抑制の状態機械で表示レイヤーを推定する。編集は記録済みソース範囲の外科的置換（列揃え維持・書込前に再パース検証）で、git/gh を Process 実行して push→Actions 監視→UF2 取得まで自動化。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            { label: "フローティングHUD (Swift/SwiftUI)", sublabel: "NSPanel 常時最前面 / レイヤー推定 / ヒートマップ / 編集UI", kind: "client" },
+          ],
+          connector: "生HID購読 (IOHIDManager) / keymap 読み書き / git・gh 実行",
+        },
+        {
+          nodes: [
+            { label: "roBa (BLE HID)", sublabel: "keyboard NKRO / consumer / trackball", kind: "external" },
+            { label: "zmk-config-roBa", sublabel: "roBa.keymap / roBa.json（正本）", kind: "storage" },
+            { label: "GitHub Actions", sublabel: "ZMK ビルド → UF2 artifact (gh CLI)", kind: "build" },
+          ],
+        },
+      ],
+    },
+    nativeQuality: {
+      checks: [
+        { label: "ビルド", status: "pass", detail: "swift build 警告0・エラー0" },
+        { label: "CI", status: "pass", detail: "GitHub Actions: build + selftest(102)" },
+        { label: "コード署名", status: "pass", detail: "自己署名・安定identity (RoBaHUD Self-Signed) — Input Monitoring 権限維持に必須" },
+        { label: "常駐フットプリント", status: "pass", detail: "LSUIElement / release 1.4MB / 推定タイマーはアイドル時停止" },
+        { label: "配布", status: "warn", detail: "自己署名・未公証（個人/ローカル配布前提）。Input Monitoring の TCC 許可が必要" },
+      ],
+      measuredAt: "2026-07-02",
+      notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse 非該当。客観的に検証できる項目のみを掲載。",
+    },
+    testCoverage: {
+      statements: 76.75, branches: 76.75, functions: 78.40, lines: 86.23,
+      tests: 102, measuredAt: "2026-07-02",
+      notes: "swift build + llvm-cov を --selftest 実行で計測（Swift の region coverage を statements/branches に記載）。lib 7ファイルの行カバレッジ = Parser 92% / KeycodeTable 98% / InferenceEngine 88% / Geometry 95% / Editor 80% / Model 74% / Stats 48%。UI・HID 購読・git/gh 実行層は副作用層のため対象外",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 0, tool: "none", measuredAt: "2026-07-02",
+      notes: "外部依存なし（SwiftPM・Apple 標準フレームワークのみ）。git/gh はユーザー環境の CLI を Process 実行し、トークン類は一切保持しない",
+    },
+    secretScan: { leaks: 0, commits: 6, measuredAt: "2026-07-02" },
+  },
   {
     id: "utility-tracker",
     name: "光熱費トラッカー",

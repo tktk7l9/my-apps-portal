@@ -234,7 +234,7 @@ export const rawProjects: RawProject[] = [
     id: "roba-hud",
     name: "RoBaHUD",
     description:
-      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。ホストからは見えないレイヤーをキーコード逆引き＋トラックボール検知で推定する。打鍵ヒートマップ、左右それぞれのバッテリー監視（HUD内チップ＋メニューバー常時表示・履歴グラフ・低残量/切断通知・ログイン時自動起動 = zmk-battery-center 相当）に加え、GUI からキーを選んで .keymap を書き換え → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
+      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。ホストからは見えないレイヤーをキーコード逆引き＋トラックボール検知で推定する。⌥⌘K グローバルホットキー・コンパクトバー表示・クリック透過、打鍵ヒートマップ、左右それぞれのバッテリー監視（HUD内チップ＋メニューバー常時表示(2行/1行)・履歴グラフ・放電レートから残り日数予測・低残量/切断通知・ログイン時自動起動 = zmk-battery-center 相当）に加え、GUI からキーを選んで .keymap を書き換え → CHEATSHEET.md の配置図を自動再生成 → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
     trackedPackages: [],
     staticTech: [
       { name: "Swift", docsUrl: "https://www.swift.org/documentation/", version: "6.3" },
@@ -272,18 +272,18 @@ export const rawProjects: RawProject[] = [
     nativeQuality: {
       checks: [
         { label: "ビルド", status: "pass", detail: "swift build 警告0・エラー0" },
-        { label: "CI", status: "pass", detail: "GitHub Actions: build + selftest(102)" },
+        { label: "CI", status: "pass", detail: "GitHub Actions: build + selftest(254) + lib行100%カバレッジゲート" },
         { label: "コード署名", status: "pass", detail: "自己署名・安定identity (RoBaHUD Self-Signed) — Input Monitoring 権限維持に必須" },
-        { label: "常駐フットプリント", status: "pass", detail: "LSUIElement / release 1.4MB / 推定タイマーはアイドル時停止" },
+        { label: "常駐フットプリント", status: "pass", detail: "LSUIElement / release ~1.5MB / 実測 アイドルCPU 0.0%・RSS ~103MB（推定タイマーはアイドル時停止）" },
         { label: "配布", status: "warn", detail: "自己署名・未公証（個人/ローカル配布前提）。Input Monitoring の TCC 許可が必要" },
       ],
       measuredAt: "2026-07-02",
       notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse 非該当。客観的に検証できる項目のみを掲載。",
     },
     testCoverage: {
-      statements: 78.02, branches: 78.02, functions: 79.78, lines: 86.88,
-      tests: 129, measuredAt: "2026-07-03",
-      notes: "swift build + llvm-cov を --selftest 実行で計測（Swift の region coverage を statements/branches に記載）。lib 8ファイルの行カバレッジ = KeycodeTable 98% / BatteryModel 95% / Geometry 95% / Parser 92% / InferenceEngine 88% / Editor 80% / Model 74% / Stats 48%。UI・HID/BLE 購読・git/gh 実行層は副作用層のため対象外",
+      statements: 99.14, branches: 99.14, functions: 100, lines: 100,
+      tests: 254, measuredAt: "2026-07-03",
+      notes: "swift build + llvm-cov を --selftest 実行で計測（Swift の region coverage を statements/branches に記載）。lib 10ファイル（Parser/Editor/Model/KeycodeTable/InferenceEngine/Geometry/Stats/BatteryModel/BatteryForecast/CheatsheetGenerator）を行100%の閾値ゲート（scripts/coverage-gate.sh・CIで強制）。UI・HID/BLE 購読・git/gh 実行層は副作用層のため対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

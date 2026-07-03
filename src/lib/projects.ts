@@ -234,7 +234,7 @@ export const rawProjects: RawProject[] = [
     id: "roba-hud",
     name: "RoBaHUD",
     description:
-      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。ホストからは見えないレイヤーをキーコード逆引き＋トラックボール検知で推定する。打鍵ヒートマップに加え、GUI からキーを選んで .keymap を書き換え → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
+      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。ホストからは見えないレイヤーをキーコード逆引き＋トラックボール検知で推定する。打鍵ヒートマップ、左右それぞれのバッテリー監視（残量チップ・履歴グラフ・低残量/切断通知・ログイン時自動起動 = zmk-battery-center 相当）に加え、GUI からキーを選んで .keymap を書き換え → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
     trackedPackages: [],
     staticTech: [
       { name: "Swift", docsUrl: "https://www.swift.org/documentation/", version: "6.3" },
@@ -246,12 +246,12 @@ export const rawProjects: RawProject[] = [
     platform: "other",
     services: ["GitHub Actions"],
     createdAt: "2026-07-02",
-    updatedAt: "2026-07-02",
+    updatedAt: "2026-07-03",
     githubUrl: "https://github.com/tktk7l9/roba-hud",
     githubVisibility: "public",
     emoji: "🖲️",
     technicalOverview:
-      "Swift / SwiftUI 製（依存ゼロ・SwiftPM）。非アクティブ化 NSPanel を全 Spaces / フルスクリーン上に常時最前面表示する。zmk-config-roBa の .keymap（devicetree）を独自トークナイザでソース範囲付きパースし、roBa.json の座標（親指キーの回転含む）で描画。IOHIDManager が roBa デバイスのみ購読し（Product 文字列で識別・BLE 単一デバイス）、(page,usage)→(layer,pos) 逆引き＋トラックボール移動/スクロール検知＋暗黙シフト抑制の状態機械で表示レイヤーを推定する。編集は記録済みソース範囲の外科的置換（列揃え維持・書込前に再パース検証）で、git/gh を Process 実行して push→Actions 監視→UF2 取得まで自動化。",
+      "Swift / SwiftUI 製（依存ゼロ・SwiftPM）。非アクティブ化 NSPanel を全 Spaces / フルスクリーン上に常時最前面表示する。zmk-config-roBa の .keymap（devicetree）を独自トークナイザでソース範囲付きパースし、roBa.json の座標（親指キーの回転含む）で描画。IOHIDManager が roBa デバイスのみ購読し（Product 文字列で識別・BLE 単一デバイス）、(page,usage)→(layer,pos) 逆引き＋トラックボール移動/スクロール検知＋暗黙シフト抑制の状態機械で表示レイヤーを推定する。バッテリーは CoreBluetooth で既存 HID ボンドに相乗りし、標準 Battery Service (0x180F) の複数キャラクタリスティックを CUD \"Peripheral N\"（ZMK の CENTRAL_BATTERY_LEVEL_PROXY）で左右に識別して購読、履歴を Swift Charts で描画。編集は記録済みソース範囲の外科的置換（列揃え維持・書込前に再パース検証）で、git/gh を Process 実行して push→Actions 監視→UF2 取得まで自動化。",
     architecture: {
       layers: [
         {
@@ -262,7 +262,7 @@ export const rawProjects: RawProject[] = [
         },
         {
           nodes: [
-            { label: "roBa (BLE HID)", sublabel: "keyboard NKRO / consumer / trackball", kind: "external" },
+            { label: "roBa (BLE)", sublabel: "HID (NKRO/consumer/trackball) + GATT Battery Service ×左右", kind: "external" },
             { label: "zmk-config-roBa", sublabel: "roBa.keymap / roBa.json（正本）", kind: "storage" },
             { label: "GitHub Actions", sublabel: "ZMK ビルド → UF2 artifact (gh CLI)", kind: "build" },
           ],
@@ -281,9 +281,9 @@ export const rawProjects: RawProject[] = [
       notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse 非該当。客観的に検証できる項目のみを掲載。",
     },
     testCoverage: {
-      statements: 76.75, branches: 76.75, functions: 78.40, lines: 86.23,
-      tests: 102, measuredAt: "2026-07-02",
-      notes: "swift build + llvm-cov を --selftest 実行で計測（Swift の region coverage を statements/branches に記載）。lib 7ファイルの行カバレッジ = Parser 92% / KeycodeTable 98% / InferenceEngine 88% / Geometry 95% / Editor 80% / Model 74% / Stats 48%。UI・HID 購読・git/gh 実行層は副作用層のため対象外",
+      statements: 78.02, branches: 78.02, functions: 79.78, lines: 86.88,
+      tests: 127, measuredAt: "2026-07-03",
+      notes: "swift build + llvm-cov を --selftest 実行で計測（Swift の region coverage を statements/branches に記載）。lib 8ファイルの行カバレッジ = KeycodeTable 98% / BatteryModel 95% / Geometry 95% / Parser 92% / InferenceEngine 88% / Editor 80% / Model 74% / Stats 48%。UI・HID/BLE 購読・git/gh 実行層は副作用層のため対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

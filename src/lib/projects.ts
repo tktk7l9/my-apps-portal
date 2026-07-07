@@ -385,7 +385,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/skydial.svg",
     emoji: "🌗",
     technicalOverview:
-      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期13.2kB gzip）。ARはiOS(webkitCompassHeading)/Android(deviceorientationabsolute)/センサー無し(ドラッグ)をHeadingSource共通IFに隔離し、Canvas 2Dの等距円筒投影で軌道を重畳。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
+      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期13.5kB gzip）。ARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
     architecture: {
       layers: [
         {
@@ -412,8 +412,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 109, measuredAt: "2026-07-08",
-      notes: "純ロジック層(astro/state/i18n/map-rays)を100%閾値ゲート。天体計算はJPL Horizons(0.002°一致)・USNO(出没±75s)・極夜白夜/月の出なし日エッジ込みで突合。UI/Three/Leaflet層は対象外",
+      tests: 144, measuredAt: "2026-07-08",
+      notes: "純ロジック層(astro/state/i18n/測地/AR姿勢・投影/朔望ソルバー/偏角/TZ推定)を100%閾値ゲート。天体計算はJPL Horizons(0.002°一致)・USNO(出没±75s・朔望±10分)・極夜白夜/月の出なし日エッジ込みで突合。UI/Three/Leaflet層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

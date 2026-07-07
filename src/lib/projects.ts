@@ -231,6 +231,77 @@ export const serviceUrls: Record<string, string> = {
 
 export const rawProjects: RawProject[] = [
   {
+    id: "agent-cockpit",
+    name: "Agent Cockpit",
+    description:
+      "AI コーディングエージェントの設定を1画面で横断管理する macOS デスクトップアプリ。Claude Code（~/.claude.json・~/.claude/）・OpenAI Codex（~/.codex/config.toml）・Cursor（~/.cursor/）＋プロジェクトスコープ（.mcp.json・.claude/）に分散した MCP サーバー / Skill / Subagent / スラッシュコマンド / プラグイン / 設定 / AGENTS.md・CLAUDE.md を統合インベントリとして表示し、GUI からフル編集（追加・編集・削除・リネーム・トグル）できる。全書込は 差分プレビュー（env 値マスク）→ sha256 競合検知 → ファイル毎50世代バックアップ → atomic write（パーミッション保持）の同一パイプラインを通り、~/.codex/auth.json や .env* は IPC 層でハード拒否。外部エディタや各 CLI 本体による変更は chokidar 監視で即座に反映される。",
+    trackedPackages: [],
+    staticTech: [
+      { name: "Electron", docsUrl: "https://www.electronjs.org/docs/latest", version: "43" },
+      { name: "React", docsUrl: "https://react.dev", version: "19" },
+      { name: "TypeScript", docsUrl: "https://www.typescriptlang.org/docs/", version: "6.0" },
+      { name: "electron-vite", docsUrl: "https://electron-vite.org", version: "5" },
+      { name: "CodeMirror", docsUrl: "https://codemirror.net/docs/", version: "6" },
+      { name: "macOS", docsUrl: "https://developer.apple.com/documentation/", version: "arm64" },
+    ],
+    category: "Tool",
+    platform: "other",
+    services: ["GitHub Actions"],
+    createdAt: "2026-07-07",
+    updatedAt: "2026-07-07",
+    githubUrl: "https://github.com/tktk7l9/agent-cockpit",
+    githubVisibility: "public",
+    favicon: "/favicons/agent-cockpit.svg",
+    emoji: "🎛️",
+    technicalOverview:
+      "Electron（electron-vite + React 19 + zustand + CodeMirror 6）。全ロジックを純関数の lib 層（FileSnapshot→FileEdit 変換・fs/Electron 非依存）に隔離し、書込は planMutation に一本化 — これにより lib を plain node の vitest で 100% カバレッジゲートできる。設定ファイルは絶対に全体再直列化しない: JSON は jsonc-parser の modify/applyEdits によるテキスト編集（~/.claude.json の約70個の無関係キー・整形をバイト単位で保存）、TOML は toml-eslint-parser の AST レンジを外科的にスプライス（コメント生存）、markdown frontmatter は yaml Document API。main プロセスは薄い fs ゲートウェイで、realpath 二重チェックのパス allowlist・auth.json/.env* denylist・バックアップ・atomic write を担う。renderer は contextIsolation + sandbox + 厳格 CSP + 型付き contextBridge API 1本のみ（リモートコンテンツなし）。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            { label: "Renderer (React 19)", sublabel: "統合インベントリ / 各種エディタ / 差分モーダル / CodeMirror 6", kind: "client" },
+          ],
+          connector: "型付き contextBridge API (window.cockpit) — contextIsolation + sandbox",
+        },
+        {
+          nodes: [
+            { label: "Main: 純関数 lib", sublabel: "planMutation / jsonc・TOML 外科的編集 / inventory（100%ゲート）", kind: "server" },
+            { label: "Main: fs-gateway", sublabel: "パスallowlist / 50世代バックアップ / atomic write / chokidar 監視", kind: "server" },
+          ],
+        },
+        {
+          nodes: [
+            { label: "Claude Code", sublabel: "~/.claude.json / ~/.claude/ / .mcp.json", kind: "storage" },
+            { label: "Codex", sublabel: "~/.codex/config.toml（コメント保存・0600維持）", kind: "storage" },
+            { label: "Cursor", sublabel: "~/.cursor/mcp.json / skills / agents", kind: "storage" },
+          ],
+        },
+      ],
+    },
+    nativeQuality: {
+      checks: [
+        { label: "ビルド", status: "pass", detail: "tsc --noEmit（node/web 2プロジェクト）+ electron-vite build 警告0" },
+        { label: "CI", status: "pass", detail: "GitHub Actions: typecheck + lib 100%カバレッジゲート + build + npm audit（ubuntu）/ dmg アーティファクト（macos-14）" },
+        { label: "書込安全性", status: "pass", detail: "差分プレビュー→sha256競合検知→バックアップ→atomic write。no-op変異バイト同一の不変条件テストで回帰防御" },
+        { label: "Electronセキュリティ", status: "pass", detail: "contextIsolation / sandbox / nodeIntegration off / 厳格CSP / navigation全拒否 / IPCパスallowlist + 機微ファイルdenylist" },
+        { label: "配布", status: "warn", detail: "未署名・未公証（Developer ID なし）。初回起動は右クリック→開く、または xattr -dr com.apple.quarantine" },
+      ],
+      measuredAt: "2026-07-07",
+      notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse / Observatory 非該当。客観的に検証できる項目のみを掲載。",
+    },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 152, measuredAt: "2026-07-07",
+      notes: "vitest + @vitest/coverage-v8。純関数の src/lib（パーサ・外科的エディタ・planMutation・inventory・validate/diff/redact）を 100/100/100/100 の閾値ゲート（CIで強制）。main の書込パイプライン（バックアップ・atomic・競合検知・symlink脱出拒否）は実テンポラリファイルで9テスト。UI層は対象外",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 503, tool: "npm", measuredAt: "2026-07-07",
+      notes: "全依存 devDependencies（main もバンドル）= 配布物は out/ のみで node_modules を同梱しない。実行時のネットワーク通信ゼロ・シークレット非保持",
+    },
+    secretScan: { leaks: 0, commits: 1, measuredAt: "2026-07-07" },
+  },
+  {
     id: "roba-hud",
     name: "RoBaHUD",
     description:

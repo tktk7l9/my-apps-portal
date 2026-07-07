@@ -180,6 +180,11 @@ export const packageMeta: Record<string, PackageMeta> = {
     docsUrl: "https://vite.dev/guide/",
     versionUrl: (v) => `https://github.com/vitejs/vite/releases/tag/v${v}`,
   },
+  leaflet: {
+    displayName: "Leaflet",
+    docsUrl: "https://leafletjs.com/reference.html",
+    versionUrl: (v) => `https://github.com/Leaflet/Leaflet/releases/tag/v${v}`,
+  },
   typescript: {
     displayName: "TypeScript",
     docsUrl: "https://www.typescriptlang.org/docs/",
@@ -362,6 +367,64 @@ export const rawProjects: RawProject[] = [
       notes: "外部依存なし（SwiftPM・Apple 標準フレームワークのみ）。git/gh はユーザー環境の CLI を Process 実行し、トークン類は一切保持しない",
     },
     secretScan: { leaks: 0, commits: 6, measuredAt: "2026-07-02" },
+  },
+  {
+    id: "skydial",
+    name: "Skydial",
+    description:
+      "太陽と月の位置・日の出日没・薄明・ゴールデンアワー・月齢を、3Dドーム/地図/ARで確認できるトラッカーPWA。日時スクラバーで過去未来の空を探索でき、状態はURLで共有可能。空グラデーション背景が太陽高度に連動する。日本語/英語対応。",
+    trackedPackages: ["vite", "typescript", "three", "leaflet"],
+    category: "Tool",
+    platform: "web",
+    services: ["Vercel", "Vercel Analytics"],
+    createdAt: "2026-07-07",
+    updatedAt: "2026-07-08",
+    githubUrl: "https://github.com/tktk7l9/skydial",
+    githubVisibility: "public",
+    liveUrl: "https://skydial.vercel.app",
+    favicon: "/favicons/skydial.svg",
+    emoji: "🌗",
+    technicalOverview:
+      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期13.2kB gzip）。ARはiOS(webkitCompassHeading)/Android(deviceorientationabsolute)/センサー無し(ドラッグ)をHeadingSource共通IFに隔離し、Canvas 2Dの等距円筒投影で軌道を重畳。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            {
+              label: "ブラウザ (Vanilla TS)",
+              sublabel: "Meeus天体計算 / Three.jsドーム / Leaflet / AR(センサー+Canvas2D)",
+              kind: "client",
+            },
+          ],
+          connector: "静的配信 + タイルGET (HTTPS)",
+        },
+        {
+          nodes: [
+            { label: "Vite · Vercel", sublabel: "厳格CSP / PWA(SW) / URL状態共有", kind: "edge" },
+            { label: "OSM / 地理院タイル", sublabel: "img-src限定許可 (計算は全てローカル)", kind: "external" },
+          ],
+        },
+      ],
+    },
+    lighthouseScores: {
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-07-08",
+    },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 109, measuredAt: "2026-07-08",
+      notes: "純ロジック層(astro/state/i18n/map-rays)を100%閾値ゲート。天体計算はJPL Horizons(0.002°一致)・USNO(出没±75s)・極夜白夜/月の出なし日エッジ込みで突合。UI/Three/Leaflet層は対象外",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 107, tool: "npm", measuredAt: "2026-07-08",
+      notes: "npm audit 0件。実行時依存はthree/leaflet/@vercel/analyticsのみ（天体計算は自前）",
+    },
+    secretScan: { leaks: 0, commits: 10, measuredAt: "2026-07-08" },
+    securityHeaders: {
+      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-08",
+      notes: "Mozilla Observatory v2 満点。デスクトップLighthouseも100/100/100/100",
+    },
   },
   {
     id: "utility-tracker",

@@ -372,7 +372,7 @@ export const rawProjects: RawProject[] = [
     id: "skydial",
     name: "Skydial",
     description:
-      "太陽と月の位置・日の出日没・薄明・ゴールデンアワー・月齢を、3Dドーム/地図/ARで確認できるトラッカーPWA。ドーム内では自宅の寸法・屋根・窓・隣家をパラメトリックに入力し、影の落ち方と窓ごとの日射取得熱量(kWh)を晴天モデルで可視化(パッシブデザイン検討向け)。日時スクラバーで過去未来の空を探索でき、状態はURLで共有可能。日本語/英語対応。",
+      "太陽と月の位置・日の出日没・薄明・ゴールデンアワー・月齢を、3Dドーム/地図/ARで確認できるトラッカーPWA。ドーム内では自宅の寸法・屋根・窓・隣家をパラメトリックに入力し、影の落ち方と窓ごとの日射取得熱量(kWh)を晴天モデルで可視化。屋根を半透明にしたカットアウェイで、室内のどこまで日射が届くか(床の日向パッチ・侵入距離・照射面積)も3D表示(パッシブデザイン検討向け)。日時スクラバーで過去未来の空を探索でき、状態はURLで共有可能。日本語/英語対応。",
     trackedPackages: ["vite", "typescript", "three", "leaflet"],
     category: "Tool",
     platform: "web",
@@ -385,7 +385,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/skydial.svg",
     emoji: "🌗",
     technicalOverview:
-      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。日射取得シミュレーションはIneichen–Perez晴天モデル+Hay–Davies傾斜面散乱（pvlib-python生成fixtureと0.1%突合）、遮蔽は建物・屋根・軒・隣家を三角形メッシュ化しMöller–Trumboreでレイトレース（表示用Three.jsメッシュと計算用ジオメトリは同一ソース）。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期17kB gzip）。ARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
+      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。日射取得シミュレーションはIneichen–Perez晴天モデル+Hay–Davies傾斜面散乱（pvlib-python生成fixtureと0.1%突合）、遮蔽は建物・屋根・軒・隣家を三角形メッシュ化しMöller–Trumboreでレイトレース（表示用Three.jsメッシュと計算用ジオメトリは同一ソース）。室内可視化は窓4隅を太陽方向へ床面投影しSutherland–Hodgmanで建物footprintにクリップする幾何計算(建物全体を1部屋として扱う簡略化)。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期17.4kB gzip）。ARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
     architecture: {
       layers: [
         {
@@ -412,15 +412,15 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 276, measuredAt: "2026-07-08",
-      notes: "純ロジック層(astro/state/i18n/測地/AR姿勢・投影/朔望ソルバー/偏角/TZ推定/日射sunsim一式)を100%閾値ゲート。天体計算はJPL Horizons(0.002°一致)・USNO(出没±75s・朔望±10分)・極夜白夜/月の出なし日エッジ込みで突合。日射はpvlib-python生成fixtureと0.1%突合+物理不変量(冬至南面>夏至南面等)。UI/Three/Leaflet層は対象外",
+      tests: 309, measuredAt: "2026-07-08",
+      notes: "純ロジック層(astro/state/i18n/測地/AR姿勢・投影/朔望ソルバー/偏角/TZ推定/日射sunsim一式+室内床パッチ幾何)を100%閾値ゲート。天体計算はJPL Horizons(0.002°一致)・USNO(出没±75s・朔望±10分)・極夜白夜/月の出なし日エッジ込みで突合。日射はpvlib-python生成fixtureと0.1%突合+物理不変量(冬至南面>夏至南面・冬至の床侵入深さ>夏至等)。UI/Three/Leaflet層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 107, tool: "npm", measuredAt: "2026-07-08",
       notes: "npm audit 0件。実行時依存はthree/leaflet/@vercel/analyticsのみ（天体計算・日射計算は自前）",
     },
-    secretScan: { leaks: 0, commits: 18, measuredAt: "2026-07-08" },
+    secretScan: { leaks: 0, commits: 23, measuredAt: "2026-07-08" },
     securityHeaders: {
       grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-08",
       notes: "Mozilla Observatory v2 満点。デスクトップLighthouseも100/100/100/100",

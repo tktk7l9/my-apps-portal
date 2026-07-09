@@ -492,7 +492,10 @@ function ProjectRow({
             </a>
           )}
         </p>
-        <p className="mt-0.5 max-w-[200px] text-xs leading-relaxed text-slate-400">
+        <p
+          title={project.description}
+          className="mt-0.5 line-clamp-2 max-w-[200px] text-xs leading-relaxed text-slate-400"
+        >
           {project.description}
         </p>
       </td>

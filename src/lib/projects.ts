@@ -372,7 +372,7 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1868（明治）〜現在の国内外の歴史ニュース13,941件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム50点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンクを表示。地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、URL共有、ダークモード対応。",
+      "1868（明治）〜現在の国内外の歴史ニュース13,941件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム100点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンクを表示。地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応。全13,941件を個別ページとしてprerenderしsitemap配信（ロングテールSEO）。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
@@ -385,7 +385,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia 年ページ159年分の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。生成した13,941件は overview+十年チャンクの静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。トップ50はYAMLキュレーション層で要約リライト+SVG割当（currentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia 年ページ159年分の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。生成した13,941件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。編集層はYAMLキュレーション350件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト+SVG100点、currentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビで内部リンク）。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。CIは本番同等CSPヘッダー配信での実ブラウザスモーク16シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。",
     architecture: {
       layers: [
         {
@@ -421,14 +421,14 @@ export const rawProjects: RawProject[] = [
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
       tests: 164, measuredAt: "2026-07-10",
-      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション)を100%閾値ゲート。実ブラウザスモーク13シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル)も本番URLでPASS。UIコンポーネント層は対象外",
+      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション)を100%閾値ゲート。実ブラウザスモーク16シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ)をCI+本番URLでPASS。UIコンポーネント層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 165, tool: "npm", measuredAt: "2026-07-10",
       notes: "npm audit 0件（cookieはoverrideで^0.7.2に固定）。実行時依存はminisearch/@vercel/analyticsのみ",
     },
-    secretScan: { leaks: 0, commits: 7, measuredAt: "2026-07-10" },
+    secretScan: { leaks: 0, commits: 9, measuredAt: "2026-07-10" },
     securityHeaders: {
       grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-10",
       notes: "Mozilla Observatory v2 満点。Lighthouseはmobile/desktopとも100/100/100/100（LCP 1.7s・CLS 0）",

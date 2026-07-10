@@ -369,6 +369,72 @@ export const rawProjects: RawProject[] = [
     secretScan: { leaks: 0, commits: 6, measuredAt: "2026-07-02" },
   },
   {
+    id: "chronoscroll",
+    name: "chronoscroll",
+    description:
+      "1868（明治）〜現在の国内外の歴史ニュース13,941件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム50点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンクを表示。地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、URL共有、ダークモード対応。",
+    trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
+    category: "Tool",
+    platform: "web",
+    services: ["Vercel", "Vercel Analytics"],
+    createdAt: "2026-07-10",
+    updatedAt: "2026-07-10",
+    githubUrl: "https://github.com/tktk7l9/chronoscroll",
+    githubVisibility: "public",
+    liveUrl: "https://chronoscroll.vercel.app",
+    favicon: "/favicons/chronoscroll.svg",
+    emoji: "⌛",
+    technicalOverview:
+      "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia 年ページ159年分の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。生成した13,941件は overview+十年チャンクの静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。トップ50はYAMLキュレーション層で要約リライト+SVG割当（currentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            {
+              label: "ブラウザ (Svelte 5)",
+              sublabel: "仮想化年表 / LODズーム / MiniSearch Worker / URL状態",
+              kind: "client",
+            },
+          ],
+          connector: "静的配信 + JSONチャンクGET (HTTPS)",
+        },
+        {
+          nodes: [
+            {
+              label: "SvelteKit static · Vercel",
+              sublabel: "厳格CSP / 13,941件を17チャンク配信",
+              kind: "edge",
+            },
+            {
+              label: "Wikipedia / Wikidata",
+              sublabel: "ビルド時のみ取得 (実行時は画像サムネのみ)",
+              kind: "external",
+            },
+          ],
+        },
+      ],
+    },
+    lighthouseScores: {
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-07-10",
+    },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 164, measuredAt: "2026-07-10",
+      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション)を100%閾値ゲート。実ブラウザスモーク13シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル)も本番URLでPASS。UIコンポーネント層は対象外",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 165, tool: "npm", measuredAt: "2026-07-10",
+      notes: "npm audit 0件（cookieはoverrideで^0.7.2に固定）。実行時依存はminisearch/@vercel/analyticsのみ",
+    },
+    secretScan: { leaks: 0, commits: 7, measuredAt: "2026-07-10" },
+    securityHeaders: {
+      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-10",
+      notes: "Mozilla Observatory v2 満点。Lighthouseはmobile/desktopとも100/100/100/100（LCP 1.7s・CLS 0）",
+    },
+  },
+  {
     id: "skydial",
     name: "Skydial",
     description:

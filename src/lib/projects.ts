@@ -372,20 +372,20 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1868（明治）〜現在の国内外の歴史ニュース13,941件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム100点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンクを表示。地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応。全13,941件を個別ページとしてprerenderしsitemap配信（ロングテールSEO）。",
+      "1868（明治）〜現在の国内外の歴史ニュース27,014件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム106点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンクを表示。地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,014件を個別ページとしてprerenderしsitemap配信（ロングテールSEO）。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
     services: ["Vercel", "Vercel Analytics"],
     createdAt: "2026-07-10",
-    updatedAt: "2026-07-10",
+    updatedAt: "2026-07-12",
     githubUrl: "https://github.com/tktk7l9/chronoscroll",
     githubVisibility: "public",
     liveUrl: "https://chronoscroll.vercel.app",
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia 年ページ159年分の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。生成した13,941件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。編集層はYAMLキュレーション350件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト+SVG100点、currentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビで内部リンク）。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。CIは本番同等CSPヘッダー配信での実ブラウザスモーク16シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。生成27,014件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト+AI・テック史新規追加41件、SVG106点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビで内部リンク）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。CIは本番同等CSPヘッダー配信での実ブラウザスモーク17シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。",
     architecture: {
       layers: [
         {
@@ -402,7 +402,7 @@ export const rawProjects: RawProject[] = [
           nodes: [
             {
               label: "SvelteKit static · Vercel",
-              sublabel: "厳格CSP / 13,941件を17チャンク配信",
+              sublabel: "厳格CSP / 27,014件を25チャンク配信",
               kind: "edge",
             },
             {
@@ -416,12 +416,12 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-07-10",
+      measuredAt: "2026-07-12",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 164, measuredAt: "2026-07-10",
-      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション)を100%閾値ゲート。実ブラウザスモーク16シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ)をCI+本番URLでPASS。UIコンポーネント層は対象外",
+      tests: 191, measuredAt: "2026-07-12",
+      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除)を100%閾値ゲート。実ブラウザスモーク17シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ)をCI+本番URLでPASS。UIコンポーネント層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

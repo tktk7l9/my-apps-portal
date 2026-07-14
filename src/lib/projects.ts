@@ -236,6 +236,64 @@ export const serviceUrls: Record<string, string> = {
 
 export const rawProjects: RawProject[] = [
   {
+    id: "lumen-bloom",
+    name: "Lumen Bloom",
+    description:
+      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。部屋の隅に置かれた水入りガラス花瓶とプロシージャル生成のひまわり（?obj=でチューリップに切替）に、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・オブジェクトを固定して共有可能。",
+    trackedPackages: ["vite", "typescript", "three"],
+    category: "Tool",
+    platform: "web",
+    services: ["Vercel", "Vercel Analytics"],
+    createdAt: "2026-07-14",
+    updatedAt: "2026-07-14",
+    githubUrl: "https://github.com/tktk7l9/lumen-bloom",
+    githubVisibility: "public",
+    liveUrl: "https://lumen-bloom.vercel.app",
+    favicon: "/favicons/lumen-bloom.svg",
+    emoji: "🌻",
+    technicalOverview:
+      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated ~0.05°/月相ch.48、skydialから移植しJPL Horizons・USNOとfixture突合）。ひまわりは完全プロシージャル（種盤はVogelフィロタキシス=黄金角螺旋170小花、花びら/萼/葉は同一のパラメトリック曲面グリッドのプロポーション違い、シード付きmulberry32で決定論的レイアウト）で外部3Dアセット不使用。窓格子はカメラ不可視（colorWrite/depthWrite無効）のalphaTestゴボ板が太陽方向に追従してシャドウマップにのみ寄与。水はtransmissionガラス内で見えるようクラシックalpha透過+ガラスdepthWrite無効の合成。天気はOpen-Meteo（キー不要）をWMOコード→ムードにマッピングし、全照明量を指数スムージング（τ≈2s）で遷移。常時稼働向けに適応フレームレート（パーティクル/稲光時のみ30fps、平常時10fps）・昼夜で不要な影パスを丸ごと停止・タブ非表示で全ループ停止。IBL（RoomEnvironment）は昼夜カーブに連動させ深夜が正午のように光る罠を回避。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            {
+              label: "ブラウザ (Vanilla TS)",
+              sublabel: "Meeus太陽/月計算 / プロシージャルひまわり / 窓ゴボ+適応fps / HUD・WakeLock",
+              kind: "client",
+            },
+          ],
+          connector: "静的配信 + 天気GET (HTTPS)",
+        },
+        {
+          nodes: [
+            { label: "Vite · Vercel", sublabel: "厳格CSP / PWA(SW) / URLパラメータ共有", kind: "edge" },
+            { label: "Open-Meteo", sublabel: "connect-src限定許可 (天体計算は全てローカル)", kind: "external" },
+          ],
+        },
+      ],
+    },
+    lighthouseScores: {
+      performance: 92, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-07-14",
+    },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 179, measuredAt: "2026-07-14",
+      notes: "純ロジック層(astro太陽/月/月相・フィロタキシス/花びら曲面/花瓶プロファイル/花束レイアウト・天気クライアント/WMOマッピング/staleness・シーン状態導出・URLパラメータ)を100%閾値ゲート。天体計算はMeeus例題+JPL Horizons(~0.01°)+USNO輝面比(±5%)で突合。Three.js/DOM層は対象外",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 124, tool: "npm", measuredAt: "2026-07-14",
+      notes: "npm audit 0件。実行時依存はthree/@vercel/analyticsのみ（天体計算・天気マッピングは自前）",
+    },
+    secretScan: { leaks: 0, commits: 20, measuredAt: "2026-07-14" },
+    securityHeaders: {
+      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-14",
+      notes: "Mozilla Observatory v2 満点。Lighthouseはdesktop 99/100/100/100・mobile 92/100/100/100（常時3D描画のTBTは適応fpsで280msまで削減）",
+    },
+  },
+  {
     id: "agent-cockpit",
     name: "Agent Cockpit",
     description:

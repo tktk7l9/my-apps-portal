@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import {
   categories,
   serviceUrls,
@@ -14,7 +14,6 @@ import {
   type TestCoverage,
 } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
-import { getActionableIssues, buildClaudePrompt } from "@/lib/claude-prompt";
 import { ProjectDetailModal } from "@/components/ProjectDetailModal";
 
 const versionColors: Record<VersionStatus, string> = {
@@ -80,25 +79,8 @@ export function ProjectTable({
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("updatedAt");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
-  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [techFilterOpen, setTechFilterOpen] = useState(false);
-
-  const handleCopy = useCallback((id: string, text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopiedKey(id);
-      setTimeout(() => setCopiedKey(null), 2000);
-    });
-  }, []);
-
-  const actionableApps = useMemo(() => {
-    return projects
-      .map((p) => {
-        const issues = getActionableIssues(p, versionStatuses, latestVersions);
-        return { project: p, issues };
-      })
-      .filter(({ issues }) => issues.length > 0);
-  }, [projects, versionStatuses, latestVersions]);
 
   const allTechs = useMemo(
     () => [...new Set(projects.flatMap((p) => p.techVersions.map((t) => t.name)))].sort(),
@@ -319,54 +301,6 @@ export function ProjectTable({
           ))
         )}
       </div>
-
-      {/* 依頼文言 */}
-      {actionableApps.length > 0 && (
-        <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-medium text-indigo-300">依頼文言</p>
-            <button
-              onClick={() => {
-                const all = actionableApps
-                  .map(({ project, issues }) => buildClaudePrompt(project, issues))
-                  .join("\n\n");
-                handleCopy("__all__", all);
-              }}
-              className={`shrink-0 rounded-md px-2.5 py-1 text-xs transition-colors ${
-                copiedKey === "__all__"
-                  ? "bg-emerald-500/20 text-emerald-400"
-                  : "bg-white/8 text-slate-400 hover:bg-white/15 hover:text-slate-200"
-              }`}
-            >
-              {copiedKey === "__all__" ? "コピー済み" : "まとめてコピー"}
-            </button>
-          </div>
-          <div className="space-y-2">
-            {actionableApps.map(({ project, issues }) => {
-              const prompt = buildClaudePrompt(project, issues);
-              const isCopied = copiedKey === project.id;
-              return (
-                <div key={project.id} className="flex items-start gap-3 rounded-lg bg-white/5 p-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-medium text-slate-400 mb-1.5">{project.name}</p>
-                    <pre className="text-xs text-slate-300 whitespace-pre-wrap font-mono leading-relaxed select-all">{prompt}</pre>
-                  </div>
-                  <button
-                    onClick={() => handleCopy(project.id, prompt)}
-                    className={`shrink-0 rounded-md px-2.5 py-1 text-xs transition-colors ${
-                      isCopied
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-white/8 text-slate-400 hover:bg-white/15 hover:text-slate-200"
-                    }`}
-                  >
-                    {isCopied ? "コピー済み" : "コピー"}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {selectedProject && (
         <ProjectDetailModal

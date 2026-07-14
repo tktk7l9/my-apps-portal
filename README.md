@@ -12,7 +12,6 @@
 - **最終コミット日** — GitHub API で public リポジトリの最終コミット日を表示
 - **手動更新ボタン** — キャッシュを即座にクリアして最新情報を再取得
 - **詳細モーダル** — アプリごとに OGP 画像・技術スタック・リンクをまとめて確認
-- **Claude 依頼文生成** — 対応が必要なアプリに対してそのままペーストできるプロンプトを表示
 
 ## Tech Stack
 
@@ -55,6 +54,7 @@ src/
 └── lib/
     ├── projects.ts         # アプリ定義データ
     ├── github.ts           # GitHub API クライアント
-    ├── version-status.ts   # npm / OSV バージョンチェック
-    └── claude-prompt.ts    # Claude 依頼文生成ユーティリティ
+    └── version-status.ts   # npm / OSV バージョンチェック
 ```
+
+依存パッケージの更新自体は各リポジトリの Dependabot（`.github/dependabot.yml`）に任せており、本ポータルは状態の可視化のみを担う。

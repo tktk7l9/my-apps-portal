@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback, Fragment } from "react";
+import { useEffect, useState, Fragment } from "react";
 import Image from "next/image";
 import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type NativeQuality, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
-import { getActionableIssues, buildClaudePrompt } from "@/lib/claude-prompt";
 
 const versionColors: Record<VersionStatus, string> = {
   latest:     "text-emerald-500",
@@ -48,7 +47,6 @@ export function ProjectDetailModal({
   lastCommitDates: Record<string, string>;
   onClose: () => void;
 }) {
-  const [isCopied, setIsCopied] = useState(false);
   const [ogpLoaded, setOgpLoaded] = useState(false);
   const [ogpError, setOgpError] = useState(false);
 
@@ -64,18 +62,8 @@ export function ProjectDetailModal({
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  const issues = getActionableIssues(project, versionStatuses, latestVersions);
-  const prompt = issues.length > 0 ? buildClaudePrompt(project, issues) : null;
   const displayUpdatedAt = lastCommitDates[project.id] ?? project.updatedAt;
   const vis = visibilityConfig[project.githubVisibility];
-
-  const handleCopy = useCallback(() => {
-    if (!prompt) return;
-    navigator.clipboard.writeText(prompt).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
-  }, [prompt]);
 
   return (
     <div
@@ -391,29 +379,6 @@ export function ProjectDetailModal({
             <span>作成 {project.createdAt}</span>
             <span>更新 {displayUpdatedAt}</span>
           </div>
-
-          {/* Claude prompt */}
-          {prompt && (
-            <>
-              <div className="my-5 border-t border-white/5" />
-              <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-4">
-                <p className="mb-2.5 text-xs font-medium text-indigo-300">Claude に依頼する</p>
-                <pre className="select-all whitespace-pre-wrap font-mono text-xs leading-relaxed text-slate-300">
-                  {prompt}
-                </pre>
-                <button
-                  onClick={handleCopy}
-                  className={`mt-3 rounded-md px-2.5 py-1 text-xs transition-colors ${
-                    isCopied
-                      ? "bg-emerald-500/20 text-emerald-400"
-                      : "bg-white/8 text-slate-400 hover:bg-white/15 hover:text-slate-200"
-                  }`}
-                >
-                  {isCopied ? "コピー済み" : "コピー"}
-                </button>
-              </div>
-            </>
-          )}
         </div>
       </div>
     </div>

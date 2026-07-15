@@ -1142,6 +1142,51 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 8, measuredAt: "2026-06-30" },
   },
+  {
+    id: "ai-primer",
+    name: "AI Primer",
+    description:
+      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。ChatGPT・Claude・Gemini・Grokの比較からコーディングAI・画像/動画/音楽生成・活用と倫理まで8トラック40レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ・AI年表・用語集も収録。",
+    trackedPackages: ["next", "react", "unified"],
+    category: "Tool",
+    platform: "web",
+    services: ["Vercel", "Vercel Analytics"],
+    createdAt: "2026-07-15",
+    updatedAt: "2026-07-15",
+    githubUrl: "https://github.com/tktk7l9/ai-primer",
+    githubVisibility: "public",
+    liveUrl: "https://ai-primer-nine.vercel.app",
+    favicon: "/favicons/ai-primer.svg",
+    technicalOverview:
+      "Next.js 16 (App Router) + React 19。CSPはacro-finder方式のper-request nonce(proxy.ts、force-dynamic)でObservatory A+を維持しつつSSR。i18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。クイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
+    architecture: {
+      layers: [
+        { nodes: [{ label: "ブラウザ", sublabel: "クイズ(useSyncExternalStore)/進捗ローカルストレージ/言語切替", kind: "client" }], connector: "HTTPS" },
+        { nodes: [{ label: "Vercel", sublabel: "Next.js SSR(force-dynamic) / proxy.tsでnonce CSP発行 / CDN", kind: "edge" }], connector: "Markdownビルド時変換" },
+        { nodes: [{ label: "GitHub Actions", sublabel: "CI(typecheck/coverage/build) / 月次鮮度チェック→Issue化", kind: "server" }] },
+      ],
+    },
+    emoji: "🧭",
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 368, measuredAt: "2026-07-15",
+      notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが40レッスン+モデル15件+年表18件+用語21語の整合性(id一意・ja/en非空・出典https・lastVerified妥当等)を横断検証。UIコンポーネントはpresentation層として対象外(実ブラウザ操作で確認済み)",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 0, tool: "npm", measuredAt: "2026-07-15",
+      notes: "npm audit 0件(postcssをoverridesで8.5.10+に固定しNext 16同梱分の脆弱性を回避)",
+    },
+    lighthouseScores: {
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-07-15",
+    },
+    secretScan: { leaks: 0, commits: 24, measuredAt: "2026-07-15" },
+    securityHeaders: {
+      grade: "A+", score: 115, passed: 10, total: 10, measuredAt: "2026-07-15",
+      notes: "Mozilla Observatory v2。acro-finder方式のper-request nonce CSP(strict-dynamic)+セキュリティヘッダー一式",
+    },
+  },
 ];
 
 export const categories: Category[] = ["All", "Game", "Simulator", "Tool", "Other"];

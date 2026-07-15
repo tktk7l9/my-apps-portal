@@ -1169,19 +1169,19 @@ export const rawProjects: RawProject[] = [
     emoji: "🧭",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 368, measuredAt: "2026-07-15",
-      notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが40レッスン+モデル15件+年表18件+用語21語の整合性(id一意・ja/en非空・出典https・lastVerified妥当等)を横断検証。UIコンポーネントはpresentation層として対象外(実ブラウザ操作で確認済み)",
+      tests: 397, measuredAt: "2026-07-15",
+      notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが40レッスン+モデル15件+年表25件+用語21語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 0, tool: "npm", measuredAt: "2026-07-15",
-      notes: "npm audit 0件(postcssをoverridesで8.5.10+に固定しNext 16同梱分の脆弱性を回避)",
+      notes: "npm audit --audit-level=low 0件(postcssをoverridesで8.5.10+に固定しNext 16同梱分の脆弱性を回避)。CIにgitleaks/npm audit/Lighthouseリグレッションガードを組み込み済み",
     },
     lighthouseScores: {
       performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
       measuredAt: "2026-07-15",
     },
-    secretScan: { leaks: 0, commits: 24, measuredAt: "2026-07-15" },
+    secretScan: { leaks: 0, commits: 30, measuredAt: "2026-07-15" },
     securityHeaders: {
       grade: "A+", score: 115, passed: 10, total: 10, measuredAt: "2026-07-15",
       notes: "Mozilla Observatory v2。acro-finder方式のper-request nonce CSP(strict-dynamic)+セキュリティヘッダー一式",

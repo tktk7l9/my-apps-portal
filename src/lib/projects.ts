@@ -239,7 +239,7 @@ export const rawProjects: RawProject[] = [
     id: "service-anatomy",
     name: "Service Anatomy",
     description:
-      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備え、記事はめっちゃカメレオン/Nani翻訳/みてね/DayCity/PixelPotの5本。",
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備え、記事はめっちゃカメレオン/Nani翻訳/みてね/DayCity/PixelPot/NERV防災/Obsidian/しずかなインターネットの8本。",
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
@@ -262,7 +262,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🔬",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 204, measuredAt: "2026-07-16",
+      tests: 237, measuredAt: "2026-07-17",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {

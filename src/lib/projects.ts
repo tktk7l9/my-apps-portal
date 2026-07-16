@@ -236,6 +236,51 @@ export const serviceUrls: Record<string, string> = {
 
 export const rawProjects: RawProject[] = [
   {
+    id: "service-anatomy",
+    name: "Service Anatomy",
+    description:
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。初期記事はめっちゃカメレオン/Nani翻訳/家族アルバム みてねの3本。",
+    trackedPackages: ["next", "react", "unified"],
+    category: "Other",
+    platform: "web",
+    services: ["Vercel", "Vercel Analytics"],
+    createdAt: "2026-07-16",
+    updatedAt: "2026-07-16",
+    githubUrl: "https://github.com/tktk7l9/service-anatomy",
+    githubVisibility: "public",
+    liveUrl: "https://service-anatomy.vercel.app",
+    favicon: "/favicons/service-anatomy.svg",
+    technicalOverview:
+      "Next.js 16 (App Router) + React 19。全HTMLルートをforce-dynamic + per-request nonce CSP(proxy.ts)で配信しObservatory A+。記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。ヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+    architecture: {
+      layers: [
+        { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
+        { nodes: [{ label: "Vercel", sublabel: "Next.js SSR(force-dynamic) / proxy.tsでnonce CSP発行 / 記事md実行時読込(outputFileTracingIncludes)", kind: "edge" }], connector: "remark/rehype+directive変換" },
+        { nodes: [{ label: "GitHub Actions", sublabel: "CI(gitleaks/audit/typecheck/coverage100%/build/Lighthouseガード)", kind: "server" }] },
+      ],
+    },
+    emoji: "🔬",
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 163, measuredAt: "2026-07-16",
+      notes: "engine(markdown/articles/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出)をCI強制。記事を追加すると自動でテスト対象に入る",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 0, tool: "npm", measuredAt: "2026-07-16",
+      notes: "npm audit --audit-level=low 0件(postcssをoverridesで8.5.10+に固定)。CIにgitleaks/npm audit/Lighthouseリグレッションガードを組み込み済み",
+    },
+    lighthouseScores: {
+      performance: 99, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-07-16",
+    },
+    secretScan: { leaks: 0, commits: 10, measuredAt: "2026-07-16" },
+    securityHeaders: {
+      grade: "A+", score: 115, passed: 10, total: 10, measuredAt: "2026-07-16",
+      notes: "Mozilla Observatory v2。per-request nonce CSP(strict-dynamic)+セキュリティヘッダー一式。desktop Lighthouseは100/100/100/100(mobileはperf 99)",
+    },
+  },
+  {
     id: "lumen-bloom",
     name: "Lumen Bloom",
     description:

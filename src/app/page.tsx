@@ -3,6 +3,7 @@ import { StatsSummary } from "@/components/StatsSummary";
 import { ProjectTable } from "@/components/ProjectTable";
 import { RefreshButton } from "@/components/RefreshButton";
 import { FeaturedWorks } from "@/components/FeaturedWorks";
+import { ClientWork } from "@/components/ClientWork";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
 import { enrichProjectsWithVersions } from "@/lib/repo-versions";
@@ -53,6 +54,7 @@ async function ProjectDataLoader() {
 
   const featured = selectFeatured(projects);
   const rest = selectRest(projects);
+  const clientWorks = projects.filter((p) => p.kind === "client");
 
   return (
     <>
@@ -62,6 +64,8 @@ async function ProjectDataLoader() {
         latestVersions={latestVersions}
         lastCommitDates={lastCommitDates}
       />
+
+      <ClientWork projects={clientWorks} />
 
       <section>
         <div className="mb-3 flex items-baseline gap-3">

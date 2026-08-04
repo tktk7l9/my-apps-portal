@@ -1,6 +1,9 @@
+import { PortfolioHeader } from "@/components/PortfolioHeader";
+import { StatsSummary } from "@/components/StatsSummary";
 import { ProjectTable } from "@/components/ProjectTable";
 import { RefreshButton } from "@/components/RefreshButton";
 import { rawProjects } from "@/lib/projects";
+import { computePortfolioStats } from "@/lib/stats";
 import { enrichProjectsWithVersions } from "@/lib/repo-versions";
 import { getVersionStatuses } from "@/lib/version-status";
 import { getLastCommitDates } from "@/lib/github";
@@ -9,15 +12,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#080c14] text-slate-100">
       <div className="mx-auto max-w-6xl px-3 py-6 sm:px-6 sm:py-12 lg:px-8">
-        <header className="mb-5 sm:mb-8">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">My Apps</h1>
-            <p className="text-xs sm:text-sm text-slate-400">個人で作成したWebアプリの一覧です。</p>
-            <div className="ml-auto">
-              <RefreshButton />
-            </div>
-          </div>
-        </header>
+        <PortfolioHeader />
+        <StatsSummary stats={computePortfolioStats(rawProjects)} />
 
         <main>
           <ProjectDataLoader />
@@ -28,7 +24,7 @@ export default function Home() {
             href="https://github.com/tktk7l9"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-slate-400"
+            className="transition-colors hover:text-slate-300"
           >
             github.com/tktk7l9
           </a>
@@ -54,11 +50,19 @@ async function ProjectDataLoader() {
   ]);
 
   return (
-    <ProjectTable
-      projects={projects}
-      versionStatuses={versionStatuses}
-      latestVersions={latestVersions}
-      lastCommitDates={lastCommitDates}
-    />
+    <section>
+      <div className="mb-3 flex items-baseline gap-3">
+        <h2 className="text-lg font-bold text-white">すべての作品</h2>
+        <div className="ml-auto">
+          <RefreshButton />
+        </div>
+      </div>
+      <ProjectTable
+        projects={projects}
+        versionStatuses={versionStatuses}
+        latestVersions={latestVersions}
+        lastCommitDates={lastCommitDates}
+      />
+    </section>
   );
 }

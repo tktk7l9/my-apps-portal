@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { computePortfolioStats } from "@/lib/stats";
 import { makeProject } from "@/lib/test-fixtures";
+import { rawProjects } from "@/lib/projects";
 
 describe("computePortfolioStats", () => {
   it("空配列ならすべて 0 で、平均は null になる", () => {
@@ -108,5 +109,28 @@ describe("computePortfolioStats", () => {
     ]);
     expect(stats.avgLighthousePerformance).toBeNull();
     expect(stats.lighthouseMeasuredCount).toBe(0);
+  });
+});
+
+describe("実データに対する集計", () => {
+  it("実務案件は集計対象に含まれない", () => {
+    const stats = computePortfolioStats(rawProjects);
+    const clientCount = rawProjects.filter((p) => p.kind === "client").length;
+    expect(clientCount).toBeGreaterThan(0);
+    expect(stats.totalProjects).toBe(rawProjects.length - clientCount);
+  });
+
+  it("実務案件は外部にリンクを持たない", () => {
+    for (const project of rawProjects.filter((p) => p.kind === "client")) {
+      expect(project.liveUrl, `${project.id} に liveUrl がある`).toBeUndefined();
+      expect(project.githubVisibility).toBe("private");
+    }
+  });
+
+  it("実務案件は npm バージョン監視の対象外である", () => {
+    for (const project of rawProjects.filter((p) => p.kind === "client")) {
+      expect(project.staticTech, `${project.id} に staticTech がない`).toBeTruthy();
+      expect(project.trackedPackages).toEqual([]);
+    }
   });
 });

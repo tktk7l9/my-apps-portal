@@ -2,6 +2,41 @@ import type { Category, RawProject } from "./types";
 
 export const rawProjects: RawProject[] = [
   {
+    id: "kousan-admin",
+    name: "社内業務管理システム",
+    description:
+      "不動産賃貸業を営む企業の社内業務を集約する管理システム。会社・物件・文書・メモ・年次予定・車両・テナント・連絡先・確認事項・区画図の10領域を単一のダッシュボードで扱う。企画・要件定義・設計・実装・運用までを単独で担当し、Phase 1 が本番稼働中。業務ヒアリングをもとに、紙とスプレッドシートに散在していた情報を一箇所へ移した。",
+    trackedPackages: [],
+    staticTech: [
+      { name: "TanStack Start", docsUrl: "https://tanstack.com/start/latest/docs/", version: "1.x" },
+      { name: "Cloudflare Workers", docsUrl: "https://developers.cloudflare.com/workers/", version: "—" },
+      { name: "Cloudflare D1", docsUrl: "https://developers.cloudflare.com/d1/", version: "—" },
+      { name: "Drizzle ORM", docsUrl: "https://orm.drizzle.team/docs/overview", version: "—" },
+      { name: "Mantine", docsUrl: "https://mantine.dev/", version: "9.x" },
+    ],
+    category: "Tool",
+    platform: "web",
+    services: ["Cloudflare Workers", "Cloudflare D1", "Cloudflare R2", "Cloudflare Access"],
+    createdAt: "2026-07-28",
+    updatedAt: "2026-07-28",
+    githubUrl: "",
+    githubVisibility: "private",
+    emoji: "🏢",
+    kind: "client",
+    technicalOverview:
+      "TanStack Start を Cloudflare Workers 上で動かし、データベースは D1 + Drizzle ORM、ファイルは R2 に保存する。認証は Cloudflare Access の Google IdP に委譲し、アプリ側に認証情報を持たない。文書は R2 と外部ドライブの両系統を扱い、区画図は登記原文と隣接関係を突き合わせて表示する。",
+    architecture: {
+      layers: [
+        { nodes: [{ label: "ブラウザ", sublabel: "Mantine UI / 社内利用のみ", kind: "client" }], connector: "HTTPS (Cloudflare Access 認証)" },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "TanStack Start SSR / サーバー関数", kind: "edge" }], connector: "Drizzle ORM / S3 API" },
+        { nodes: [
+          { label: "D1", sublabel: "業務データ", kind: "storage" },
+          { label: "R2", sublabel: "文書ファイル", kind: "storage" },
+        ] },
+      ],
+    },
+  },
+  {
     id: "service-anatomy",
     name: "Service Anatomy",
     description:

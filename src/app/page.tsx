@@ -2,11 +2,13 @@ import { PortfolioHeader } from "@/components/PortfolioHeader";
 import { StatsSummary } from "@/components/StatsSummary";
 import { ProjectTable } from "@/components/ProjectTable";
 import { RefreshButton } from "@/components/RefreshButton";
+import { FeaturedWorks } from "@/components/FeaturedWorks";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
 import { enrichProjectsWithVersions } from "@/lib/repo-versions";
 import { getVersionStatuses } from "@/lib/version-status";
 import { getLastCommitDates } from "@/lib/github";
+import { selectFeatured, selectRest } from "@/lib/featured";
 
 export default function Home() {
   return (
@@ -49,20 +51,35 @@ async function ProjectDataLoader() {
     getLastCommitDates(publicRepos),
   ]);
 
+  const featured = selectFeatured(projects);
+  const rest = selectRest(projects);
+
   return (
-    <section>
-      <div className="mb-3 flex items-baseline gap-3">
-        <h2 className="text-lg font-bold text-white">すべての作品</h2>
-        <div className="ml-auto">
-          <RefreshButton />
-        </div>
-      </div>
-      <ProjectTable
-        projects={projects}
+    <>
+      <FeaturedWorks
+        projects={featured}
         versionStatuses={versionStatuses}
         latestVersions={latestVersions}
         lastCommitDates={lastCommitDates}
       />
-    </section>
+
+      <section>
+        <div className="mb-3 flex items-baseline gap-3">
+          <h2 className="text-lg font-bold text-white sm:text-xl">
+            他の作品
+          </h2>
+          <span className="text-sm text-slate-500 tabular-nums">{rest.length} 件</span>
+          <div className="ml-auto">
+            <RefreshButton />
+          </div>
+        </div>
+        <ProjectTable
+          projects={rest}
+          versionStatuses={versionStatuses}
+          latestVersions={latestVersions}
+          lastCommitDates={lastCommitDates}
+        />
+      </section>
+    </>
   );
 }

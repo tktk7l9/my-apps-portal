@@ -57,3 +57,27 @@ describe("実データの代表作", () => {
     }
   });
 });
+
+describe("実データの selectRest", () => {
+  const rest = selectRest(rawProjects);
+
+  it("実務案件が少なくとも1件存在する（このテストが自明にパスしないための前提）", () => {
+    const clientCount = rawProjects.filter((p) => p.kind === "client").length;
+    expect(clientCount).toBeGreaterThan(0);
+  });
+
+  it("実務案件は結果に含まれない", () => {
+    expect(rest.every((p) => p.kind !== "client")).toBe(true);
+    expect(rest.map((p) => p.id)).not.toContain("kousan-admin");
+  });
+
+  it("featuredRank を持つものは結果に含まれない", () => {
+    expect(rest.every((p) => p.featuredRank === undefined)).toBe(true);
+  });
+
+  it("件数は 全体 - 代表作 - 実務案件 の数と一致する", () => {
+    const featuredCount = selectFeatured(rawProjects).length;
+    const clientCount = rawProjects.filter((p) => p.kind === "client").length;
+    expect(rest.length).toBe(rawProjects.length - featuredCount - clientCount);
+  });
+});

@@ -43,7 +43,7 @@ afterEach(() => {
 
 describe("getVersionStatuses", () => {
   it("チェック対象外のバージョン表記は unknown にする", async () => {
-    mockFetch({});
+    const fetchMock = mockFetch({});
     const { statuses } = await getVersionStatuses([
       { techName: "Next.js", version: "—" },
       { techName: "Next.js", version: "latest" },
@@ -52,14 +52,22 @@ describe("getVersionStatuses", () => {
     expect(statuses["Next.js@—"]).toBe("unknown");
     expect(statuses["Next.js@latest"]).toBe("unknown");
     expect(statuses["Next.js@16.x"]).toBe("unknown");
+    // isCheckable でふるい落とされていれば、npm registry には一切問い合わせないはず。
+    const calledUrls = fetchMock.mock.calls.map((c) => String(c[0]));
+    expect(calledUrls.some((u) => u.startsWith("https://registry.npmjs.org/"))).toBe(false);
   });
 
   it("packageMeta に無い技術名は unknown にする", async () => {
-    mockFetch({});
+    // "next" に実体を持たせておく: 逆引きが誤って解決してしまう回帰があれば
+    // このエントリが registry に問い合わせられてしまい、下の検証で捕捉できる。
+    const fetchMock = mockFetch({ npmVersions: { next: "16.2.12" } });
     const { statuses } = await getVersionStatuses([
       { techName: "Swift", version: "6.3" },
     ]);
     expect(statuses["Swift@6.3"]).toBe("unknown");
+    // displayName → npm 名の逆引きが undefined を返していれば、npm registry には問い合わせないはず。
+    const calledUrls = fetchMock.mock.calls.map((c) => String(c[0]));
+    expect(calledUrls.some((u) => u.startsWith("https://registry.npmjs.org/"))).toBe(false);
   });
 
   it("最新版と一致すれば latest、古ければ outdated にする", async () => {

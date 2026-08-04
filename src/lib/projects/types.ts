@@ -143,6 +143,10 @@ export type RawProject = {
   /** 実務案件か個人開発か。未設定は "personal" 扱い。
    *  "client" の項目はサマリ集計と一覧テーブルから除外し、専用セクションにのみ出す。 */
   kind?: "personal" | "client";
+  /** 代表作の並び順。設定されたものだけヒーローセクションに出る（1 始まりの連番） */
+  featuredRank?: number;
+  /** 代表作カード用の見どころ 1 行（80 文字以内）。description はカードには長すぎるため別に持つ */
+  highlight?: string;
   /** 技術的概要（2〜4文） */
   technicalOverview?: string;
   /** システム構成図 */

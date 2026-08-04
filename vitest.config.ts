@@ -10,7 +10,11 @@ export default defineConfig({
     include: ["src/**/*.test.ts"],
     coverage: {
       provider: "v8",
-      include: ["src/lib/stats.ts", "src/lib/version-status.ts"],
+      include: [
+        "src/lib/stats.ts",
+        "src/lib/version-status.ts",
+        "src/lib/featured.ts",
+      ],
       thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
     },
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import Image from "next/image";
 import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type NativeQuality, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
@@ -34,6 +34,18 @@ const visibilityConfig: Record<GithubVisibility, { label: string; className: str
   "local-only": { label: "Local only", className: "bg-yellow-500/10 text-yellow-600 ring-yellow-500/20" },
 };
 
+/** ダイアログ内のフォーカス可能要素を判定するセレクタ。
+ *  非表示 (offsetParent === null) は getFocusableElements 側で追加除外する。 */
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
+  if (!container) return [];
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (el) => el.offsetParent !== null
+  );
+}
+
 export function ProjectDetailModal({
   project,
   versionStatuses,
@@ -49,6 +61,7 @@ export function ProjectDetailModal({
 }) {
   const [ogpLoaded, setOgpLoaded] = useState(false);
   const [ogpError, setOgpError] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -62,6 +75,51 @@ export function ProjectDetailModal({
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
+  // フォーカストラップ: 開いたらモーダル内へフォーカス移動し、Tab/Shift+Tab を
+  // モーダル内で循環させ、閉じたら開く前のフォーカスへ戻す。
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const dialog = dialogRef.current;
+
+    const focusable = getFocusableElements(dialog);
+    (focusable[0] ?? dialog)?.focus();
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const current = getFocusableElements(dialog);
+      if (current.length === 0) {
+        // フォーカス可能要素が無い場合はダイアログ自体に留める（例外・無限ループ防止）
+        e.preventDefault();
+        dialog?.focus();
+        return;
+      }
+
+      const first = current[0];
+      const last = current[current.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      const activeIndex = active ? current.indexOf(active) : -1;
+
+      if (e.shiftKey) {
+        if (activeIndex <= 0) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (activeIndex === -1 || activeIndex === current.length - 1) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleTab);
+    return () => {
+      document.removeEventListener("keydown", handleTab);
+      previouslyFocused?.focus();
+    };
+  }, []);
+
   const displayUpdatedAt = lastCommitDates[project.id] ?? project.updatedAt;
   const vis = visibilityConfig[project.githubVisibility];
 
@@ -71,10 +129,12 @@ export function ProjectDetailModal({
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative flex max-h-[calc(100dvh_-_1rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1117] shadow-2xl sm:max-h-[calc(100dvh_-_3rem)]"
+        tabIndex={-1}
+        className="relative flex max-h-[calc(100dvh_-_1rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1117] shadow-2xl sm:max-h-[calc(100dvh_-_3rem)] focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}

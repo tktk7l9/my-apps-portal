@@ -42,6 +42,7 @@
 | `src/lib/projects/index.ts` | 再エクスポート。既存の `@/lib/projects` import 互換を保つ |
 | `src/lib/stats.ts` | サマリ集計の純関数 |
 | `src/lib/stats.test.ts` | 上記のテスト |
+| `src/lib/test-fixtures.ts` | テスト用 `RawProject` ファクトリ。複数のテストで共有する |
 | `src/lib/featured.ts` | 代表作・非代表作の振り分け関数 |
 | `src/lib/featured.test.ts` | 上記のテスト。実データの代表作 4 件も検証する |
 | `src/lib/version-status.test.ts` | 既存 `version-status.ts` のテスト |
@@ -210,13 +211,13 @@ export default defineConfig({
 
 `src/lib/stats.test.ts`:
 
+まず共有のテストファクトリを `src/lib/test-fixtures.ts` に作る。Task 4 のテストからも使うため、テストファイルごとに複製しない。
+
 ```ts
-import { describe, expect, it } from "vitest";
 import type { RawProject } from "@/lib/projects";
-import { computePortfolioStats } from "@/lib/stats";
 
 /** テスト用の最小 RawProject。必要なフィールドだけ上書きして使う */
-function makeProject(overrides: Partial<RawProject> = {}): RawProject {
+export function makeProject(overrides: Partial<RawProject> = {}): RawProject {
   return {
     id: "sample",
     name: "Sample",
@@ -233,6 +234,16 @@ function makeProject(overrides: Partial<RawProject> = {}): RawProject {
     ...overrides,
   };
 }
+```
+
+ファイル名を `*.test.ts` にしないこと。`vitest.config.ts` の `include: ["src/**/*.test.ts"]` に拾われ、テストが 0 件のファイルとしてエラーになる。
+
+続いて `src/lib/stats.test.ts`:
+
+```ts
+import { describe, expect, it } from "vitest";
+import { computePortfolioStats } from "@/lib/stats";
+import { makeProject } from "@/lib/test-fixtures";
 
 describe("computePortfolioStats", () => {
   it("空配列ならすべて 0 で、平均は null になる", () => {
@@ -450,7 +461,7 @@ Expected: `src/lib/stats.ts` が 100%。`version-status.ts` はまだテスト�
 - [ ] **Step 9: コミット**
 
 ```bash
-git add vitest.config.ts package.json package-lock.json src/lib/stats.ts src/lib/stats.test.ts src/lib/projects/types.ts
+git add vitest.config.ts package.json package-lock.json src/lib/stats.ts src/lib/stats.test.ts src/lib/test-fixtures.ts src/lib/projects/types.ts
 git commit -m "test: Vitest を導入しサマリ集計 lib/stats.ts を追加"
 ```
 
@@ -657,29 +668,13 @@ git commit -m "test: version-status のバージョン判定と外部API失敗�
 
 `src/lib/featured.test.ts`:
 
+Task 2 で作った `makeProject` を再利用する。複製しないこと。
+
 ```ts
 import { describe, expect, it } from "vitest";
 import { rawProjects } from "@/lib/projects";
-import type { RawProject } from "@/lib/projects";
 import { selectFeatured, selectRest } from "@/lib/featured";
-
-function makeProject(overrides: Partial<RawProject> = {}): RawProject {
-  return {
-    id: "sample",
-    name: "Sample",
-    description: "説明",
-    trackedPackages: [],
-    category: "Tool",
-    platform: "web",
-    services: [],
-    createdAt: "2026-01-01",
-    updatedAt: "2026-01-02",
-    githubUrl: "https://github.com/tktk7l9/sample",
-    githubVisibility: "public",
-    emoji: "🧪",
-    ...overrides,
-  };
-}
+import { makeProject } from "@/lib/test-fixtures";
 
 describe("selectFeatured", () => {
   it("featuredRank を持つものだけを昇順で返す", () => {

@@ -1133,61 +1133,6 @@ export const rawProjects: RawProject[] = [
     },
   },
   {
-    id: "claude-usage-bar",
-    name: "Claude Usage Bar",
-    description:
-      "macOS のメニューバーに Claude プランの使用率（セッション=5時間 / 週間）を常時表示する常駐アプリ。Claude Code の /usage と同じ数値をリアルタイムにグランスでき、クリックで詳細・リセット時刻（分単位）・プラン/モデル/effort・組織情報を確認できる。",
-    trackedPackages: [],
-    staticTech: [
-      { name: "Swift", docsUrl: "https://www.swift.org/documentation/", version: "6.3" },
-      { name: "SwiftUI", docsUrl: "https://developer.apple.com/documentation/swiftui", version: "—" },
-      { name: "AppKit", docsUrl: "https://developer.apple.com/documentation/appkit", version: "—" },
-      { name: "macOS", docsUrl: "https://developer.apple.com/documentation/", version: "14+" },
-    ],
-    category: "Tool",
-    platform: "other",
-    services: ["Anthropic Claude"],
-    createdAt: "2026-06-30",
-    updatedAt: "2026-06-30",
-    githubUrl: "https://github.com/tktk7l9/claude-usage-bar",
-    githubVisibility: "public",
-    technicalOverview:
-      "Swift / SwiftUI 製の常駐メニューバーアプリ（AppKit NSStatusItem + NSPopover）。macOS Keychain から Claude Code の OAuth トークンを読み、Anthropic の OAuth エンドポイント /api/oauth/usage を 60 秒ごとにポーリングして使用率を表示する（使用量を消費しないメタデータ取得）。トークン失効はローテーション事故を避けるため自動更新せず、失効前に再認証を促す。整形・パース等の純ロジックは依存ゼロのセルフテスト（52 checks）でカバーし、GitHub Actions で build + selftest を実行。SwiftPM ビルドで .app 化し、自己署名で署名を固定。",
-    architecture: {
-      layers: [
-        { nodes: [{ label: "メニューバーアプリ (Swift/AppKit)", sublabel: "NSStatusItem 2行表示 / NSPopover / 60秒ポーリング", kind: "client" }], connector: "ローカル読取 + API取得" },
-        { nodes: [
-          { label: "macOS Keychain", sublabel: "Claude Code-credentials (OAuthトークン)", kind: "storage" },
-          { label: "~/.claude/settings.json", sublabel: "モデル / effort", kind: "storage" },
-          { label: "Anthropic OAuth API", sublabel: "/api/oauth/usage ・ /api/oauth/profile (Bearer, HTTPS)", kind: "external" },
-        ] },
-      ],
-    },
-    emoji: "📊",
-    nativeQuality: {
-      checks: [
-        { label: "ビルド", status: "pass", detail: "swift build 警告0・エラー0" },
-        { label: "CI", status: "pass", detail: "GitHub Actions: build + selftest(65)" },
-        { label: "コード署名", status: "pass", detail: "自己署名・安定identity (ClaudeUsageBar Self-Signed)" },
-        { label: "常駐フットプリント", status: "pass", detail: "LSUIElement / Dockアイコンなし・release 477KB" },
-        { label: "配布", status: "warn", detail: "自己署名・未公証（個人/ローカル配布前提）" },
-      ],
-      measuredAt: "2026-06-30",
-      notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse 非該当。客観的に検証できる項目のみを掲載。",
-    },
-    testCoverage: {
-      statements: 92.38, branches: 92.38, functions: 100, lines: 99.27,
-      tests: 65, measuredAt: "2026-06-30",
-      notes: "swift build + llvm-cov を --selftest 実行で計測。lib層(Formatting/Models=整形・パース・色判定・JSONデコード)を網羅し functions 100% / lines 99%。UI/Keychain/UsageClient/UsageStore は表示・副作用層のため対象外。statements/branches は Swift の region coverage（XCTest/Vitest 非対応の CLT 環境のため依存ゼロの自前ランナー）",
-    },
-    securityScores: {
-      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
-      totalDependencies: 0, tool: "none", measuredAt: "2026-06-30",
-      notes: "外部依存なし（SwiftPM・Apple標準フレームワークのみ）。OAuthトークンはKeychainから都度読み取り・非永続・非ログ",
-    },
-    secretScan: { leaks: 0, commits: 8, measuredAt: "2026-06-30" },
-  },
-  {
     id: "ai-primer",
     name: "AI Primer",
     description:

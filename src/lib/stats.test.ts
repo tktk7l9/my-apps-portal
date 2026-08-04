@@ -53,11 +53,16 @@ describe("computePortfolioStats", () => {
           statements: 80, branches: 80, functions: 80, lines: 80,
           tests: 46, measuredAt: "2026-01-01",
         },
+        securityScores: {
+          score: 95, critical: 0, high: 0, moderate: 1, low: 2,
+          totalDependencies: 5, tool: "npm", measuredAt: "2026-01-01",
+        },
+        secretScan: { leaks: 2, commits: 4, measuredAt: "2026-01-01" },
       }),
     ]);
     expect(stats.totalTests).toBe(246);
-    expect(stats.totalVulnerabilities).toBe(10);
-    expect(stats.totalSecretLeaks).toBe(5);
+    expect(stats.totalVulnerabilities).toBe(13);
+    expect(stats.totalSecretLeaks).toBe(7);
   });
 
   it("Lighthouse Performance の平均を小数第1位で丸め、90 以上の件数を数える", () => {
@@ -84,9 +89,10 @@ describe("computePortfolioStats", () => {
     const stats = computePortfolioStats([
       makeProject({ id: "a", lighthouseScores: lh(100) }),
       makeProject({ id: "b", lighthouseScores: lh(99) }),
-      makeProject({ id: "c", lighthouseScores: lh(98) }),
+      makeProject({ id: "c", lighthouseScores: lh(90) }),
     ]);
-    expect(stats.avgLighthousePerformance).toBe(99);
+    // (100 + 99 + 90) / 3 = 96.333... -> rounds to 96.3
+    expect(stats.avgLighthousePerformance).toBe(96.3);
   });
 
   it("実務案件は Lighthouse 集計にも含めない", () => {

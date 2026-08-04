@@ -25,10 +25,10 @@
 
 実装前に確認済みのため、再調査は不要。
 
-- `gh repo list tktk7l9` で照合した結果、`projects.ts` に登録済みの 22 件はすべて GitHub 上でも `PUBLIC`。設計書の「データ精度の確認」節および完了条件 7 は**確認済みで齟齬なし**。可視性データの修正は不要
+- `gh repo list tktk7l9` で照合した結果、`projects.ts` に登録済みの 21 件はすべて GitHub 上でも `PUBLIC`。設計書の「データ精度の確認」節および完了条件 7 は**確認済みで齟齬なし**。可視性データの修正は不要
 - `platformConfig` の `chrome-extension` は使用プロジェクトが 0 件（`rakuten-spu-helper` は GitHub 上 PRIVATE のため未登録）。**今回は定義を残したまま触らない**。削除しても利用者に見える変化がなく、将来の登録時に必要になる
 - `enrichProjectsWithVersions` は `staticTech` が設定されたプロジェクトの package.json 取得をスキップする（`src/lib/repo-versions.ts:98-105`）。kousan-admin は `staticTech` を使うことでネットワークアクセスを回避できる
-- 2026-08-04 時点の集計実測値: 22 作品 / テスト計 3,146 / 脆弱性 0 / Lighthouse Performance 平均 98.5・90+ 達成 19/19 / gitleaks 0
+- 2026-08-04 時点の集計実測値: 21 作品 / テスト計 3,081 / 脆弱性 0 / Lighthouse Performance 平均 98.5・90+ 達成 19/19 / gitleaks 0
 
 ## File Structure
 
@@ -75,7 +75,7 @@
 
 ### Task 1: `lib/projects.ts` をディレクトリに分割する
 
-振る舞いを一切変えないリファクタ。1,237 行の単一ファイルに型定義・パッケージメタ・22 件のデータが同居しており、以降のタスクで毎回この巨大ファイルを開くことになるため先に割る。
+振る舞いを一切変えないリファクタ。1,182 行の単一ファイルに型定義・パッケージメタ・21 件のデータが同居しており、以降のタスクで毎回この巨大ファイルを開くことになるため先に割る。
 
 **Files:**
 - Create: `src/lib/projects/types.ts`
@@ -1379,7 +1379,7 @@ http://localhost:3000 で以下を確認する。
 - 上 3 枚に OGP 画像が出る（初回は `/api/ogp` の取得に数秒かかる）
 - RoBaHUD は画像がなく絵文字 🖲️ が出る
 - カードをクリックすると既存の詳細モーダルが開き、Esc で閉じる
-- 下の「他の作品」が 18 件（22 − 代表作 4）で、kousan-admin が含まれない
+- 下の「他の作品」が 17 件（21 − 代表作 4）で、kousan-admin が含まれない
 - カテゴリフィルタの All の件数が 18 になっている
 
 - [ ] **Step 4: コミット**
@@ -1515,7 +1515,7 @@ git commit -m "feat: 実務プロジェクトのセクションを追加"
 - Consumes: `computePortfolioStats` / `rawProjects`
 - Produces: なし
 
-現在の description は「全 11 プロジェクト」で、実際の 22 件とずれている。二度とずれないよう集計から生成する。
+現在の description は「全 11 プロジェクト」で、実際の 21 件とずれている。二度とずれないよう集計から生成する。
 
 - [ ] **Step 1: `layout.tsx` を書き換える**
 
@@ -1667,7 +1667,7 @@ export default function OpengraphImage() {
 - [ ] **Step 3: 数値のハードコードが残っていないことを確認する**
 
 ```bash
-grep -rn "11 プロジェクト\|22 作品\|22作品" src/ || echo "ハードコードなし"
+grep -rn "11 プロジェクト\|21 作品\|21作品" src/ || echo "ハードコードなし"
 ```
 
 Expected: `ハードコードなし`。

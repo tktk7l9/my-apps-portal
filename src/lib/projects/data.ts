@@ -762,9 +762,14 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🗂️",
     lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 28, measuredAt: "2026-08-05",
+      notes: "CI のカバレッジゲートは stats.ts / version-status.ts / featured.ts を100%閾値で強制",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
-      totalDependencies: 427, tool: "npm", measuredAt: "2026-06-10",
+      totalDependencies: 427, tool: "npm", measuredAt: "2026-08-05",
       notes: "next 16.2.7 / react 19.2.7 へ更新",
     },
     secretScan: { leaks: 0, commits: 38, measuredAt: "2026-05-20" },

@@ -140,6 +140,9 @@ export type RawProject = {
   securityScores?: SecurityScores;
   secretScan?: SecretScan;
   securityHeaders?: SecurityHeaders;
+  /** 実務案件か個人開発か。未設定は "personal" 扱い。
+   *  "client" の項目はサマリ集計と一覧テーブルから除外し、専用セクションにのみ出す。 */
+  kind?: "personal" | "client";
   /** 技術的概要（2〜4文） */
   technicalOverview?: string;
   /** システム構成図 */

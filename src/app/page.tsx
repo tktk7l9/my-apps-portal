@@ -10,6 +10,7 @@ import { enrichProjectsWithVersions } from "@/lib/repo-versions";
 import { getVersionStatuses } from "@/lib/version-status";
 import { getLastCommitDates } from "@/lib/github";
 import { selectFeatured, selectRest } from "@/lib/featured";
+import { filterVersionStatusesForProjects } from "@/lib/version-filter";
 
 export default function Home() {
   return (
@@ -56,6 +57,13 @@ async function ProjectDataLoader() {
   const rest = selectRest(projects);
   const clientWorks = projects.filter((p) => p.kind === "client");
 
+  // ProjectTable が表示するのは rest だけなので、そこに載る行の
+  // techName@version キーだけに絞った versionStatuses を渡す
+  // （featured / clientWorks 分まで数に入ると「アップデートあり N 件」が
+  //  テーブルの表示内容と食い違うため）。FeaturedWorks のモーダルは
+  //  featured を含む全プロジェクトの情報が要るので、そちらには全体を渡す。
+  const restVersionStatuses = filterVersionStatusesForProjects(versionStatuses, rest);
+
   return (
     <>
       <FeaturedWorks
@@ -79,7 +87,7 @@ async function ProjectDataLoader() {
         </div>
         <ProjectTable
           projects={rest}
-          versionStatuses={versionStatuses}
+          versionStatuses={restVersionStatuses}
           latestVersions={latestVersions}
           lastCommitDates={lastCommitDates}
         />

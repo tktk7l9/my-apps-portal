@@ -5,12 +5,18 @@ export function StatsSummary({ stats }: { stats: PortfolioStats }) {
     { label: "作品数", value: `${stats.totalProjects}` },
     { label: "公開中", value: `${stats.liveProjects}` },
     { label: "テスト総数", value: stats.totalTests.toLocaleString("ja-JP") },
-    { label: "既知の脆弱性", value: `${stats.totalVulnerabilities}` },
   ];
+
+  if (stats.lighthouseMeasuredCount > 0) {
+    items.push({
+      label: "Lighthouse 90+",
+      value: `${stats.lighthouse90Count}/${stats.lighthouseMeasuredCount}`,
+    });
+  }
 
   if (stats.avgLighthousePerformance !== null) {
     items.push({
-      label: "Lighthouse 平均",
+      label: "Lighthouse Performance 平均",
       value: `${stats.avgLighthousePerformance}`,
     });
   }
@@ -28,7 +34,16 @@ export function StatsSummary({ stats }: { stats: PortfolioStats }) {
         ))}
       </dl>
       <p className="mt-2 text-xs text-slate-500">
-        各作品の計測値から自動集計しています。
+        各作品の最新の計測値から自動集計しています。
+        {stats.oldestMeasuredAt && stats.newestMeasuredAt && (
+          <>
+            {" "}計測日は作品ごとに異なります（
+            {stats.oldestMeasuredAt === stats.newestMeasuredAt
+              ? stats.oldestMeasuredAt
+              : `${stats.oldestMeasuredAt} 〜 ${stats.newestMeasuredAt}`}
+            ）。
+          </>
+        )}
       </p>
     </section>
   );

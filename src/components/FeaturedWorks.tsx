@@ -24,10 +24,11 @@ export function FeaturedWorks({
     <section className="mb-12 sm:mb-16">
       <h2 className="mb-4 text-lg font-bold text-white sm:text-xl">代表作</h2>
       <div className="grid gap-4 sm:grid-cols-2">
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <FeaturedCard
             key={project.id}
             project={project}
+            index={index}
             onSelect={() => setSelected(project)}
           />
         ))}
@@ -48,61 +49,69 @@ export function FeaturedWorks({
 
 function FeaturedCard({
   project,
+  index,
   onSelect,
 }: {
   project: Project;
+  index: number;
   onSelect: () => void;
 }) {
   const [ogpFailed, setOgpFailed] = useState(false);
   const showOgp = Boolean(project.liveUrl) && !ogpFailed;
+  // 最初の2枚（above the fold）だけ即時読み込みし、残りは遅延読み込みする
+  const imageLoading = index < 2 ? "eager" : "lazy";
 
   return (
-    <article className="overflow-hidden rounded-xl border border-white/8 bg-white/3 transition-colors hover:border-white/15">
-      <button
-        type="button"
-        onClick={onSelect}
-        className="block w-full cursor-pointer text-left"
-        aria-label={`${project.name} の詳細を開く`}
-      >
-        <div className="relative aspect-[1200/630] w-full overflow-hidden bg-[#0b1018]">
-          {showOgp ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={`/api/ogp?url=${encodeURIComponent(project.liveUrl!)}`}
-              alt={`${project.name} のプレビュー`}
-              className="h-full w-full object-cover"
-              loading="lazy"
-              onError={() => setOgpFailed(true)}
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-6xl">
-              <span aria-hidden="true">{project.emoji}</span>
-            </div>
-          )}
-        </div>
-
-        <div className="p-4 sm:p-5">
-          <h3 className="text-base font-bold text-white sm:text-lg">
-            {project.name}
-          </h3>
-          {project.highlight && (
-            <p className="mt-1.5 text-sm leading-relaxed text-slate-400">
-              {project.highlight}
-            </p>
-          )}
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {project.techVersions.slice(0, 4).map((tech) => (
-              <span
-                key={tech.name}
-                className="rounded bg-white/5 px-2 py-0.5 text-xs text-slate-300"
-              >
-                {tech.name}
-              </span>
-            ))}
+    <article className="relative overflow-hidden rounded-xl border border-white/8 bg-white/3 transition-colors hover:border-white/15">
+      <div className="relative aspect-[1200/630] w-full overflow-hidden bg-[#0b1018]">
+        {showOgp ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={`/api/ogp?url=${encodeURIComponent(project.liveUrl!)}`}
+            alt={`${project.name} のプレビュー`}
+            className="h-full w-full object-cover"
+            loading={imageLoading}
+            onError={() => setOgpFailed(true)}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-6xl">
+            <span aria-hidden="true">{project.emoji}</span>
           </div>
-          <FeaturedMetrics project={project} />
+        )}
+      </div>
+
+      <div className="p-4 sm:p-5">
+        <h3 className="text-base font-bold text-white sm:text-lg">
+          {/* ::after のオーバーレイでカード全体をクリック可能にする（stretched button）。
+              article 側の position:relative が ::after (position:absolute, inset:0) の
+              基準になる。ボタン自体はテキストサイズのままで、見出しの外に出した
+              highlight / tech chips / FeaturedMetrics を button で覆わないため、
+              それらはスクリーンリーダーの見出しアウトラインや本文として正しく読み上げられる */}
+          <button
+            type="button"
+            onClick={onSelect}
+            className="cursor-pointer text-left after:absolute after:inset-0 after:content-['']"
+          >
+            {project.name}
+          </button>
+        </h3>
+        {project.highlight && (
+          <p className="mt-1.5 text-sm leading-relaxed text-slate-400">
+            {project.highlight}
+          </p>
+        )}
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {project.techVersions.slice(0, 4).map((tech) => (
+            <span
+              key={tech.name}
+              className="rounded bg-white/5 px-2 py-0.5 text-xs text-slate-300"
+            >
+              {tech.name}
+            </span>
+          ))}
         </div>
-      </button>
+        <FeaturedMetrics project={project} />
+      </div>
     </article>
   );
 }

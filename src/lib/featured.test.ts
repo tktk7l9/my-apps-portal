@@ -68,7 +68,7 @@ describe("実データの selectRest", () => {
 
   it("実務案件は結果に含まれない", () => {
     expect(rest.every((p) => p.kind !== "client")).toBe(true);
-    expect(rest.map((p) => p.id)).not.toContain("kousan-admin");
+    expect(rest.map((p) => p.id)).not.toContain("client-realestate-admin");
   });
 
   it("featuredRank を持つものは結果に含まれない", () => {

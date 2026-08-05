@@ -2,7 +2,7 @@ import type { Category, RawProject } from "./types";
 
 export const rawProjects: RawProject[] = [
   {
-    id: "kousan-admin",
+    id: "client-realestate-admin",
     name: "社内業務管理システム",
     description:
       "不動産賃貸業を営む企業の社内業務を集約する管理システム。会社・物件・文書・メモ・年次予定・車両・テナント・連絡先・確認事項・区画図の10領域を単一のダッシュボードで扱う。企画・要件定義・設計・実装・運用までを単独で担当し、Phase 1 が本番稼働中。業務ヒアリングをもとに、紙とスプレッドシートに散在していた情報を一箇所へ移した。",
@@ -63,7 +63,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🔬",
     featuredRank: 2,
     highlight:
-      "人気サービスを技術・UX・ビジネスの4面から解剖する日英マガジン。記事の整合性を 943 テストで CI 強制。",
+      "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
       tests: 237, measuredAt: "2026-07-17",

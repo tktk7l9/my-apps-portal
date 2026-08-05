@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { computePortfolioStats } from "@/lib/stats";
+import { computeMeasurementDateRange, computePortfolioStats } from "@/lib/stats";
 import { makeProject } from "@/lib/test-fixtures";
 import { rawProjects } from "@/lib/projects";
 
 describe("computePortfolioStats", () => {
-  it("空配列ならすべて 0 で、平均は null になる", () => {
+  it("空配列ならすべて 0 で、平均・計測日レンジは null になる", () => {
     expect(computePortfolioStats([])).toEqual({
       totalProjects: 0,
       liveProjects: 0,
@@ -14,6 +14,8 @@ describe("computePortfolioStats", () => {
       avgLighthousePerformance: null,
       lighthouse90Count: 0,
       lighthouseMeasuredCount: 0,
+      oldestMeasuredAt: null,
+      newestMeasuredAt: null,
     });
   });
 
@@ -109,6 +111,74 @@ describe("computePortfolioStats", () => {
     ]);
     expect(stats.avgLighthousePerformance).toBeNull();
     expect(stats.lighthouseMeasuredCount).toBe(0);
+  });
+
+  it("testCoverage / lighthouseScores の measuredAt から最も古い・新しい日付を求める", () => {
+    const stats = computePortfolioStats([
+      makeProject({
+        id: "a",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 10, measuredAt: "2026-05-19",
+        },
+      }),
+      makeProject({
+        id: "b",
+        lighthouseScores: {
+          performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+          measuredAt: "2026-08-05",
+        },
+      }),
+    ]);
+    expect(stats.oldestMeasuredAt).toBe("2026-05-19");
+    expect(stats.newestMeasuredAt).toBe("2026-08-05");
+  });
+
+  it("実務案件の measuredAt は計測日レンジの集計から除外する", () => {
+    const stats = computePortfolioStats([
+      makeProject({
+        id: "client",
+        kind: "client",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 10, measuredAt: "2020-01-01",
+        },
+      }),
+      makeProject({
+        id: "a",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 10, measuredAt: "2026-06-01",
+        },
+      }),
+    ]);
+    expect(stats.oldestMeasuredAt).toBe("2026-06-01");
+    expect(stats.newestMeasuredAt).toBe("2026-06-01");
+  });
+
+  it("testCoverage も lighthouseScores も無ければ計測日レンジは null になる", () => {
+    const stats = computePortfolioStats([makeProject({ id: "a" })]);
+    expect(stats.oldestMeasuredAt).toBeNull();
+    expect(stats.newestMeasuredAt).toBeNull();
+  });
+});
+
+describe("computeMeasurementDateRange", () => {
+  it("空配列なら null を返す", () => {
+    expect(computeMeasurementDateRange([])).toBeNull();
+  });
+
+  it("要素が1件なら oldest と newest が同じ値になる", () => {
+    expect(computeMeasurementDateRange(["2026-05-19"])).toEqual({
+      oldest: "2026-05-19",
+      newest: "2026-05-19",
+    });
+  });
+
+  it("複数の ISO 日付から最古・最新を求める（順不同でも正しく求まる）", () => {
+    expect(
+      computeMeasurementDateRange(["2026-07-16", "2026-05-19", "2026-08-05", "2026-06-23"])
+    ).toEqual({ oldest: "2026-05-19", newest: "2026-08-05" });
   });
 });
 

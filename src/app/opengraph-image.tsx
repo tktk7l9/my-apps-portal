@@ -11,7 +11,9 @@ export const contentType = "image/png";
 const chips = [
   `${stats.totalProjects} WORKS`,
   `${stats.totalTests.toLocaleString("en-US")} TESTS`,
-  `${stats.totalVulnerabilities} VULNERABILITIES`,
+  ...(stats.lighthouseMeasuredCount === 0
+    ? []
+    : [`LIGHTHOUSE 90+ ${stats.lighthouse90Count}/${stats.lighthouseMeasuredCount}`]),
   ...(stats.avgLighthousePerformance === null
     ? []
     : [`LIGHTHOUSE ${stats.avgLighthousePerformance}`]),

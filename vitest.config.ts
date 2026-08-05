@@ -14,6 +14,7 @@ export default defineConfig({
         "src/lib/stats.ts",
         "src/lib/version-status.ts",
         "src/lib/featured.ts",
+        "src/lib/version-filter.ts",
       ],
       thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
     },

@@ -1,0 +1,206 @@
+import { describe, expect, it } from "vitest";
+import { computeMeasurementDateRange, computePortfolioStats } from "@/lib/stats";
+import { makeProject } from "@/lib/test-fixtures";
+import { rawProjects } from "@/lib/projects";
+
+describe("computePortfolioStats", () => {
+  it("空配列ならすべて 0 で、平均・計測日レンジは null になる", () => {
+    expect(computePortfolioStats([])).toEqual({
+      totalProjects: 0,
+      liveProjects: 0,
+      totalTests: 0,
+      totalVulnerabilities: 0,
+      totalSecretLeaks: 0,
+      avgLighthousePerformance: null,
+      lighthouse90Count: 0,
+      lighthouseMeasuredCount: 0,
+      oldestMeasuredAt: null,
+      newestMeasuredAt: null,
+    });
+  });
+
+  it("kind: client の実務案件を集計から除外する", () => {
+    const stats = computePortfolioStats([
+      makeProject({ id: "a" }),
+      makeProject({ id: "b", kind: "client" }),
+      makeProject({ id: "c", kind: "personal" }),
+    ]);
+    expect(stats.totalProjects).toBe(2);
+  });
+
+  it("liveUrl を持つ作品だけを liveProjects に数える", () => {
+    const stats = computePortfolioStats([
+      makeProject({ id: "a", liveUrl: "https://example.com" }),
+      makeProject({ id: "b" }),
+    ]);
+    expect(stats.liveProjects).toBe(1);
+  });
+
+  it("テスト数・脆弱性・シークレット検出を合計する", () => {
+    const stats = computePortfolioStats([
+      makeProject({
+        id: "a",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 200, measuredAt: "2026-01-01",
+        },
+        securityScores: {
+          score: 90, critical: 1, high: 2, moderate: 3, low: 4,
+          totalDependencies: 10, tool: "npm", measuredAt: "2026-01-01",
+        },
+        secretScan: { leaks: 5, commits: 10, measuredAt: "2026-01-01" },
+      }),
+      makeProject({
+        id: "b",
+        testCoverage: {
+          statements: 80, branches: 80, functions: 80, lines: 80,
+          tests: 46, measuredAt: "2026-01-01",
+        },
+        securityScores: {
+          score: 95, critical: 0, high: 0, moderate: 1, low: 2,
+          totalDependencies: 5, tool: "npm", measuredAt: "2026-01-01",
+        },
+        secretScan: { leaks: 2, commits: 4, measuredAt: "2026-01-01" },
+      }),
+    ]);
+    expect(stats.totalTests).toBe(246);
+    expect(stats.totalVulnerabilities).toBe(13);
+    expect(stats.totalSecretLeaks).toBe(7);
+  });
+
+  it("Lighthouse Performance の平均を小数第1位で丸め、90 以上の件数を数える", () => {
+    const lh = (performance: number) => ({
+      performance, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-01-01",
+    });
+    const stats = computePortfolioStats([
+      makeProject({ id: "a", lighthouseScores: lh(100) }),
+      makeProject({ id: "b", lighthouseScores: lh(99) }),
+      makeProject({ id: "c", lighthouseScores: lh(89) }),
+      makeProject({ id: "d" }),
+    ]);
+    expect(stats.avgLighthousePerformance).toBe(96);
+    expect(stats.lighthouse90Count).toBe(2);
+    expect(stats.lighthouseMeasuredCount).toBe(3);
+  });
+
+  it("平均が割り切れない場合は小数第1位に丸める", () => {
+    const lh = (performance: number) => ({
+      performance, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-01-01",
+    });
+    const stats = computePortfolioStats([
+      makeProject({ id: "a", lighthouseScores: lh(100) }),
+      makeProject({ id: "b", lighthouseScores: lh(99) }),
+      makeProject({ id: "c", lighthouseScores: lh(90) }),
+    ]);
+    // (100 + 99 + 90) / 3 = 96.333... -> rounds to 96.3
+    expect(stats.avgLighthousePerformance).toBe(96.3);
+  });
+
+  it("実務案件は Lighthouse 集計にも含めない", () => {
+    const stats = computePortfolioStats([
+      makeProject({
+        id: "client",
+        kind: "client",
+        lighthouseScores: {
+          performance: 10, accessibility: 10, bestPractices: 10, seo: 10,
+          measuredAt: "2026-01-01",
+        },
+      }),
+    ]);
+    expect(stats.avgLighthousePerformance).toBeNull();
+    expect(stats.lighthouseMeasuredCount).toBe(0);
+  });
+
+  it("testCoverage / lighthouseScores の measuredAt から最も古い・新しい日付を求める", () => {
+    const stats = computePortfolioStats([
+      makeProject({
+        id: "a",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 10, measuredAt: "2026-05-19",
+        },
+      }),
+      makeProject({
+        id: "b",
+        lighthouseScores: {
+          performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+          measuredAt: "2026-08-05",
+        },
+      }),
+    ]);
+    expect(stats.oldestMeasuredAt).toBe("2026-05-19");
+    expect(stats.newestMeasuredAt).toBe("2026-08-05");
+  });
+
+  it("実務案件の measuredAt は計測日レンジの集計から除外する", () => {
+    const stats = computePortfolioStats([
+      makeProject({
+        id: "client",
+        kind: "client",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 10, measuredAt: "2020-01-01",
+        },
+      }),
+      makeProject({
+        id: "a",
+        testCoverage: {
+          statements: 100, branches: 100, functions: 100, lines: 100,
+          tests: 10, measuredAt: "2026-06-01",
+        },
+      }),
+    ]);
+    expect(stats.oldestMeasuredAt).toBe("2026-06-01");
+    expect(stats.newestMeasuredAt).toBe("2026-06-01");
+  });
+
+  it("testCoverage も lighthouseScores も無ければ計測日レンジは null になる", () => {
+    const stats = computePortfolioStats([makeProject({ id: "a" })]);
+    expect(stats.oldestMeasuredAt).toBeNull();
+    expect(stats.newestMeasuredAt).toBeNull();
+  });
+});
+
+describe("computeMeasurementDateRange", () => {
+  it("空配列なら null を返す", () => {
+    expect(computeMeasurementDateRange([])).toBeNull();
+  });
+
+  it("要素が1件なら oldest と newest が同じ値になる", () => {
+    expect(computeMeasurementDateRange(["2026-05-19"])).toEqual({
+      oldest: "2026-05-19",
+      newest: "2026-05-19",
+    });
+  });
+
+  it("複数の ISO 日付から最古・最新を求める（順不同でも正しく求まる）", () => {
+    expect(
+      computeMeasurementDateRange(["2026-07-16", "2026-05-19", "2026-08-05", "2026-06-23"])
+    ).toEqual({ oldest: "2026-05-19", newest: "2026-08-05" });
+  });
+});
+
+describe("実データに対する集計", () => {
+  it("実務案件は集計対象に含まれない", () => {
+    const stats = computePortfolioStats(rawProjects);
+    const clientCount = rawProjects.filter((p) => p.kind === "client").length;
+    expect(clientCount).toBeGreaterThan(0);
+    expect(stats.totalProjects).toBe(rawProjects.length - clientCount);
+  });
+
+  it("実務案件は外部にリンクを持たない", () => {
+    for (const project of rawProjects.filter((p) => p.kind === "client")) {
+      expect(project.liveUrl, `${project.id} に liveUrl がある`).toBeUndefined();
+      expect(project.githubVisibility).toBe("private");
+    }
+  });
+
+  it("実務案件は npm バージョン監視の対象外である", () => {
+    for (const project of rawProjects.filter((p) => p.kind === "client")) {
+      expect(project.staticTech, `${project.id} に staticTech がない`).toBeTruthy();
+      expect(project.trackedPackages).toEqual([]);
+    }
+  });
+});

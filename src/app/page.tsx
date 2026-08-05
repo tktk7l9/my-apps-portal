@@ -1,23 +1,23 @@
+import { PortfolioHeader } from "@/components/PortfolioHeader";
+import { StatsSummary } from "@/components/StatsSummary";
 import { ProjectTable } from "@/components/ProjectTable";
 import { RefreshButton } from "@/components/RefreshButton";
+import { FeaturedWorks } from "@/components/FeaturedWorks";
+import { ClientWork } from "@/components/ClientWork";
 import { rawProjects } from "@/lib/projects";
+import { computePortfolioStats } from "@/lib/stats";
 import { enrichProjectsWithVersions } from "@/lib/repo-versions";
 import { getVersionStatuses } from "@/lib/version-status";
 import { getLastCommitDates } from "@/lib/github";
+import { selectFeatured, selectRest } from "@/lib/featured";
+import { filterVersionStatusesForProjects } from "@/lib/version-filter";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#080c14] text-slate-100">
       <div className="mx-auto max-w-6xl px-3 py-6 sm:px-6 sm:py-12 lg:px-8">
-        <header className="mb-5 sm:mb-8">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">My Apps</h1>
-            <p className="text-xs sm:text-sm text-slate-400">個人で作成したWebアプリの一覧です。</p>
-            <div className="ml-auto">
-              <RefreshButton />
-            </div>
-          </div>
-        </header>
+        <PortfolioHeader />
+        <StatsSummary stats={computePortfolioStats(rawProjects)} />
 
         <main>
           <ProjectDataLoader />
@@ -28,7 +28,7 @@ export default function Home() {
             href="https://github.com/tktk7l9"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-slate-400"
+            className="transition-colors hover:text-slate-300"
           >
             github.com/tktk7l9
           </a>
@@ -53,12 +53,45 @@ async function ProjectDataLoader() {
     getLastCommitDates(publicRepos),
   ]);
 
+  const featured = selectFeatured(projects);
+  const rest = selectRest(projects);
+  const clientWorks = projects.filter((p) => p.kind === "client");
+
+  // ProjectTable が表示するのは rest だけなので、そこに載る行の
+  // techName@version キーだけに絞った versionStatuses を渡す
+  // （featured / clientWorks 分まで数に入ると「アップデートあり N 件」が
+  //  テーブルの表示内容と食い違うため）。FeaturedWorks のモーダルは
+  //  featured を含む全プロジェクトの情報が要るので、そちらには全体を渡す。
+  const restVersionStatuses = filterVersionStatusesForProjects(versionStatuses, rest);
+
   return (
-    <ProjectTable
-      projects={projects}
-      versionStatuses={versionStatuses}
-      latestVersions={latestVersions}
-      lastCommitDates={lastCommitDates}
-    />
+    <>
+      <FeaturedWorks
+        projects={featured}
+        versionStatuses={versionStatuses}
+        latestVersions={latestVersions}
+        lastCommitDates={lastCommitDates}
+      />
+
+      <ClientWork projects={clientWorks} />
+
+      <section>
+        <div className="mb-3 flex items-baseline gap-3">
+          <h2 className="text-lg font-bold text-white sm:text-xl">
+            他の作品
+          </h2>
+          <span className="text-sm text-slate-500 tabular-nums">{rest.length} 件</span>
+          <div className="ml-auto">
+            <RefreshButton />
+          </div>
+        </div>
+        <ProjectTable
+          projects={rest}
+          versionStatuses={restVersionStatuses}
+          latestVersions={latestVersions}
+          lastCommitDates={lastCommitDates}
+        />
+      </section>
+    </>
   );
 }

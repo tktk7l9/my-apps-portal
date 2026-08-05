@@ -1,240 +1,41 @@
-export type Category = "All" | "Game" | "Simulator" | "Tool" | "Other";
-
-/** プラットフォーム種別。Webアプリ・Chrome拡張・その他を区別 */
-export type Platform = "web" | "chrome-extension" | "other";
-
-export type TechVersion = {
-  name: string;
-  docsUrl: string;
-  version: string;
-  versionUrl?: string;
-};
-
-export type GithubVisibility = "public" | "private" | "local-only";
-
-export type LighthouseScores = {
-  performance: number;
-  accessibility: number;
-  bestPractices: number;
-  seo: number;
-  measuredAt: string;
-};
-
-export type TestCoverage = {
-  /** 0..100 */
-  statements: number;
-  branches: number;
-  functions: number;
-  lines: number;
-  /** テスト総数 */
-  tests: number;
-  /** ISO 日付 */
-  measuredAt: string;
-  /** 範囲メモ (e.g. "lib 100% / 全体 80%") */
-  notes?: string;
-};
-
-/** npm/pnpm audit ベースのセキュリティスコア。
- *  score = max(0, 100 - 25*critical - 10*high - 3*moderate - 1*low) */
-export type SecurityScores = {
-  /** 0..100 */
-  score: number;
-  critical: number;
-  high: number;
-  moderate: number;
-  low: number;
-  /** audit が走査した依存数 (production + dev) */
-  totalDependencies: number;
-  /** "npm" | "pnpm" など */
-  tool: "npm" | "pnpm" | "none";
-  /** ISO 日付 */
-  measuredAt: string;
-  notes?: string;
-};
-
-/** gitleaks による secrets スキャン結果 (git履歴含む) */
-export type SecretScan = {
-  /** 検出された潜在的なシークレット数 (false positive は .gitleaksignore で除外済み) */
-  leaks: number;
-  /** スキャン対象のcommit数 */
-  commits: number;
-  measuredAt: string;
-  notes?: string;
-};
-
-/** Mozilla Observatory による HTTPセキュリティヘッダー評価 */
-export type SecurityHeaders = {
-  /** "A+" | "A" | "A-" | "B+" | "B" | ... | "F" | null (未スキャン or 失敗) */
-  grade: string | null;
-  /** 0..135 (Observatory のスコア、100超で A+) */
-  score: number | null;
-  /** 通過テスト数 (10中) */
-  passed?: number;
-  total?: number;
-  /** ISO 日付 */
-  measuredAt: string;
-  notes?: string;
-};
-
-/** ネイティブ/CLI アプリ向けの品質チェック（Lighthouse の代替）。
- *  Web ページを持たないアプリで、客観的に検証可能な項目のみを pass/warn/fail で示す。 */
-export type NativeCheckStatus = "pass" | "warn" | "fail";
-
-export type NativeCheck = {
-  label: string;
-  status: NativeCheckStatus;
-  detail?: string;
-};
-
-export type NativeQuality = {
-  checks: NativeCheck[];
-  /** ISO 日付 */
-  measuredAt: string;
-  notes?: string;
-};
-
-/** システム構成図のノード種別。色分け・凡例に使用 */
-export type ArchNodeKind = "client" | "edge" | "server" | "external" | "storage" | "build";
-
-/** 構成図の 1 ノード（ボックス） */
-export type ArchNode = {
-  label: string;
-  sublabel?: string;
-  kind: ArchNodeKind;
-};
-
-/** 構成図の 1 レイヤー。同一レイヤーのノードは横並び、レイヤー間は上→下へ矢印で接続 */
-export type ArchLayer = {
-  nodes: ArchNode[];
-  /** 次（下）のレイヤーへ向かう接続ラベル（プロトコル・データ等）。最下層では無視 */
-  connector?: string;
-};
-
-/** システム構成図。layers を上から下へ描画する */
-export type Architecture = {
-  layers: ArchLayer[];
-};
-
-export type RawProject = {
-  id: string;
-  name: string;
-  description: string;
-  trackedPackages: string[];
-  /** 主要技術を直接宣言する（npm に無い技術＝Swift 等向け）。
-   *  設定時は trackedPackages の npm バージョン監視より優先される。 */
-  staticTech?: TechVersion[];
-  category: Exclude<Category, "All">;
-  platform: Platform;
-  services: string[];
-  createdAt: string;
-  updatedAt: string;
-  githubUrl: string;
-  githubVisibility: GithubVisibility;
-  liveUrl?: string;
-  favicon?: string;
-  emoji: string;
-  lighthouseScores?: LighthouseScores;
-  /** Web を持たないネイティブ/CLI アプリの品質指標（Lighthouse の代替）。 */
-  nativeQuality?: NativeQuality;
-  testCoverage?: TestCoverage;
-  securityScores?: SecurityScores;
-  secretScan?: SecretScan;
-  securityHeaders?: SecurityHeaders;
-  /** 技術的概要（2〜4文） */
-  technicalOverview?: string;
-  /** システム構成図 */
-  architecture?: Architecture;
-};
-
-export type Project = RawProject & {
-  techVersions: TechVersion[];
-};
-
-export type PackageMeta = {
-  displayName: string;
-  docsUrl: string;
-  versionUrl: (version: string) => string | undefined;
-};
-
-export const packageMeta: Record<string, PackageMeta> = {
-  next: {
-    displayName: "Next.js",
-    docsUrl: "https://nextjs.org/docs",
-    versionUrl: (v) => `https://github.com/vercel/next.js/releases/tag/v${v}`,
-  },
-  react: {
-    displayName: "React",
-    docsUrl: "https://react.dev",
-    versionUrl: (v) => `https://github.com/facebook/react/releases/tag/v${v}`,
-  },
-  three: {
-    displayName: "Three.js",
-    docsUrl: "https://threejs.org/docs/",
-    versionUrl: (v) => {
-      const minor = v.split(".")[1];
-      return minor ? `https://github.com/mrdoob/three.js/releases/tag/r${minor}` : undefined;
-    },
-  },
-  vite: {
-    displayName: "Vite",
-    docsUrl: "https://vite.dev/guide/",
-    versionUrl: (v) => `https://github.com/vitejs/vite/releases/tag/v${v}`,
-  },
-  leaflet: {
-    displayName: "Leaflet",
-    docsUrl: "https://leafletjs.com/reference.html",
-    versionUrl: (v) => `https://github.com/Leaflet/Leaflet/releases/tag/v${v}`,
-  },
-  typescript: {
-    displayName: "TypeScript",
-    docsUrl: "https://www.typescriptlang.org/docs/",
-    versionUrl: (v) => {
-      const parts = v.split(".");
-      if (parts.length < 2) return undefined;
-      return `https://www.typescriptlang.org/docs/handbook/release-notes/typescript-${parts[0]}-${parts[1]}.html`;
-    },
-  },
-  "@anthropic-ai/sdk": {
-    displayName: "Anthropic SDK",
-    docsUrl: "https://docs.anthropic.com/",
-    versionUrl: (v) => `https://github.com/anthropics/anthropic-sdk-js/releases/tag/sdk-v${v}`,
-  },
-  "@supabase/supabase-js": {
-    displayName: "Supabase JS",
-    docsUrl: "https://supabase.com/docs/reference/javascript/",
-    versionUrl: (v) =>
-      v.endsWith("x")
-        ? "https://github.com/supabase/supabase-js/releases"
-        : `https://github.com/supabase/supabase-js/releases/tag/v${v}`,
-  },
-  "@google/generative-ai": {
-    displayName: "Gemini API",
-    docsUrl: "https://ai.google.dev/gemini-api/docs",
-    versionUrl: (v) => `https://github.com/google-gemini/generative-ai-js/releases/tag/v${v}`,
-  },
-  tailwindcss: {
-    displayName: "Tailwind CSS",
-    docsUrl: "https://tailwindcss.com/docs",
-    versionUrl: (v) => `https://github.com/tailwindlabs/tailwindcss/releases/tag/v${v}`,
-  },
-  "@tanstack/react-start": {
-    displayName: "TanStack Start",
-    docsUrl: "https://tanstack.com/start/latest/docs/",
-    versionUrl: (v) => `https://github.com/TanStack/router/releases/tag/v${v}`,
-  },
-};
-
-export const serviceUrls: Record<string, string> = {
-  Vercel:            "https://vercel.com",
-  "GitHub Actions":  "https://github.com/features/actions",
-  Supabase:          "https://supabase.com",
-  "Anthropic Claude": "https://anthropic.com",
-  "Google Gemini":   "https://ai.google.dev",
-  Resend:            "https://resend.com",
-  "GitHub Pages":    "https://pages.github.com",
-};
+import type { Category, RawProject } from "./types";
 
 export const rawProjects: RawProject[] = [
+  {
+    id: "client-realestate-admin",
+    name: "社内業務管理システム",
+    description:
+      "不動産賃貸業を営む企業の社内業務を集約する管理システム。会社・物件・文書・メモ・年次予定・車両・テナント・連絡先・確認事項・区画図の10領域を単一のダッシュボードで扱う。企画・要件定義・設計・実装・運用までを単独で担当し、Phase 1 が本番稼働中。業務ヒアリングをもとに、紙とスプレッドシートに散在していた情報を一箇所へ移した。",
+    trackedPackages: [],
+    staticTech: [
+      { name: "TanStack Start", docsUrl: "https://tanstack.com/start/latest/docs/", version: "1.x" },
+      { name: "Cloudflare Workers", docsUrl: "https://developers.cloudflare.com/workers/", version: "—" },
+      { name: "Cloudflare D1", docsUrl: "https://developers.cloudflare.com/d1/", version: "—" },
+      { name: "Drizzle ORM", docsUrl: "https://orm.drizzle.team/docs/overview", version: "—" },
+      { name: "Mantine", docsUrl: "https://mantine.dev/", version: "9.x" },
+    ],
+    category: "Tool",
+    platform: "web",
+    services: ["Cloudflare Workers", "Cloudflare D1", "Cloudflare R2", "Cloudflare Access"],
+    createdAt: "2026-07-28",
+    updatedAt: "2026-07-28",
+    githubUrl: "",
+    githubVisibility: "private",
+    emoji: "🏢",
+    kind: "client",
+    technicalOverview:
+      "TanStack Start を Cloudflare Workers 上で動かし、データベースは D1 + Drizzle ORM、ファイルは R2 に保存する。認証は Cloudflare Access の Google IdP に委譲し、アプリ側に認証情報を持たない。文書は R2 と外部ドライブの両系統を扱い、区画図は登記原文と隣接関係を突き合わせて表示する。",
+    architecture: {
+      layers: [
+        { nodes: [{ label: "ブラウザ", sublabel: "Mantine UI / 社内利用のみ", kind: "client" }], connector: "HTTPS (Cloudflare Access 認証)" },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "TanStack Start SSR / サーバー関数", kind: "edge" }], connector: "Drizzle ORM / S3 API" },
+        { nodes: [
+          { label: "D1", sublabel: "業務データ", kind: "storage" },
+          { label: "R2", sublabel: "文書ファイル", kind: "storage" },
+        ] },
+      ],
+    },
+  },
   {
     id: "service-anatomy",
     name: "Service Anatomy",
@@ -260,6 +61,9 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🔬",
+    featuredRank: 2,
+    highlight:
+      "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
       tests: 237, measuredAt: "2026-07-17",
@@ -429,6 +233,9 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/roba-hud",
     githubVisibility: "public",
     emoji: "🖲️",
+    featuredRank: 4,
+    highlight:
+      "自作分割キーボードの入力を可視化する macOS 常駐アプリ。ファームの keymap を直接解析しレイヤーを推定。",
     technicalOverview:
       "Swift / SwiftUI 製（依存ゼロ・SwiftPM）。非アクティブ化 NSPanel を全 Spaces / フルスクリーン上に常時最前面表示する。zmk-config-roBa の .keymap（devicetree）を独自トークナイザでソース範囲付きパースし、roBa.json の座標（親指キーの回転含む）で描画。IOHIDManager が roBa デバイスのみ購読し（Product 文字列で識別・BLE 単一デバイス）、(page,usage)→(layer,pos) 逆引き＋トラックボール移動/スクロール検知＋暗黙シフト抑制の状態機械で表示レイヤーを推定する。バッテリーは CoreBluetooth で既存 HID ボンドに相乗りし、標準 Battery Service (0x180F) の複数キャラクタリスティックを CUD \"Peripheral N\"（ZMK の CENTRAL_BATTERY_LEVEL_PROXY）で左右に識別して購読、履歴を Swift Charts で描画。編集は記録済みソース範囲の外科的置換（列揃え維持・書込前に再パース検証）で、git/gh を Process 実行して push→Actions 監視→UF2 取得まで自動化。",
     architecture: {
@@ -487,6 +294,9 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://chronoscroll.vercel.app",
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
+    featuredRank: 1,
+    highlight:
+      "Wikipedia から歴史ニュース 27,051 件を収集し、縦スクロールの年表に。近似重複排除と関連付けは自前実装。",
     technicalOverview:
       "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,051件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。CIは本番同等CSPヘッダー配信での実ブラウザスモーク37シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。",
     architecture: {
@@ -553,6 +363,9 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://skydial.vercel.app",
     favicon: "/favicons/skydial.svg",
     emoji: "🌗",
+    featuredRank: 3,
+    highlight:
+      "太陽と月の位置を天文計算で求め、室内に差し込む日射を3D可視化する PWA。Lighthouse 4項目満点。",
     technicalOverview:
       "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。日射取得シミュレーションはIneichen–Perez晴天モデル+Hay–Davies傾斜面散乱（pvlib-python生成fixtureと0.1%突合）、遮蔽は建物・屋根・軒・隣家を三角形メッシュ化しMöller–Trumboreでレイトレース（表示用Three.jsメッシュと計算用ジオメトリは同一ソース）。室内可視化は窓4隅を太陽方向へ床面投影しSutherland–Hodgmanで建物footprintにクリップする幾何計算(建物全体を1部屋として扱う簡略化)。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期17.4kB gzip）。ARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
     architecture: {
@@ -949,10 +762,15 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🗂️",
     lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 28, measuredAt: "2026-08-05",
+      notes: "CI のカバレッジゲートは stats.ts / version-status.ts / featured.ts の3ファイルを100%閾値で強制。UIコンポーネント・app層は対象外",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
-      totalDependencies: 427, tool: "npm", measuredAt: "2026-06-10",
-      notes: "next 16.2.7 / react 19.2.7 へ更新",
+      totalDependencies: 427, tool: "npm", measuredAt: "2026-08-05",
+      notes: "brace-expansion の override を ^5.0.9 に引き上げ GHSA-rgw5-rvv9-x895 (high) を解消。CI で npm audit --audit-level=high / gitleaks を強制",
     },
     secretScan: { leaks: 0, commits: 38, measuredAt: "2026-05-20" },
     securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },

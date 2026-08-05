@@ -1,8 +1,23 @@
 import { ImageResponse } from "next/og";
+import { rawProjects } from "@/lib/projects";
+import { computePortfolioStats } from "@/lib/stats";
 
-export const alt = "tktk7l9 — Apps";
+const stats = computePortfolioStats(rawProjects);
+
+export const alt = "齋藤拓也 — ポートフォリオ";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+const chips = [
+  `${stats.totalProjects} WORKS`,
+  `${stats.totalTests.toLocaleString("en-US")} TESTS`,
+  ...(stats.lighthouseMeasuredCount === 0
+    ? []
+    : [`LIGHTHOUSE 90+ ${stats.lighthouse90Count}/${stats.lighthouseMeasuredCount}`]),
+  ...(stats.avgLighthousePerformance === null
+    ? []
+    : [`LIGHTHOUSE ${stats.avgLighthousePerformance}`]),
+];
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -61,7 +76,7 @@ export default function OpengraphImage() {
               lineHeight: 1,
             }}
           >
-            My&nbsp;<span style={{ color: "#38bdf8" }}>Apps</span>
+            Port<span style={{ color: "#38bdf8" }}>folio</span>
           </div>
           <div
             style={{
@@ -72,12 +87,12 @@ export default function OpengraphImage() {
               maxWidth: "960px",
             }}
           >
-            個人で作成したWebアプリの一覧 — ゲーム・シミュレーター・ツールなど。
+            齋藤拓也 — フリーランス Web エンジニア。企画から運用まで一人で。
           </div>
         </div>
 
         <div style={{ display: "flex", gap: "14px" }}>
-          {["GAMES", "SIMULATORS", "TOOLS", "3D / WEBGL"].map((t) => (
+          {chips.map((t) => (
             <div
               key={t}
               style={{

@@ -765,12 +765,12 @@ export const rawProjects: RawProject[] = [
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
       tests: 28, measuredAt: "2026-08-05",
-      notes: "CI のカバレッジゲートは stats.ts / version-status.ts / featured.ts を100%閾値で強制",
+      notes: "CI のカバレッジゲートは stats.ts / version-status.ts / featured.ts の3ファイルを100%閾値で強制。UIコンポーネント・app層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 427, tool: "npm", measuredAt: "2026-08-05",
-      notes: "next 16.2.7 / react 19.2.7 へ更新",
+      notes: "brace-expansion の override を ^5.0.9 に引き上げ GHSA-rgw5-rvv9-x895 (high) を解消。CI で npm audit --audit-level=high / gitleaks を強制",
     },
     secretScan: { leaks: 0, commits: 38, measuredAt: "2026-05-20" },
     securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },

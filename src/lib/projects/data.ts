@@ -168,6 +168,8 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/agent-cockpit",
     githubVisibility: "public",
     favicon: "/favicons/agent-cockpit.svg",
+    // Web ページを持たない Electron アプリのため、project データからカードを生成する
+    ogImage: "/api/og/agent-cockpit",
     emoji: "🎛️",
     technicalOverview:
       "Electron（electron-vite + React 19 + zustand + CodeMirror 6）。全ロジックを純関数の lib 層（FileSnapshot→FileEdit 変換・fs/Electron 非依存）に隔離し、書込は planMutation に一本化 — これにより lib を plain node の vitest で 100% カバレッジゲートできる。設定ファイルは絶対に全体再直列化しない: JSON は jsonc-parser の modify/applyEdits によるテキスト編集（~/.claude.json の約70個の無関係キー・整形をバイト単位で保存）、TOML は toml-eslint-parser の AST レンジを外科的にスプライス（コメント生存）、markdown frontmatter は yaml Document API。main プロセスは薄い fs ゲートウェイで、realpath 二重チェックのパス allowlist・auth.json/.env* denylist・バックアップ・atomic write を担う。renderer は contextIsolation + sandbox + 厳格 CSP + 型付き contextBridge API 1本のみ（リモートコンテンツなし）。",

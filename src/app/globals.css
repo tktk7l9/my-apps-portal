@@ -8,3 +8,46 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
 }
+
+/* スクロールバー
+ *
+ * 既定のスクロールバーは環境によって 16px 前後の帯になり（macOS でも
+ * 「スクロールバーを常に表示」設定や、クラシックスクロールバーの環境）、
+ * モーダルでは全幅画像の右に明確な余白として出てしまう。
+ * 細い角丸・半透明のつまみ＋トラック透明にして、コンテンツを邪魔しない
+ * 主張の弱い見た目にする。
+ *
+ * scrollbar-width は Chromium も解釈するようになったが、指定すると
+ * ::-webkit-scrollbar 側が丸ごと無視されて幅を 8px に制御できなくなる
+ * （ブラウザ既定の thin = 実測 11px になる）。そのため標準プロパティは
+ * ::-webkit-scrollbar を持たない環境（Firefox）だけに当てる。
+ * scrollbar-color は継承するが scrollbar-width は継承しないので全要素指定。 */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(148 163 184 / 0.25) transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(148 163 184 / 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(148 163 184 / 0.45);
+}
+
+/* 縦横のスクロールバーが交差する角。既定の白い四角を消す */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

@@ -13,7 +13,7 @@ export function PortfolioHeader() {
         齋藤拓也
       </h1>
       <p className="mt-1 text-sm text-slate-300 sm:text-base">
-        フリーランス Web エンジニア
+        フロントエンドエンジニア（業務委託）
       </p>
       <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-400">
         React・Next.js を中心に、企画から設計・実装・運用までを一人で担当しています。

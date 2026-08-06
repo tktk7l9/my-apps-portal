@@ -465,11 +465,6 @@ function lighthouseColor(score: number): string {
   return "text-red-400";
 }
 
-function lighthouseBg(score: number): string {
-  if (score >= 90) return "bg-emerald-500";
-  if (score >= 50) return "bg-amber-500";
-  return "bg-red-500";
-}
 
 function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
   const mark = { pass: "✓", warn: "⚠", fail: "✕" } as const;
@@ -491,6 +486,32 @@ function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
   );
 }
 
+/** 指標を4つ並べる共通セル。
+ *
+ *  以前は指標ごとに「ラベル列＋全幅バー＋数値」の行を積んでいたが、
+ *  Lighthouse もカバレッジもほぼ 98〜100 に張り付くため、バーの長さは
+ *  どれも見分けがつかず面積だけ食っていた（4セクション計11本）。
+ *  値そのものと色（緑/黄/赤）で十分に読めるので、数値主体の4列に畳む。 */
+function MetricCells({
+  items,
+}: {
+  items: { label: string; value: string; tone: string }[];
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {items.map(({ label, value, tone }) => (
+        <div
+          key={label}
+          className="rounded-md bg-white/3 px-2 py-1.5 text-center ring-1 ring-white/5"
+        >
+          <p className="text-[10px] text-slate-500">{label}</p>
+          <p className={`text-sm tabular-nums font-semibold ${tone}`}>{value}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function LighthouseScoresDetail({ scores }: { scores: LighthouseScores }) {
   const items: { label: string; key: keyof Omit<LighthouseScores, "measuredAt"> }[] = [
     { label: "Performance",    key: "performance" },
@@ -499,27 +520,13 @@ function LighthouseScoresDetail({ scores }: { scores: LighthouseScores }) {
     { label: "SEO",            key: "seo" },
   ];
   return (
-    <div className="space-y-2.5">
-      {items.map(({ label, key }) => {
-        const score = scores[key];
-        return (
-          <div key={key} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">{label}</span>
-            <div className="flex flex-1 items-center gap-2">
-              <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/8">
-                <div
-                  className={`absolute inset-y-0 left-0 rounded-full ${lighthouseBg(score)}`}
-                  style={{ width: `${score}%` }}
-                />
-              </div>
-              <span className={`w-8 shrink-0 text-right text-sm tabular-nums font-semibold ${lighthouseColor(score)}`}>
-                {score}
-              </span>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+    <MetricCells
+      items={items.map(({ label, key }) => ({
+        label,
+        value: String(scores[key]),
+        tone: lighthouseColor(scores[key]),
+      }))}
+    />
   );
 }
 
@@ -529,11 +536,6 @@ function securityColor(score: number): string {
   return "text-red-400";
 }
 
-function securityBg(score: number): string {
-  if (score >= 90) return "bg-emerald-500";
-  if (score >= 60) return "bg-amber-500";
-  return "bg-red-500";
-}
 
 function SecurityScoresDetail({ scores }: { scores: SecurityScores }) {
   const items: { label: string; value: number; color: string }[] = [
@@ -544,33 +546,20 @@ function SecurityScoresDetail({ scores }: { scores: SecurityScores }) {
   ];
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-3">
-        <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">Score</span>
-        <div className="flex flex-1 items-center gap-2">
-          <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/8">
-            <div
-              className={`absolute inset-y-0 left-0 rounded-full ${securityBg(scores.score)}`}
-              style={{ width: `${scores.score}%` }}
-            />
-          </div>
-          <span className={`w-8 shrink-0 text-right text-sm tabular-nums font-semibold ${securityColor(scores.score)}`}>
-            {scores.score}
-          </span>
-        </div>
-      </div>
-      <div className="grid grid-cols-4 gap-2">
-        {items.map(({ label, value, color }) => (
-          <div
-            key={label}
-            className="rounded-md bg-white/3 px-2 py-1.5 text-center ring-1 ring-white/5"
-          >
-            <p className="text-[10px] text-slate-500">{label}</p>
-            <p className={`text-sm tabular-nums font-semibold ${value > 0 ? color : "text-slate-600"}`}>
-              {value}
-            </p>
-          </div>
-        ))}
-      </div>
+      {/* スコアはこの下の内訳から算出される値なので、バーは重複表示になる */}
+      <p className="flex items-baseline gap-2">
+        <span className={`text-3xl tabular-nums font-bold ${securityColor(scores.score)}`}>
+          {scores.score}
+        </span>
+        <span className="text-xs text-slate-500">/ 100</span>
+      </p>
+      <MetricCells
+        items={items.map(({ label, value, color }) => ({
+          label,
+          value: String(value),
+          tone: value > 0 ? color : "text-slate-600",
+        }))}
+      />
     </div>
   );
 }
@@ -601,50 +590,22 @@ function SecurityHeadersDetail({ headers }: { headers: SecurityHeaders }) {
   if (!headers.grade) {
     return <p className="text-sm text-slate-500">スキャンに失敗しました (詳細は notes 参照)</p>;
   }
-  const pct = headers.score !== null ? Math.min(100, headers.score) : 0;
+  // グレード・スコア・合格数は同じ計測の3つの見え方でしかないので1行にまとめる
+  // （スコアのバーは隣に数値が出ている時点で情報が重複していた）
   return (
-    <div className="space-y-2.5">
-      <div className="flex items-center gap-3">
-        <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">グレード</span>
-        <span className={`text-3xl tabular-nums font-bold ${headerGradeColor(headers.grade)}`}>
-          {headers.grade}
-        </span>
-        {headers.score !== null && (
-          <span className="text-sm text-slate-500 tabular-nums">{headers.score}/100</span>
-        )}
-      </div>
+    <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+      <span className={`text-3xl tabular-nums font-bold ${headerGradeColor(headers.grade)}`}>
+        {headers.grade}
+      </span>
+      {headers.score !== null && (
+        <span className="text-sm tabular-nums text-slate-400">{headers.score} / 100</span>
+      )}
       {headers.passed !== undefined && headers.total !== undefined && (
-        <div className="flex items-center gap-3">
-          <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">合格テスト</span>
-          <div className="flex flex-1 items-center gap-2">
-            <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/8">
-              <div
-                className="absolute inset-y-0 left-0 rounded-full bg-emerald-500"
-                style={{ width: `${(headers.passed / headers.total) * 100}%` }}
-              />
-            </div>
-            <span className="w-16 shrink-0 text-right text-sm tabular-nums font-semibold text-slate-300">
-              {headers.passed} / {headers.total}
-            </span>
-          </div>
-        </div>
+        <span className="text-xs tabular-nums text-slate-500">
+          合格 {headers.passed} / {headers.total}
+        </span>
       )}
-      {headers.score !== null && headers.score < 100 && (
-        <div className="flex items-center gap-3">
-          <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">スコア</span>
-          <div className="flex flex-1 items-center gap-2">
-            <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/8">
-              <div
-                className={`absolute inset-y-0 left-0 rounded-full ${
-                  pct >= 90 ? "bg-emerald-500" : pct >= 70 ? "bg-lime-500" : pct >= 50 ? "bg-amber-500" : "bg-red-500"
-                }`}
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </p>
   );
 }
 
@@ -654,11 +615,6 @@ function coverageColor(score: number): string {
   return "text-red-400";
 }
 
-function coverageBg(score: number): string {
-  if (score >= 80) return "bg-emerald-500";
-  if (score >= 50) return "bg-amber-500";
-  return "bg-red-500";
-}
 
 function TestCoverageDetail({ coverage }: { coverage: TestCoverage }) {
   const items: { label: string; key: keyof Omit<TestCoverage, "tests" | "measuredAt" | "notes"> }[] = [
@@ -668,27 +624,13 @@ function TestCoverageDetail({ coverage }: { coverage: TestCoverage }) {
     { label: "Lines",      key: "lines" },
   ];
   return (
-    <div className="space-y-2.5">
-      {items.map(({ label, key }) => {
-        const score = coverage[key];
-        return (
-          <div key={key} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">{label}</span>
-            <div className="flex flex-1 items-center gap-2">
-              <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/8">
-                <div
-                  className={`absolute inset-y-0 left-0 rounded-full ${coverageBg(score)}`}
-                  style={{ width: `${score}%` }}
-                />
-              </div>
-              <span className={`w-12 shrink-0 text-right text-sm tabular-nums font-semibold ${coverageColor(score)}`}>
-                {score.toFixed(1)}%
-              </span>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+    <MetricCells
+      items={items.map(({ label, key }) => ({
+        label,
+        value: `${coverage[key].toFixed(1)}%`,
+        tone: coverageColor(coverage[key]),
+      }))}
+    />
   );
 }
 

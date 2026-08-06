@@ -145,7 +145,8 @@ export function ProjectDetailModal({
         <button
           onClick={onClose}
           aria-label="閉じる"
-          className="absolute right-4 top-4 text-slate-600 transition-colors hover:text-slate-300"
+          // 本文がボタンの下を流れるようになったため、背景を敷いて可読性を保つ
+          className="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-1.5 text-slate-300 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -153,24 +154,27 @@ export function ProjectDetailModal({
           </svg>
         </button>
 
-        {/* OGP image */}
-        {eyecatchSrc(project) && !ogpError && (
-          <div className="relative aspect-[1.91/1] w-full shrink-0 overflow-hidden rounded-t-2xl bg-white/5">
-            {!ogpLoaded && (
-              <div className="absolute inset-0 animate-pulse bg-white/5" />
-            )}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={eyecatchSrc(project)!}
-              alt={`${project.name} preview`}
-              className={`h-full w-full object-cover transition-opacity duration-300 ${ogpLoaded ? "opacity-100" : "opacity-0"}`}
-              onLoad={() => setOgpLoaded(true)}
-              onError={() => setOgpError(true)}
-            />
-          </div>
-        )}
-
         <div className="min-h-0 grow overflow-y-auto overscroll-contain p-4 sm:p-6">
+          {/* OGP image — スクロール領域の「中」に置いて本文と一緒に流す。
+              外に出すと上部に貼り付いたままになり、モーダル高さの4割前後を
+              常時占有して本文の可読領域を圧迫する。
+              負のマージンでコンテナのパディングを打ち消し、画像だけ全幅にする */}
+          {eyecatchSrc(project) && !ogpError && (
+            <div className="relative -mx-4 -mt-4 mb-4 aspect-[1.91/1] overflow-hidden bg-white/5 sm:-mx-6 sm:-mt-6 sm:mb-6">
+              {!ogpLoaded && (
+                <div className="absolute inset-0 animate-pulse bg-white/5" />
+              )}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={eyecatchSrc(project)!}
+                alt={`${project.name} preview`}
+                className={`h-full w-full object-cover transition-opacity duration-300 ${ogpLoaded ? "opacity-100" : "opacity-0"}`}
+                onLoad={() => setOgpLoaded(true)}
+                onError={() => setOgpError(true)}
+              />
+            </div>
+          )}
+
           {/* Header */}
           <div className="flex items-start gap-3 pr-8">
             <span className="mt-0.5 shrink-0">

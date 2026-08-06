@@ -21,6 +21,10 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-28",
     githubUrl: "",
     githubVisibility: "private",
+    // 非公開リポジトリで liveUrl も無いため、project データからカードを生成する。
+    // 生成元は name / category / platform / staticTech のみで、社名・物件・
+    // テナントは含めない（description は使わない）＝守秘の範囲を越えない
+    ogImage: "/api/og/client-realestate-admin",
     emoji: "🏢",
     kind: "client",
     technicalOverview:

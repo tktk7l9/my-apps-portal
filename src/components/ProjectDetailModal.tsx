@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, Fragment } from "react";
 import Image from "next/image";
 import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type NativeQuality, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
+import { eyecatchSrc } from "@/lib/eyecatch";
 
 const versionColors: Record<VersionStatus, string> = {
   latest:     "text-emerald-500",
@@ -150,14 +151,14 @@ export function ProjectDetailModal({
         </button>
 
         {/* OGP image */}
-        {project.liveUrl && !ogpError && (
+        {eyecatchSrc(project) && !ogpError && (
           <div className="relative aspect-[1.91/1] w-full shrink-0 overflow-hidden rounded-t-2xl bg-white/5">
             {!ogpLoaded && (
               <div className="absolute inset-0 animate-pulse bg-white/5" />
             )}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`/api/ogp?url=${encodeURIComponent(project.liveUrl)}`}
+              src={eyecatchSrc(project)!}
               alt={`${project.name} preview`}
               className={`h-full w-full object-cover transition-opacity duration-300 ${ogpLoaded ? "opacity-100" : "opacity-0"}`}
               onLoad={() => setOgpLoaded(true)}

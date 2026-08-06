@@ -137,6 +137,9 @@ export type RawProject = {
   githubUrl: string;
   githubVisibility: GithubVisibility;
   liveUrl?: string;
+  /** カードのアイキャッチ画像を明示指定する。未設定なら liveUrl の OGP を取りに行く。
+   *  liveUrl があっても使う場面がある（ボット対策で 429 を返すサイト・Web を持たないアプリ）。 */
+  ogImage?: string;
   favicon?: string;
   emoji: string;
   lighthouseScores?: LighthouseScores;

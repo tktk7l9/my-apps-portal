@@ -50,6 +50,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     liveUrl: "https://service-anatomy.vercel.app",
+    // Vercel Firewall の bot_protection(challenge) が有効で、サーバー側からの取得は
+    // どの User-Agent でも 429 になる。本物の OG 画像を静的コピーで持つ
+    // （記事OGP生成は Fast Origin Transfer を消費するため、都度取得はしない）
+    ogImage: "/og/service-anatomy.png",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
       "Next.js 16 (App Router) + React 19。全HTMLルートをforce-dynamic + per-request nonce CSP(proxy.ts)で配信しObservatory A+。記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。ヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
@@ -232,6 +236,8 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-03",
     githubUrl: "https://github.com/tktk7l9/roba-hud",
     githubVisibility: "public",
+    // Web ページを持たない macOS アプリのため、project データからカードを生成する
+    ogImage: "/api/og/roba-hud",
     emoji: "🖲️",
     featuredRank: 4,
     highlight:

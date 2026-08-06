@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Project } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
+import { eyecatchSrc } from "@/lib/eyecatch";
 import { ProjectDetailModal } from "@/components/ProjectDetailModal";
 
 export function FeaturedWorks({
@@ -57,7 +58,8 @@ function FeaturedCard({
   onSelect: () => void;
 }) {
   const [ogpFailed, setOgpFailed] = useState(false);
-  const showOgp = Boolean(project.liveUrl) && !ogpFailed;
+  const src = eyecatchSrc(project);
+  const showOgp = src !== null && !ogpFailed;
   // 最初の2枚（above the fold）だけ即時読み込みし、残りは遅延読み込みする
   const imageLoading = index < 2 ? "eager" : "lazy";
 
@@ -67,7 +69,7 @@ function FeaturedCard({
         {showOgp ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
-            src={`/api/ogp?url=${encodeURIComponent(project.liveUrl!)}`}
+            src={src!}
             alt={`${project.name} のプレビュー`}
             className="h-full w-full object-cover"
             loading={imageLoading}

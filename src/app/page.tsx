@@ -10,7 +10,10 @@ import { enrichProjectsWithVersions } from "@/lib/repo-versions";
 import { getVersionStatuses } from "@/lib/version-status";
 import { getLastCommitDates } from "@/lib/github";
 import { selectFeatured, selectRest } from "@/lib/featured";
-import { filterVersionStatusesForProjects } from "@/lib/version-filter";
+import {
+  collectVersionCheckEntries,
+  filterVersionStatusesForProjects,
+} from "@/lib/version-filter";
 
 export default function Home() {
   return (
@@ -41,9 +44,8 @@ export default function Home() {
 async function ProjectDataLoader() {
   const projects = await enrichProjectsWithVersions(rawProjects);
 
-  const allEntries = projects.flatMap((p) =>
-    p.techVersions.map((t) => ({ techName: t.name, version: t.version }))
-  );
+  // staticTech 宣言のアプリは npm 監視の対象外（詳細は collectVersionCheckEntries）
+  const allEntries = collectVersionCheckEntries(projects);
   const publicRepos = projects
     .filter((p) => p.githubVisibility === "public")
     .map((p) => ({ id: p.id, githubUrl: p.githubUrl }));

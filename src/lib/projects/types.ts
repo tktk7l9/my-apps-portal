@@ -8,6 +8,12 @@ export type TechVersion = {
   docsUrl: string;
   version: string;
   versionUrl?: string;
+  /**
+   * package.json の宣言が `^16.2.10` のようなレンジだった場合 true。
+   * このとき version はレンジの下限であって実際に解決される版ではないため、
+   * OSV への脆弱性照会には使えない（下限の脆弱性を誤検出する）。
+   */
+  versionIsRange?: boolean;
 };
 
 export type GithubVisibility = "public" | "private" | "local-only";

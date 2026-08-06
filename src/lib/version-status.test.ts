@@ -122,4 +122,41 @@ describe("getVersionStatuses", () => {
     ]);
     expect(statuses["Next.js@16.2.12"]).toBe("latest");
   });
+
+  it("レンジ宣言のバージョンは OSV に問い合わせない", async () => {
+    // acro-finder の `^16.2.10` のような宣言。表示している 16.2.10 はレンジの
+    // 下限であって lockfile が解決する実体ではないため、下限の脆弱性を拾って
+    // 恒久的に vulnerable と表示されてしまうのを防ぐ。
+    const fetchMock = mockFetch({
+      npmVersions: { next: "16.3.0" },
+      osv: { ok: true, vulnFlags: [true] },
+    });
+
+    const { statuses } = await getVersionStatuses([
+      { techName: "Next.js", version: "16.2.10", versionIsRange: true },
+    ]);
+
+    // 脆弱性判定は行わず、最新版との比較だけは従来どおり効く
+    expect(statuses["Next.js@16.2.10"]).toBe("outdated");
+
+    const osvCalls = fetchMock.mock.calls.filter(
+      (c) => String(c[0]) === "https://api.osv.dev/v1/querybatch"
+    );
+    expect(osvCalls).toHaveLength(0);
+  });
+
+  it("同じキーが厳密指定でも現れるならそちらを採用して OSV に問い合わせる", async () => {
+    // 別プロジェクトが同じ版を厳密指定しているなら実体が確定するので照会してよい
+    mockFetch({
+      npmVersions: { next: "16.3.0" },
+      osv: { ok: true, vulnFlags: [true] },
+    });
+
+    const { statuses } = await getVersionStatuses([
+      { techName: "Next.js", version: "16.2.10", versionIsRange: true },
+      { techName: "Next.js", version: "16.2.10", versionIsRange: false },
+    ]);
+
+    expect(statuses["Next.js@16.2.10"]).toBe("vulnerable");
+  });
 });

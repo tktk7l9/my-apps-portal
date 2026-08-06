@@ -36,6 +36,8 @@ async function fetchLatestVersions(pkgs: string[]): Promise<Record<string, strin
 async function fetchVulnerableKeys(
   queries: { key: string; pkg: string; version: string }[]
 ): Promise<Set<string>> {
+  // 照会対象が無いなら空リクエストを投げない
+  if (queries.length === 0) return new Set();
   try {
     const body = {
       queries: queries.map(({ pkg, version }) => ({
@@ -64,7 +66,7 @@ async function fetchVulnerableKeys(
 }
 
 export async function getVersionStatuses(
-  entries: { techName: string; version: string }[]
+  entries: { techName: string; version: string; versionIsRange?: boolean }[]
 ): Promise<GetVersionStatusesResult> {
   const checkable = entries.filter(({ version }) => isCheckable(version));
 
@@ -72,13 +74,23 @@ export async function getVersionStatuses(
     ...new Set(checkable.map(({ techName }) => npmNames[techName]).filter(Boolean)),
   ];
 
+  // レンジ宣言（`^16.2.10`）で表示している version はレンジの下限であって
+  // lockfile が解決する実体ではない。そのまま OSV に投げると下限の脆弱性を
+  // 拾って恒久的に「脆弱性あり」と出るため、厳密指定のものだけを照会する。
+  // 同じ techName@version が別プロジェクトで厳密指定されていればそちらを採る。
+  const exactKeys = new Set(
+    checkable
+      .filter(({ versionIsRange }) => !versionIsRange)
+      .map(({ techName, version }) => `${techName}@${version}`)
+  );
+
   const osvQueries = checkable
     .map(({ techName, version }) => ({
       key: `${techName}@${version}`,
       pkg: npmNames[techName],
       version,
     }))
-    .filter(({ pkg }) => Boolean(pkg));
+    .filter(({ pkg, key }) => Boolean(pkg) && exactKeys.has(key));
 
   const [latestMap, vulnKeys] = await Promise.all([
     fetchLatestVersions(uniquePkgs),

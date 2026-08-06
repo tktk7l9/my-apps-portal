@@ -90,6 +90,8 @@ function buildTechVersions(
       docsUrl: meta.docsUrl,
       version,
       versionUrl,
+      // stripRange で削れた = `^` `~` 等が付いたレンジ宣言だった
+      versionIsRange: raw ? raw !== version : false,
     }];
   });
 }

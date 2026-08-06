@@ -4,6 +4,37 @@ import type { VersionStatus } from "@/lib/version-status";
 /** techVersions を持つ最小限の形。Project 全体を要求しないことで呼び出し側の結合を減らす */
 type HasTechVersions = { techVersions: TechVersion[] };
 
+/** getVersionStatuses に渡す照会単位 */
+export type VersionCheckEntry = {
+  techName: string;
+  version: string;
+  versionIsRange?: boolean;
+};
+
+/**
+ * npm registry / OSV への照会対象となる techName@version を集める。
+ *
+ * `staticTech` を宣言したプロジェクトは npm 監視をバイパスする意図なので除外する。
+ * staticTech の version にはメジャーのみ（React "19"）や npm のバージョン体系に
+ * 乗らない値（macOS "arm64"）が入るため、そのまま npm registry と比較すると
+ * displayName がたまたま npm パッケージ名と一致するもの（React / TypeScript）
+ * だけが「アップデートあり」と誤判定される。Electron や CodeMirror が無害なのは
+ * packageMeta に登録が無く unknown へ落ちるからにすぎない。
+ */
+export function collectVersionCheckEntries(
+  projects: (HasTechVersions & { staticTech?: unknown })[]
+): VersionCheckEntry[] {
+  return projects
+    .filter((project) => !project.staticTech)
+    .flatMap((project) =>
+      project.techVersions.map((tech) => ({
+        techName: tech.name,
+        version: tech.version,
+        versionIsRange: tech.versionIsRange,
+      }))
+    );
+}
+
 /**
  * versionStatuses（全プロジェクト分）を、指定した projects が実際に使っている
  * `techName@version` キーだけに絞り込む。

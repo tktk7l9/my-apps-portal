@@ -5,6 +5,7 @@ import Image from "next/image";
 import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type NativeQuality, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
 import { eyecatchSrc } from "@/lib/eyecatch";
+import { Paragraphs } from "@/components/Paragraphs";
 
 const versionColors: Record<VersionStatus, string> = {
   latest:     "text-emerald-500",
@@ -186,7 +187,10 @@ export function ProjectDetailModal({
           </div>
 
           {/* Description */}
-          <p className="mt-4 text-sm leading-relaxed text-slate-400">{project.description}</p>
+          <Paragraphs
+            text={project.description}
+            className="mt-4 text-sm leading-relaxed text-slate-400"
+          />
 
           {/* Links */}
           <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -231,7 +235,10 @@ export function ProjectDetailModal({
               <div className="my-5 border-t border-white/5" />
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">技術的概要</p>
-                <p className="text-sm leading-relaxed text-slate-400">{project.technicalOverview}</p>
+                <Paragraphs
+                  text={project.technicalOverview}
+                  className="text-sm leading-relaxed text-slate-400"
+                />
               </div>
             </>
           )}

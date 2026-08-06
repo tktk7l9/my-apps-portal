@@ -16,6 +16,7 @@ export default defineConfig({
         "src/lib/featured.ts",
         "src/lib/version-filter.ts",
         "src/lib/eyecatch.ts",
+        "src/lib/paragraphs.ts",
       ],
       thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
     },

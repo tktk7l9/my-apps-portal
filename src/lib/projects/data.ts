@@ -60,7 +60,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.png",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートをforce-dynamic + per-request nonce CSP(proxy.ts)で配信しObservatory A+。記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。ヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートをforce-dynamic + per-request nonce CSP(proxy.ts)で配信しObservatory A+。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -96,7 +96,7 @@ export const rawProjects: RawProject[] = [
     id: "lumen-bloom",
     name: "Lumen Bloom",
     description:
-      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。部屋の隅の花瓶には週替わりでその季節の花や枝物（ひまわり・バラ・チューリップ・コスモス・アネモネ・ガーベラ・マーガレット・芍薬・ダリア・マム・カーネーション・ラナンキュラス・紫陽花・水仙・ユリ・ラベンダー・かすみ草・リンドウ・カラー・梅・桜・ミモザ・紅葉・南天・ドウダンツツジの全25種を月3〜4候補で循環、花に合わせて透明/ロゼ/コバルト/スモークガラス・白磁/青磁/黒陶/テラコッタの陶器・真鍮の花瓶も変化、南半球は季節6ヶ月シフト）が生けられ、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・今週の花・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・アレンジを固定して共有可能。",
+      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。\n\n部屋の隅の花瓶には週替わりでその季節の花や枝物（ひまわり・バラ・チューリップ・コスモス・アネモネ・ガーベラ・マーガレット・芍薬・ダリア・マム・カーネーション・ラナンキュラス・紫陽花・水仙・ユリ・ラベンダー・かすみ草・リンドウ・カラー・梅・桜・ミモザ・紅葉・南天・ドウダンツツジの全25種を月3〜4候補で循環、花に合わせて透明/ロゼ/コバルト/スモークガラス・白磁/青磁/黒陶/テラコッタの陶器・真鍮の花瓶も変化、南半球は季節6ヶ月シフト）が生けられ、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。\n\n天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・今週の花・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・アレンジを固定して共有可能。",
     trackedPackages: ["vite", "typescript", "three"],
     category: "Tool",
     platform: "web",
@@ -109,7 +109,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/lumen-bloom.svg",
     emoji: "🌻",
     technicalOverview:
-      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated ~0.05°/月相ch.48、skydialから移植しJPL Horizons・USNOとfixture突合）。ひまわりは完全プロシージャル（種盤はVogelフィロタキシス=黄金角螺旋170小花、花びら/萼/葉は同一のパラメトリック曲面グリッドのプロポーション違い、シード付きmulberry32で決定論的レイアウト）で外部3Dアセット不使用。窓格子はカメラ不可視（colorWrite/depthWrite無効）のalphaTestゴボ板が太陽方向に追従してシャドウマップにのみ寄与。水はtransmissionガラス内で見えるようクラシックalpha透過+ガラスdepthWrite無効の合成。天気はOpen-Meteo（キー不要）をWMOコード→ムードにマッピングし、全照明量を指数スムージング（τ≈2s）で遷移。常時稼働向けに適応フレームレート（パーティクル/稲光時のみ30fps、平常時10fps）・昼夜で不要な影パスを丸ごと停止・タブ非表示で全ループ停止。IBL（RoomEnvironment）は昼夜カーブに連動させ深夜が正午のように光る罠を回避。",
+      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated ~0.05°/月相ch.48、skydialから移植しJPL Horizons・USNOとfixture突合）。ひまわりは完全プロシージャル（種盤はVogelフィロタキシス=黄金角螺旋170小花、花びら/萼/葉は同一のパラメトリック曲面グリッドのプロポーション違い、シード付きmulberry32で決定論的レイアウト）で外部3Dアセット不使用。\n\n窓格子はカメラ不可視（colorWrite/depthWrite無効）のalphaTestゴボ板が太陽方向に追従してシャドウマップにのみ寄与。水はtransmissionガラス内で見えるようクラシックalpha透過+ガラスdepthWrite無効の合成。\n\n天気はOpen-Meteo（キー不要）をWMOコード→ムードにマッピングし、全照明量を指数スムージング（τ≈2s）で遷移。常時稼働向けに適応フレームレート（パーティクル/稲光時のみ30fps、平常時10fps）・昼夜で不要な影パスを丸ごと停止・タブ非表示で全ループ停止。IBL（RoomEnvironment）は昼夜カーブに連動させ深夜が正午のように光る罠を回避。",
     architecture: {
       layers: [
         {
@@ -154,7 +154,7 @@ export const rawProjects: RawProject[] = [
     id: "agent-cockpit",
     name: "Agent Cockpit",
     description:
-      "AI コーディングエージェントの設定を1画面で横断管理する macOS デスクトップアプリ。Claude Code（~/.claude.json・~/.claude/）・OpenAI Codex（~/.codex/config.toml）・Cursor（~/.cursor/）＋プロジェクトスコープ（.mcp.json・.claude/）に分散した MCP サーバー / Skill / Subagent / スラッシュコマンド / プラグイン / 設定 / AGENTS.md・CLAUDE.md を統合インベントリとして表示し、GUI からフル編集（追加・編集・削除・リネーム・トグル）できる。全書込は 差分プレビュー（env 値マスク）→ sha256 競合検知 → ファイル毎50世代バックアップ → atomic write（パーミッション保持）の同一パイプラインを通り、~/.codex/auth.json や .env* は IPC 層でハード拒否。外部エディタや各 CLI 本体による変更は chokidar 監視で即座に反映される。",
+      "AI コーディングエージェントの設定を1画面で横断管理する macOS デスクトップアプリ。Claude Code（~/.claude.json・~/.claude/）・OpenAI Codex（~/.codex/config.toml）・Cursor（~/.cursor/）＋プロジェクトスコープ（.mcp.json・.claude/）に分散した MCP サーバー / Skill / Subagent / スラッシュコマンド / プラグイン / 設定 / AGENTS.md・CLAUDE.md を統合インベントリとして表示し、GUI からフル編集（追加・編集・削除・リネーム・トグル）できる。\n\n全書込は 差分プレビュー（env 値マスク）→ sha256 競合検知 → ファイル毎50世代バックアップ → atomic write（パーミッション保持）の同一パイプラインを通り、~/.codex/auth.json や .env* は IPC 層でハード拒否。外部エディタや各 CLI 本体による変更は chokidar 監視で即座に反映される。",
     trackedPackages: [],
     staticTech: [
       { name: "Electron", docsUrl: "https://www.electronjs.org/docs/latest", version: "43" },
@@ -176,7 +176,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/api/og/agent-cockpit",
     emoji: "🎛️",
     technicalOverview:
-      "Electron（electron-vite + React 19 + zustand + CodeMirror 6）。全ロジックを純関数の lib 層（FileSnapshot→FileEdit 変換・fs/Electron 非依存）に隔離し、書込は planMutation に一本化 — これにより lib を plain node の vitest で 100% カバレッジゲートできる。設定ファイルは絶対に全体再直列化しない: JSON は jsonc-parser の modify/applyEdits によるテキスト編集（~/.claude.json の約70個の無関係キー・整形をバイト単位で保存）、TOML は toml-eslint-parser の AST レンジを外科的にスプライス（コメント生存）、markdown frontmatter は yaml Document API。main プロセスは薄い fs ゲートウェイで、realpath 二重チェックのパス allowlist・auth.json/.env* denylist・バックアップ・atomic write を担う。renderer は contextIsolation + sandbox + 厳格 CSP + 型付き contextBridge API 1本のみ（リモートコンテンツなし）。",
+      "Electron（electron-vite + React 19 + zustand + CodeMirror 6）。全ロジックを純関数の lib 層（FileSnapshot→FileEdit 変換・fs/Electron 非依存）に隔離し、書込は planMutation に一本化 — これにより lib を plain node の vitest で 100% カバレッジゲートできる。\n\n設定ファイルは絶対に全体再直列化しない: JSON は jsonc-parser の modify/applyEdits によるテキスト編集（~/.claude.json の約70個の無関係キー・整形をバイト単位で保存）、TOML は toml-eslint-parser の AST レンジを外科的にスプライス（コメント生存）、markdown frontmatter は yaml Document API。\n\nmain プロセスは薄い fs ゲートウェイで、realpath 二重チェックのパス allowlist・auth.json/.env* denylist・バックアップ・atomic write を担う。renderer は contextIsolation + sandbox + 厳格 CSP + 型付き contextBridge API 1本のみ（リモートコンテンツなし）。",
     architecture: {
       layers: [
         {
@@ -227,7 +227,7 @@ export const rawProjects: RawProject[] = [
     id: "roba-hud",
     name: "RoBaHUD",
     description:
-      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。レイヤーキーのホールドはファームウェア側の隠しマーカー（F21–F24 = macOS に仮想キーコードが無くアプリからは不可視、生 HID 購読にだけ届く）で正確に検知し、ホールドした瞬間にそのレイヤーの配置へ表示が切り替わる。マーカーの無い経路はキーコード逆引き＋トラックボール検知で推定。⌥⌘K グローバルホットキー・コンパクトバー表示・クリック透過、打鍵ヒートマップ、左右それぞれのバッテリー監視（HUD内チップ＋メニューバー常時表示(2行/1行)・履歴グラフ・放電レートから残り日数予測・低残量/切断通知・ログイン時自動起動 = zmk-battery-center 相当）に加え、GUI からキーを選んで .keymap を書き換え → CHEATSHEET.md の配置図を自動再生成 → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
+      "roBa（ZMK 分割キーボード・右手トラックボール）専用の macOS フローティング HUD。実配置の43キーをレイヤー別に常時最前面表示し、roBa の打鍵だけをリアルタイムハイライト。\n\nレイヤーキーのホールドはファームウェア側の隠しマーカー（F21–F24 = macOS に仮想キーコードが無くアプリからは不可視、生 HID 購読にだけ届く）で正確に検知し、ホールドした瞬間にそのレイヤーの配置へ表示が切り替わる。マーカーの無い経路はキーコード逆引き＋トラックボール検知で推定。\n\n⌥⌘K グローバルホットキー・コンパクトバー表示・クリック透過、打鍵ヒートマップ、左右それぞれのバッテリー監視（HUD内チップ＋メニューバー常時表示(2行/1行)・履歴グラフ・放電レートから残り日数予測・低残量/切断通知・ログイン時自動起動 = zmk-battery-center 相当）に加え、GUI からキーを選んで .keymap を書き換え → CHEATSHEET.md の配置図を自動再生成 → commit & push → GitHub Actions ビルド監視 → UF2 自動ダウンロード → 書き込みガイドまでの一気通貫パイプラインを備える。",
     trackedPackages: [],
     staticTech: [
       { name: "Swift", docsUrl: "https://www.swift.org/documentation/", version: "6.3" },
@@ -249,7 +249,7 @@ export const rawProjects: RawProject[] = [
     highlight:
       "自作分割キーボードの入力を可視化する macOS 常駐アプリ。ファームの keymap を直接解析しレイヤーを推定。",
     technicalOverview:
-      "Swift / SwiftUI 製（依存ゼロ・SwiftPM）。非アクティブ化 NSPanel を全 Spaces / フルスクリーン上に常時最前面表示する。zmk-config-roBa の .keymap（devicetree）を独自トークナイザでソース範囲付きパースし、roBa.json の座標（親指キーの回転含む）で描画。IOHIDManager が roBa デバイスのみ購読し（Product 文字列で識別・BLE 単一デバイス）、(page,usage)→(layer,pos) 逆引き＋トラックボール移動/スクロール検知＋暗黙シフト抑制の状態機械で表示レイヤーを推定する。バッテリーは CoreBluetooth で既存 HID ボンドに相乗りし、標準 Battery Service (0x180F) の複数キャラクタリスティックを CUD \"Peripheral N\"（ZMK の CENTRAL_BATTERY_LEVEL_PROXY）で左右に識別して購読、履歴を Swift Charts で描画。編集は記録済みソース範囲の外科的置換（列揃え維持・書込前に再パース検証）で、git/gh を Process 実行して push→Actions 監視→UF2 取得まで自動化。",
+      "Swift / SwiftUI 製（依存ゼロ・SwiftPM）。非アクティブ化 NSPanel を全 Spaces / フルスクリーン上に常時最前面表示する。\n\nzmk-config-roBa の .keymap（devicetree）を独自トークナイザでソース範囲付きパースし、roBa.json の座標（親指キーの回転含む）で描画。IOHIDManager が roBa デバイスのみ購読し（Product 文字列で識別・BLE 単一デバイス）、(page,usage)→(layer,pos) 逆引き＋トラックボール移動/スクロール検知＋暗黙シフト抑制の状態機械で表示レイヤーを推定する。\n\nバッテリーは CoreBluetooth で既存 HID ボンドに相乗りし、標準 Battery Service (0x180F) の複数キャラクタリスティックを CUD \"Peripheral N\"（ZMK の CENTRAL_BATTERY_LEVEL_PROXY）で左右に識別して購読、履歴を Swift Charts で描画。編集は記録済みソース範囲の外科的置換（列揃え維持・書込前に再パース検証）で、git/gh を Process 実行して push→Actions 監視→UF2 取得まで自動化。",
     architecture: {
       layers: [
         {
@@ -294,7 +294,7 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1829〜現在の国内外の歴史ニュース27,051件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,666件・全体の約39%に付与）。地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,051件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。さらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画の特集7本185件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史37件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
+      "1829〜現在の国内外の歴史ニュース27,051件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,666件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,051件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画の特集7本185件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史37件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
@@ -310,7 +310,7 @@ export const rawProjects: RawProject[] = [
     highlight:
       "Wikipedia から歴史ニュース 27,051 件を収集し、縦スクロールの年表に。近似重複排除と関連付けは自前実装。",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。データはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,051件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。CIは本番同等CSPヘッダー配信での実ブラウザスモーク37シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,051件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク37シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。",
     architecture: {
       layers: [
         {
@@ -379,7 +379,7 @@ export const rawProjects: RawProject[] = [
     highlight:
       "太陽と月の位置を天文計算で求め、室内に差し込む日射を3D可視化する PWA。Lighthouse 4項目満点。",
     technicalOverview:
-      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。日射取得シミュレーションはIneichen–Perez晴天モデル+Hay–Davies傾斜面散乱（pvlib-python生成fixtureと0.1%突合）、遮蔽は建物・屋根・軒・隣家を三角形メッシュ化しMöller–Trumboreでレイトレース（表示用Three.jsメッシュと計算用ジオメトリは同一ソース）。室内可視化は窓4隅を太陽方向へ床面投影しSutherland–Hodgmanで建物footprintにクリップする幾何計算(建物全体を1部屋として扱う簡略化)。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期17.4kB gzip）。ARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
+      "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。日射取得シミュレーションはIneichen–Perez晴天モデル+Hay–Davies傾斜面散乱（pvlib-python生成fixtureと0.1%突合）、遮蔽は建物・屋根・軒・隣家を三角形メッシュ化しMöller–Trumboreでレイトレース（表示用Three.jsメッシュと計算用ジオメトリは同一ソース）。\n\n室内可視化は窓4隅を太陽方向へ床面投影しSutherland–Hodgmanで建物footprintにクリップする幾何計算(建物全体を1部屋として扱う簡略化)。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期17.4kB gzip）。\n\nARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
     architecture: {
       layers: [
         {
@@ -891,7 +891,7 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://css-atelier.vercel.app",
     favicon: "/favicons/css-atelier.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js。学習者の自由記述 CSS を同一オリジンの iframe(srcdoc) に constructable stylesheet（adoptedStyleSheets + replaceSync）で注入するため、厳格な CSP（unsafe-inline 不使用）のままライブ適用できる。採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は app チャンクに分離し初回操作で遅延読込。Vite でビルドして Vercel に静的配信、PWA でオフライン対応。",
+      "バニラ TypeScript + Three.js。学習者の自由記述 CSS を同一オリジンの iframe(srcdoc) に constructable stylesheet（adoptedStyleSheets + replaceSync）で注入するため、厳格な CSP（unsafe-inline 不使用）のままライブ適用できる。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は app チャンクに分離し初回操作で遅延読込。Vite でビルドして Vercel に静的配信、PWA でオフライン対応。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "エディタ(DOM) / サンドボックス iframe(constructable stylesheet) / Three.js 概念ビジュアライザ / Service Worker", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
@@ -934,7 +934,7 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://glsl-atelier.vercel.app",
     favicon: "/favicons/glsl-atelier.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js。学習者のコードを実際に実行して採点する。GLSL シェーダーは GPU 専用言語で任意 JS を実行しないためメインページで直接コンパイル＆描画し gl.readPixels で採点（CSP 厳格・eval 不要）。Three.js（任意 JS）は sandbox=\"allow-scripts\" の不透明オリジン iframe（/sandbox.html だけ緩和 CSP・connect-src 'none'）に隔離し、postMessage でコードを渡してシーングラフを読み戻す。採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は背景(bloom)/サンドボックスに分離して遅延読込。Vite でビルドし Vercel に静的配信、PWA 対応。",
+      "バニラ TypeScript + Three.js。学習者のコードを実際に実行して採点する。\n\nGLSL シェーダーは GPU 専用言語で任意 JS を実行しないためメインページで直接コンパイル＆描画し gl.readPixels で採点（CSP 厳格・eval 不要）。Three.js（任意 JS）は sandbox=\"allow-scripts\" の不透明オリジン iframe（/sandbox.html だけ緩和 CSP・connect-src 'none'）に隔離し、postMessage でコードを渡してシーングラフを読み戻す。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は背景(bloom)/サンドボックスに分離して遅延読込。Vite でビルドし Vercel に静的配信、PWA 対応。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "エディタ(DOM) / WebGL シェーダー実行(readPixels) / 不透明オリジン sandbox iframe(Three.js) / 宇宙背景(bloom) / Service Worker", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
@@ -978,7 +978,7 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://ai-primer-nine.vercel.app",
     favicon: "/favicons/ai-primer.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。CSPはacro-finder方式のper-request nonce(proxy.ts、force-dynamic)でObservatory A+を維持しつつSSR。i18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。クイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
+      "Next.js 16 (App Router) + React 19。CSPはacro-finder方式のper-request nonce(proxy.ts、force-dynamic)でObservatory A+を維持しつつSSR。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "クイズ(useSyncExternalStore)/進捗ローカルストレージ/言語切替", kind: "client" }], connector: "HTTPS" },

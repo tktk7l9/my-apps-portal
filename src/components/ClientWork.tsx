@@ -1,5 +1,6 @@
 import type { Project } from "@/lib/projects";
 import { eyecatchSrc } from "@/lib/eyecatch";
+import { Paragraphs } from "@/components/Paragraphs";
 
 export function ClientWork({ projects }: { projects: Project[] }) {
   if (projects.length === 0) return null;
@@ -47,14 +48,16 @@ export function ClientWork({ projects }: { projects: Project[] }) {
                     </span>
                   </div>
 
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                    {project.description}
-                  </p>
+                  <Paragraphs
+                    text={project.description}
+                    className="mt-2 text-sm leading-relaxed text-slate-400"
+                  />
 
                   {project.technicalOverview && (
-                    <p className="mt-3 border-l-2 border-white/10 pl-3 text-xs leading-relaxed text-slate-500">
-                      {project.technicalOverview}
-                    </p>
+                    <Paragraphs
+                      text={project.technicalOverview}
+                      className="mt-3 border-l-2 border-white/10 pl-3 text-xs leading-relaxed text-slate-500"
+                    />
                   )}
 
                   <div className="mt-3 flex flex-wrap gap-1.5">

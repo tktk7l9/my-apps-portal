@@ -136,7 +136,9 @@ export function ProjectDetailModal({
         aria-modal="true"
         aria-labelledby="modal-title"
         tabIndex={-1}
-        className="relative flex max-h-[calc(100dvh_-_1rem)] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1117] shadow-2xl sm:max-h-[calc(100dvh_-_3rem)] focus:outline-none"
+        // max-w-3xl(768px) は本文が1行50字。日本語の快適域(35〜50字)の上限で、
+        // これ以上広げると長文の可読性が落ちる（4xl=59字・5xl=69字と実測）
+        className="relative flex max-h-[calc(100dvh_-_1rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1117] shadow-2xl sm:max-h-[calc(100dvh_-_3rem)] focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}

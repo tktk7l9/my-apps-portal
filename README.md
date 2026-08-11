@@ -58,3 +58,23 @@ src/
 ```
 
 依存パッケージの更新自体は各リポジトリの Dependabot（`.github/dependabot.yml`）に任せており、本ポータルは状態の可視化のみを担う。
+
+## ホスティング
+
+本番は **Cloudflare Workers**（`@opennextjs/cloudflare`）: https://my-apps-portal.saitotakuya0719.workers.dev
+
+2026-08-11、Vercel 無料枠の超過でアカウントが停止（全プロジェクトが
+`402 DEPLOYMENT_DISABLED`）したため移行した。Server Actions・API Route・
+`next/og` を持つ動的アプリなので、静的アプリのような assets 配信ではなく
+Worker スクリプト（`.open-next/worker.js`）が要る。`npm run deploy` で
+build + deploy、`GITHUB_TOKEN` は Worker のシークレット（`wrangler secret put`）。
+
+掲載データ側の対応:
+
+- Cloudflare へ移した6本（skydial / css-atelier / glsl-atelier / lumen-bloom /
+  snippet-sprint / 本ポータル）は `liveUrl` を workers.dev に更新
+- **同一アカウントの workers.dev 宛は Worker からの subrequest が通らない**ため、
+  `/api/ogp` でのスクレイプができない。各アプリの `ogp.png` を `public/og/` に
+  置いて `ogImage` で直接指定している（service-anatomy と同じ回避策）
+- 消費源として停止した3本（acro-finder / ai-primer / service-anatomy）は
+  リンク切れを出さないよう `liveUrl` を外した（`公開中` の集計からも外れる）

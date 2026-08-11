@@ -8,7 +8,7 @@ const stats = computePortfolioStats(rawProjects);
 
 const title = "齋藤拓也 — ポートフォリオ";
 const description = `フロントエンドエンジニア（業務委託）齋藤拓也の個人開発ポートフォリオ。React・Next.js を中心に ${stats.totalProjects} 作品を企画から運用まで一人で手がけました。`;
-const url = "https://my-apps-portal-tau.vercel.app";
+const url = "https://my-apps-portal.saitotakuya0719.workers.dev";
 
 export const metadata: Metadata = {
   title,

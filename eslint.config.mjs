@@ -14,6 +14,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // vitest coverage output (generated)
     "coverage/**",
+    // OpenNext / wrangler build output (generated)
+    ".open-next/**",
+    ".wrangler/**",
   ]),
 ]);
 

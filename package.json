@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.20.2",
     "@vercel/analytics": "^2.0.1",
     "next": "^16.3.0",
     "react": "^19.2.8",
@@ -27,7 +31,8 @@
     "eslint-config-next": "^16.3.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "vitest": "^3.2.7"
+    "vitest": "^3.2.7",
+    "wrangler": "^4.120.1"
   },
   "overrides": {
     "postcss": "^8.5.10",

@@ -1,0 +1,22 @@
+/**
+ * my-apps-portal — Cloudflare Workers (@opennextjs/cloudflare)
+ * https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/
+ *
+ * 静的アプリ5本と違い、Server Actions / API Route / next/og を持つ動的
+ * アプリなので Worker スクリプト(.open-next/worker.js)が要る。
+ * nodejs_compat は OpenNext の必須要件。
+ */
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "my-apps-portal",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+}

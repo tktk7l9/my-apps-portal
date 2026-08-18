@@ -360,6 +360,96 @@ export const rawProjects: RawProject[] = [
     },
   },
   {
+    id: "somewhere-now",
+    name: "Somewhere Now",
+    description:
+      "世界57地点のYouTubeライブカメラを地図から選んで覗くアプリ。地図には太陽位置から求めた昼夜の境界(ターミネータ)が引いてあり、「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
+    trackedPackages: ["vite", "typescript", "leaflet", "wrangler"],
+    category: "Tool",
+    platform: "web",
+    services: ["Cloudflare Workers", "Cloudflare KV", "YouTube Data API", "Open-Meteo"],
+    createdAt: "2026-08-18",
+    updatedAt: "2026-08-19",
+    githubUrl: "https://github.com/tktk7l9/somewhere-now",
+    githubVisibility: "public",
+    liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
+    favicon: "/favicons/somewhere-now.svg",
+    emoji: "\u{1F30D}",
+    highlight:
+      "地球のライブカメラを地図から覗く。昼夜の境界を引き、「いま夜の場所」を選べる。Cron が配信の生死を追い続けるので死んだピンが残らない。",
+    technicalOverview:
+      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時 search.list(100 units)でチャンネルから現在の配信を探し直す。フロントは静的データを持つので /api/cams が落ちても地図は出る。\n\nYouTube Data API の無料枠は10,000 units/日。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            {
+              label: "ブラウザ (Vanilla TS)",
+              sublabel: "Leaflet地図 / 昼夜ターミネータ / youtube-nocookie iframe",
+              kind: "client",
+            },
+          ],
+          connector: "静的配信 + /api/cams (HTTPS)",
+        },
+        {
+          nodes: [
+            {
+              label: "Cloudflare Worker",
+              sublabel: "静的アセット / 生存状態API / Cron Triggers",
+              kind: "edge",
+            },
+            { label: "Cloudflare KV", sublabel: "生存状態 + 日次クォータ台帳", kind: "storage" },
+          ],
+          connector: "Cron から定期取得 (APIキーはWorker側のみ)",
+        },
+        {
+          nodes: [
+            { label: "YouTube Data API", sublabel: "配信の生死・視聴者数・埋め込み可否", kind: "external" },
+            { label: "OSM / Open-Meteo", sublabel: "地図タイル / 現地の天気 (キー不要)", kind: "external" },
+          ],
+        },
+      ],
+    },
+    lighthouseScores: {
+      performance: 95,
+      accessibility: 100,
+      bestPractices: 96,
+      seo: 100,
+      measuredAt: "2026-08-19",
+    },
+    testCoverage: {
+      statements: 100,
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      tests: 195,
+      measuredAt: "2026-08-19",
+      notes:
+        "純ロジック層(天体計算・ドメイン・YouTube APIクライアント・生存更新アルゴリズム)を100%閾値ゲート。昼夜判定は6都市の現地時計と突合、クォータ会計は予算切れの打ち切りと失敗時の計上まで検証。index.htmlのタイルpreloadが初期表示座標とずれたら落ちるテストも含む。UI/Leaflet/iframe層は対象外",
+    },
+    securityScores: {
+      score: 100,
+      critical: 0,
+      high: 0,
+      moderate: 0,
+      low: 0,
+      totalDependencies: 204,
+      tool: "npm",
+      measuredAt: "2026-08-19",
+      notes: "npm audit 0件。実行時依存はleafletとleaflet.markerclusterのみ(天体計算は自前)",
+    },
+    secretScan: { leaks: 0, commits: 4, measuredAt: "2026-08-19" },
+    securityHeaders: {
+      grade: "A+",
+      score: 120,
+      passed: 10,
+      total: 10,
+      measuredAt: "2026-08-19",
+      notes:
+        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100、モバイルのbest-practices 96はOSMラスタタイルに@2xが無いことによる構造的上限",
+    },
+  },
+  {
     id: "skydial",
     name: "Skydial",
     description:

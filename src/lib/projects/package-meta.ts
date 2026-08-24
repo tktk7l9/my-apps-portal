@@ -66,14 +66,43 @@ export const packageMeta: Record<string, PackageMeta> = {
     docsUrl: "https://tanstack.com/start/latest/docs/",
     versionUrl: (v) => `https://github.com/TanStack/router/releases/tag/v${v}`,
   },
+  svelte: {
+    displayName: "Svelte",
+    docsUrl: "https://svelte.dev/docs",
+    versionUrl: (v) => `https://github.com/sveltejs/svelte/releases/tag/svelte%40${v}`,
+  },
+  "@sveltejs/kit": {
+    displayName: "SvelteKit",
+    docsUrl: "https://svelte.dev/docs/kit",
+    versionUrl: (v) =>
+      `https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%40${v}`,
+  },
+  unified: {
+    displayName: "unified",
+    docsUrl: "https://unifiedjs.com/learn/",
+    versionUrl: (v) => `https://github.com/unifiedjs/unified/releases/tag/${v}`,
+  },
+  minisearch: {
+    displayName: "MiniSearch",
+    docsUrl: "https://lucaong.github.io/minisearch/",
+    versionUrl: (v) => `https://github.com/lucaong/minisearch/releases/tag/v${v}`,
+  },
 };
 
 export const serviceUrls: Record<string, string> = {
-  Vercel:            "https://vercel.com",
-  "GitHub Actions":  "https://github.com/features/actions",
-  Supabase:          "https://supabase.com",
-  "Anthropic Claude": "https://anthropic.com",
-  "Google Gemini":   "https://ai.google.dev",
-  Resend:            "https://resend.com",
-  "GitHub Pages":    "https://pages.github.com",
+  Vercel:                 "https://vercel.com",
+  "Vercel Analytics":     "https://vercel.com/docs/analytics",
+  "GitHub Actions":       "https://github.com/features/actions",
+  Supabase:               "https://supabase.com",
+  "Anthropic Claude":     "https://anthropic.com",
+  "Google Gemini":        "https://ai.google.dev",
+  Resend:                 "https://resend.com",
+  "GitHub Pages":         "https://pages.github.com",
+  "Cloudflare Workers":   "https://developers.cloudflare.com/workers/",
+  "Cloudflare KV":        "https://developers.cloudflare.com/kv/",
+  "Cloudflare D1":        "https://developers.cloudflare.com/d1/",
+  "Cloudflare R2":        "https://developers.cloudflare.com/r2/",
+  "Cloudflare Access":    "https://developers.cloudflare.com/cloudflare-one/access-controls/",
+  "YouTube Data API":     "https://developers.google.com/youtube/v3",
+  "Open-Meteo":           "https://open-meteo.com/",
 };

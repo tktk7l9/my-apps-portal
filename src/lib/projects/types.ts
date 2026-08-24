@@ -154,7 +154,7 @@ export type RawProject = {
   kind?: "personal" | "client";
   /** 代表作の並び順。設定されたものだけヒーローセクションに出る（1 始まりの連番） */
   featuredRank?: number;
-  /** 代表作カード用の見どころ 1 行（80 文字以内）。description はカードには長すぎるため別に持つ */
+  /** 代表作カード用の見どころ 1 行（80 文字以内）。featuredRank がある作品にだけ付ける */
   highlight?: string;
   /** 技術的概要（2〜4文） */
   technicalOverview?: string;

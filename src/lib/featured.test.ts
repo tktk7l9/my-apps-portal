@@ -56,6 +56,17 @@ describe("実データの代表作", () => {
       ).toBeLessThanOrEqual(80);
     }
   });
+
+  it("highlight は featuredRank がある作品にだけ付ける", () => {
+    for (const project of rawProjects) {
+      if (project.highlight !== undefined) {
+        expect(
+          project.featuredRank,
+          `${project.id} に highlight があるが featuredRank が無い`
+        ).toBeDefined();
+      }
+    }
+  });
 });
 
 describe("実データの selectRest", () => {

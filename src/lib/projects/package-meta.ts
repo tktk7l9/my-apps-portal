@@ -29,6 +29,11 @@ export const packageMeta: Record<string, PackageMeta> = {
     docsUrl: "https://leafletjs.com/reference.html",
     versionUrl: (v) => `https://github.com/Leaflet/Leaflet/releases/tag/v${v}`,
   },
+  "maplibre-gl": {
+    displayName: "MapLibre GL JS",
+    docsUrl: "https://maplibre.org/maplibre-gl-js/docs/",
+    versionUrl: (v) => `https://github.com/maplibre/maplibre-gl-js/releases/tag/v${v}`,
+  },
   typescript: {
     displayName: "TypeScript",
     docsUrl: "https://www.typescriptlang.org/docs/",

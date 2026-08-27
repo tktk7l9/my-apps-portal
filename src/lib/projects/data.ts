@@ -362,28 +362,31 @@ export const rawProjects: RawProject[] = [
   {
     id: "somewhere-now",
     name: "Somewhere Now",
+    featuredRank: 5,
+    highlight:
+      "世界118の国と地域・5,720地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
     description:
-      "世界46の国と地域・176地点のYouTubeライブカメラを地図から選んで覗くアプリ。地図には太陽位置から求めた昼夜の境界(ターミネータ)が引いてあり、「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
-    trackedPackages: ["vite", "typescript", "leaflet"],
+      "世界118の国と地域・5,720地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
+    trackedPackages: ["vite", "typescript", "leaflet", "maplibre-gl"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare KV", "YouTube Data API", "Open-Meteo"],
     createdAt: "2026-08-18",
-    updatedAt: "2026-08-19",
+    updatedAt: "2026-08-27",
     githubUrl: "https://github.com/tktk7l9/somewhere-now",
     githubVisibility: "public",
     liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
     favicon: "/favicons/somewhere-now.svg",
     emoji: "\u{1F30D}",
     technicalOverview:
-      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。フロントは静的データを持つので /api/cams が落ちても地図は出る。\n\n176台が127チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
+      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。フロントは静的データを持つので /api/cams が落ちても地図は出る。\n\n5,720台が2,450チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、5,720件を10分ごとに全確認すると16,560 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
     architecture: {
       layers: [
         {
           nodes: [
             {
               label: "ブラウザ (Vanilla TS)",
-              sublabel: "Leaflet地図 / 昼夜ターミネータ / youtube-nocookie iframe",
+              sublabel: "Leaflet平面図 / MapLibre地球儀 / 昼夜ターミネータ / youtube-nocookie iframe",
               kind: "client",
             },
           ],
@@ -409,21 +412,21 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 95,
-      accessibility: 100,
+      performance: 50,
+      accessibility: 96,
       bestPractices: 96,
       seo: 100,
-      measuredAt: "2026-08-19",
+      measuredAt: "2026-08-27",
     },
     testCoverage: {
       statements: 100,
       branches: 100,
       functions: 100,
       lines: 100,
-      tests: 232,
-      measuredAt: "2026-08-19",
+      tests: 356,
+      measuredAt: "2026-08-27",
       notes:
-        "純ロジック層(天体計算・ドメイン・YouTube APIクライアント・生存更新アルゴリズム)を100%閾値ゲート。配信タイトルによるカメラ識別は、同一チャンネル内の紛らわしいタイトル群で取り違えないことを検証。昼夜判定は6都市の現地時計と突合、クォータ会計は予算切れの打ち切りと失敗時の計上まで検証。index.htmlのタイルpreloadが初期表示座標とずれたら落ちるテストも含む。UI/Leaflet/iframe層は対象外",
+        "純ロジック層(天体計算・ドメイン・YouTube APIクライアント・生存更新アルゴリズム・休憩モードの行き先選定・ピン描画)を100%閾値ゲート。配信タイトルによるカメラ識別は、同一チャンネル内の紛らわしいタイトル群で取り違えないことを検証。昼夜判定は6都市の現地時計と突合、クォータ会計は予算切れの打ち切りと失敗時の計上まで検証。UI/Leaflet/MapLibre/iframe層は対象外",
     },
     securityScores: {
       score: 100,
@@ -431,20 +434,20 @@ export const rawProjects: RawProject[] = [
       high: 0,
       moderate: 0,
       low: 0,
-      totalDependencies: 204,
+      totalDependencies: 226,
       tool: "npm",
-      measuredAt: "2026-08-19",
-      notes: "npm audit 0件。実行時依存はleafletとleaflet.markerclusterのみ(天体計算は自前)",
+      measuredAt: "2026-08-27",
+      notes: "npm audit 0件。実行時依存は地図まわり(leaflet / leaflet.markercluster / maplibre-gl)だけで、天体計算は自前",
     },
-    secretScan: { leaks: 0, commits: 4, measuredAt: "2026-08-19" },
+    secretScan: { leaks: 0, commits: 60, measuredAt: "2026-08-27" },
     securityHeaders: {
       grade: "A+",
       score: 120,
       passed: 10,
       total: 10,
-      measuredAt: "2026-08-19",
+      measuredAt: "2026-08-27",
       notes:
-        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100、モバイルのbest-practices 96はOSMラスタタイルに@2xが無いことによる構造的上限",
+        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100で安定。モバイルperf 50はカメラ5,720件を同梱したことでメインバンドルが2.6MB(gzip 611KB)に膨らみ、スクリプト実行が6.2秒かかるため(要データ分離)。a11y 96は密集したLeafletマーカーのタップ標的間隔",
     },
   },
   {

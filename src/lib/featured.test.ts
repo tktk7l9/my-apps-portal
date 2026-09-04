@@ -34,12 +34,15 @@ describe("selectRest", () => {
 describe("実データの代表作", () => {
   const featured = selectFeatured(rawProjects);
 
-  it("代表作はちょうど 5 件である", () => {
-    expect(featured).toHaveLength(5);
+  it("代表作はちょうど 4 件である", () => {
+    expect(featured).toHaveLength(4);
   });
 
   it("featuredRank は 1 から始まる連番で重複しない", () => {
-    expect(featured.map((p) => p.featuredRank)).toEqual([1, 2, 3, 4, 5]);
+    // 件数を変えてもこのテストが意図どおり働くよう、長さではなく連番性を検査する
+    expect(featured.map((p) => p.featuredRank)).toEqual(
+      Array.from({ length: featured.length }, (_, i) => i + 1)
+    );
   });
 
   it("代表作にはすべて highlight が設定されている", () => {

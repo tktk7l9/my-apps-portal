@@ -304,6 +304,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/chronoscroll",
     githubVisibility: "public",
     liveUrl: "https://chronoscroll.vercel.app",
+    ogImage: "/api/og/chronoscroll",
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
@@ -373,6 +374,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/somewhere-now",
     githubVisibility: "public",
     liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
+    ogImage: "https://somewhere-now.saitotakuya0719.workers.dev/og.png",
     favicon: "/favicons/somewhere-now.svg",
     emoji: "\u{1F30D}",
     technicalOverview:
@@ -523,6 +525,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/utility-tracker",
     githubVisibility: "public",
     liveUrl: "https://utility-tracker.saitotakuya0719.workers.dev",
+    ogImage: "/api/og/utility-tracker",
     emoji: "💡",
     technicalOverview:
       "Next.js App Router（クライアント描画のデータ端末、noindex）。集計の心臓部は src/lib の純関数（Vitest 100%）で、隔月請求の水道はカレンダー月へ日割り按分して月次系列に正規化する。CSV は文字コード選択(UTF-8/Shift_JIS)＋列マッピングで正規化し、unique(種別,期間)で冪等取込。保存は Supabase(Postgres)、認証はメール+パスワードの単一ユーザーで RLS を適用。グラフは recharts。",
@@ -575,6 +578,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/lifeplan-simulator",
     githubVisibility: "public",
     liveUrl: "https://lifeplan-simulator.saitotakuya0719.workers.dev",
+    ogImage: "https://lifeplan-simulator.saitotakuya0719.workers.dev/opengraph-image",
     favicon: "/favicons/lifeplan-simulator.svg",
     technicalOverview:
       "資産推移のシミュレーションは lib/simulation の純関数でクライアント側で完結し、状態は Zustand、入力フォームは React Hook Form + Zod で検証する。AI 評価機能のみ Next.js の Route Handler 経由で Claude を呼び出し、レスポンスを Zod でバリデーションする。グラフは Recharts、背景演出は Three.js。",
@@ -613,6 +617,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/parkour-cat",
     githubVisibility: "public",
     liveUrl: "https://tktk7l9.github.io/parkour-cat/",
+    ogImage: "/api/og/parkour-cat",
     favicon: "/favicons/parkour-cat.svg",
     technicalOverview:
       "フレームワークを使わないバニラ TypeScript 構成。Three.js の WebGL レンダラと requestAnimationFrame のゲームループでステージを描画し、処理はすべてクライアントで完結する。Vite で ESM にバンドルし、静的アセットを GitHub Pages から配信。バックエンドは持たない。",
@@ -679,6 +684,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/housing-performance-simulator",
     githubVisibility: "public",
     liveUrl: "https://housing-performance-simulator.saitotakuya0719.workers.dev",
+    ogImage: "https://housing-performance-simulator.saitotakuya0719.workers.dev/opengraph-image",
     favicon: "/favicons/housing-performance-simulator.svg",
     technicalOverview:
       "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand、フォームは React Hook Form + Zod。Next.js を Cloudflare Workers に配信し、外部 API は持たない。",
@@ -716,6 +722,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/ai-news-feed-app",
     githubVisibility: "public",
     liveUrl: "https://ai-news-feed-app.saitotakuya0719.workers.dev",
+    ogImage: "https://ai-news-feed-app.saitotakuya0719.workers.dev/opengraph-image",
     favicon: "/favicons/ai-news-feed-app.svg",
     technicalOverview:
       "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信し、音声読み上げは api/tts 経由。クリーンアップ用 Cron と Resend 通知も備える。",
@@ -783,6 +790,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/resume",
     githubVisibility: "public",
     liveUrl: "https://resume.saitotakuya0719.workers.dev",
+    ogImage: "https://resume.saitotakuya0719.workers.dev/opengraph-image",
     favicon: "/favicons/resume.svg",
     technicalOverview:
       "Next.js App Router で構築した静的中心の職務経歴書サイト(ja/en)。shadcn/ui + Tailwind CSS で UI を組み、問い合わせフォームは Server Action から Resend 経由でメール送信する。Cloudflare Workers に配信。",
@@ -816,6 +824,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/elparaiso",
     githubVisibility: "public",
     liveUrl: "https://elparaiso.saitotakuya0719.workers.dev",
+    ogImage: "https://elparaiso.saitotakuya0719.workers.dev/opengraph-image",
     favicon: "/favicons/elparaiso.svg",
     technicalOverview:
       "Next.js App Router によるコミュニティブランドサイト。ギャラリーや商品情報は Supabase(Postgres・Storage)から取得し、認証は @supabase/auth-ui を利用する。Cloudflare Workers に配信。",
@@ -848,6 +857,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/my-apps-portal",
     githubVisibility: "public",
     liveUrl: "https://my-apps-portal.saitotakuya0719.workers.dev",
+    ogImage: "/opengraph-image",
     favicon: "/favicons/my-apps-portal.svg",
     technicalOverview:
       "Next.js の Server Components が npm registry・OSV・GitHub API を取得(1時間キャッシュ)し、各アプリのバージョン / 脆弱性 / 最終コミットを集約する。OGP 画像は /api/ogp プロキシ経由(24時間キャッシュ)。アプリ定義は projects.ts に集約。",
@@ -890,6 +900,8 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-05-20",
     githubUrl: "https://github.com/tktk7l9/acro-finder",
     githubVisibility: "public",
+    // Vercel 稼働中のみ公開のため liveUrl を持たない。カードは生成画像で表す
+    ogImage: "/api/og/acro-finder",
     favicon: "/favicons/acro-finder.svg",
     technicalOverview:
       "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。proxy.ts で nonce ベースの CSP を付与し、Vercel に配信。",
@@ -1068,6 +1080,8 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-15",
     githubUrl: "https://github.com/tktk7l9/ai-primer",
     githubVisibility: "public",
+    // Vercel 稼働中のみ公開のため liveUrl を持たない。カードは生成画像で表す
+    ogImage: "/api/og/ai-primer",
     favicon: "/favicons/ai-primer.svg",
     technicalOverview:
       "Next.js 16 (App Router) + React 19。CSPはacro-finder方式のper-request nonce(proxy.ts、force-dynamic)でObservatory A+を維持しつつSSR。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",

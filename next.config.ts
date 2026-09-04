@@ -7,7 +7,7 @@ const cspHeader = `
   script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com${isDev ? " 'unsafe-eval'" : ""};
   connect-src 'self' https://cloudflareinsights.com;
   style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data:;
+  img-src 'self' blob: data: https://*.saitotakuya0719.workers.dev;
   font-src 'self';
   object-src 'none';
   base-uri 'self';

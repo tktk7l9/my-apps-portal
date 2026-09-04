@@ -1,5 +1,5 @@
 const links = [
-  { href: "https://resume-tktk7l9.vercel.app", label: "職務経歴書" },
+  { href: "https://resume.saitotakuya0719.workers.dev", label: "職務経歴書" },
   { href: "https://github.com/tktk7l9", label: "GitHub" },
 ];
 

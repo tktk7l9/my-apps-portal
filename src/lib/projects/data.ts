@@ -605,41 +605,6 @@ export const rawProjects: RawProject[] = [
     securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
   },
   {
-    id: "parkour-cat",
-    name: "パルクール猫",
-    description: "猫がアクロバティックに都市と自然を駆け抜けるThree.js / WebGLパルクールゲーム。",
-    trackedPackages: ["three", "vite", "typescript"],
-    category: "Game",
-    platform: "web",
-    services: ["GitHub Pages"],
-    createdAt: "2026-04-24",
-    updatedAt: "2026-05-26",
-    githubUrl: "https://github.com/tktk7l9/parkour-cat",
-    githubVisibility: "public",
-    liveUrl: "https://tktk7l9.github.io/parkour-cat/",
-    ogImage: "/api/og/parkour-cat",
-    favicon: "/favicons/parkour-cat.svg",
-    technicalOverview:
-      "フレームワークを使わないバニラ TypeScript 構成。Three.js の WebGL レンダラと requestAnimationFrame のゲームループでステージを描画し、処理はすべてクライアントで完結する。Vite で ESM にバンドルし、静的アセットを GitHub Pages から配信。バックエンドは持たない。",
-    architecture: {
-      layers: [
-        { nodes: [{ label: "ブラウザ (WebGL)", sublabel: "Three.js レンダラ / ゲームループ", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
-        { nodes: [{ label: "GitHub Pages", sublabel: "静的ホスティング", kind: "edge" }] },
-      ],
-    },
-    emoji: "🐈",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
-    securityScores: {
-      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
-      totalDependencies: 68, tool: "npm", measuredAt: "2026-08-06",
-    },
-    secretScan: { leaks: 0, commits: 30, measuredAt: "2026-08-06" },
-    securityHeaders: {
-      grade: null, score: null, measuredAt: "2026-05-20",
-      notes: "GitHub Pages のサブパス配信のため Observatory が直接スキャン不可",
-    },
-  },
-  {
     id: "hyper-tetris",
     name: "Hyper Tetris",
     description: "3D / 4D / 5D / 6D次元に拡張された実験的テトリスゲーム。",

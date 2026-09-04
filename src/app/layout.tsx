@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
 import "./globals.css";
@@ -43,7 +42,14 @@ export default function RootLayout({
     <html lang="ja" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         {children}
-        {process.env.VERCEL && <Analytics />}
+        {/* Cloudflare Web Analytics（トークンは公開前提の識別子。秘密ではない） */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts --
+            type="module" のスクリプトは仕様上 defer されるため、パーサーを止めない */}
+        <script
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={'{"token": "cd156fbf0fd24da0a12e58fdb4e63828"}'}
+        />
       </body>
     </html>
   );

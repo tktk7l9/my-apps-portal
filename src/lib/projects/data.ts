@@ -124,7 +124,7 @@ export const rawProjects: RawProject[] = [
         },
         {
           nodes: [
-            { label: "Vite · Vercel", sublabel: "厳格CSP / PWA(SW) / URLパラメータ共有", kind: "edge" },
+            { label: "Vite · Cloudflare Workers", sublabel: "厳格CSP / PWA(SW) / URLパラメータ共有", kind: "edge" },
             { label: "Open-Meteo", sublabel: "connect-src限定許可 (天体計算は全てローカル)", kind: "external" },
           ],
         },
@@ -483,7 +483,7 @@ export const rawProjects: RawProject[] = [
         },
         {
           nodes: [
-            { label: "Vite · Vercel", sublabel: "厳格CSP / PWA(SW) / URL状態共有", kind: "edge" },
+            { label: "Vite · Cloudflare Workers", sublabel: "厳格CSP / PWA(SW) / URL状態共有", kind: "edge" },
             { label: "OSM / 地理院タイル", sublabel: "img-src限定許可 (計算は全てローカル)", kind: "external" },
           ],
         },
@@ -536,7 +536,7 @@ export const rawProjects: RawProject[] = [
         },
         {
           nodes: [
-            { label: "Next.js · Vercel", sublabel: "静的配信 / CSP(connect-src supabase)", kind: "edge" },
+            { label: "Next.js · Cloudflare Workers", sublabel: "静的配信 / CSP(connect-src supabase)", kind: "edge" },
             { label: "Supabase", sublabel: "Postgres(readings) / Auth / RLS", kind: "storage" },
           ],
         },
@@ -581,7 +581,7 @@ export const rawProjects: RawProject[] = [
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "Zustand / RHF+Zod / Recharts / Three.js", kind: "client" }], connector: "AI評価のみ (HTTPS)" },
-        { nodes: [{ label: "Next.js · Vercel", sublabel: "Route Handler /api/evaluate ・レート制限", kind: "server" }], connector: "messages.create" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "Route Handler /api/evaluate ・レート制限", kind: "server" }], connector: "messages.create" },
         { nodes: [{ label: "Anthropic Claude API", sublabel: "claude-sonnet-4-6", kind: "external" }] },
       ],
     },
@@ -650,11 +650,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://hyper-tetris.saitotakuya0719.workers.dev",
     favicon: "/favicons/hyper-tetris.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js 構成。3D〜6D に拡張したテトリスの盤面を高次元から射影してレンダリングし、ゲームループはクライアントで完結する。Vite でビルドして Vercel に静的配信。バックエンドなし。",
+      "バニラ TypeScript + Three.js 構成。3D〜6D に拡張したテトリスの盤面を高次元から射影してレンダリングし、ゲームループはクライアントで完結する。Vite でビルドして Cloudflare Workers に静的配信。バックエンドなし。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (WebGL)", sublabel: "Three.js / 多次元射影レンダリング", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
-        { nodes: [{ label: "Vercel", sublabel: "静的ホスティング / CDN", kind: "edge" }] },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "静的ホスティング / CDN", kind: "edge" }] },
       ],
     },
     emoji: "🟦",
@@ -681,11 +681,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://housing-performance-simulator.saitotakuya0719.workers.dev",
     favicon: "/favicons/housing-performance-simulator.svg",
     technicalOverview:
-      "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand、フォームは React Hook Form + Zod。Next.js を Vercel に配信し、外部 API は持たない。",
+      "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand、フォームは React Hook Form + Zod。Next.js を Cloudflare Workers に配信し、外部 API は持たない。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "lib計算 / Recharts / @react-pdf / lz-string共有", kind: "client" }], connector: "静的配信 (HTTPS)" },
-        { nodes: [{ label: "Next.js · Vercel", sublabel: "App Router / 外部APIなし", kind: "server" }] },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "App Router / 外部APIなし", kind: "server" }] },
       ],
     },
     emoji: "🏠",
@@ -718,13 +718,13 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://ai-news-feed-app.saitotakuya0719.workers.dev",
     favicon: "/favicons/ai-news-feed-app.svg",
     technicalOverview:
-      "Vercel Cron が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信し、音声読み上げは api/tts 経由。クリーンアップ用 Cron と Resend 通知も備える。",
+      "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信し、音声読み上げは api/tts 経由。クリーンアップ用 Cron と Resend 通知も備える。",
     architecture: {
       layers: [
-        { nodes: [{ label: "Vercel Cron", sublabel: "毎朝6時 JST / cleanup", kind: "server" }], connector: "① RSS取得 → Gemini要約" },
+        { nodes: [{ label: "Cloudflare Cron Triggers", sublabel: "毎朝6時 JST / cleanup", kind: "server" }], connector: "① RSS取得 → Gemini要約" },
         { nodes: [{ label: "Google Gemini API", sublabel: "日本語ダイジェスト生成", kind: "external" }], connector: "② ジョブが結果を保存" },
         { nodes: [{ label: "Supabase", sublabel: "Postgres 永続化", kind: "storage" }], connector: "③ 閲覧時に取得" },
-        { nodes: [{ label: "Next.js · Vercel", sublabel: "SSR / api/tts 音声", kind: "server" }], connector: "④ 配信 (HTTPS)" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "SSR / api/tts 音声", kind: "server" }], connector: "④ 配信 (HTTPS)" },
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "カテゴリ・アーカイブ・音声再生", kind: "client" }] },
       ],
     },
@@ -754,11 +754,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://tricking-3d.saitotakuya0719.workers.dev",
     favicon: "/favicons/tricking-3d.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js 構成。技のモーションを 3D 表示し、回転軸と重心の軌跡を可視化する。計算・描画はクライアントで完結し、Vite でビルドして Vercel に静的配信。バックエンドなし。",
+      "バニラ TypeScript + Three.js 構成。技のモーションを 3D 表示し、回転軸と重心の軌跡を可視化する。計算・描画はクライアントで完結し、Vite でビルドして Cloudflare Workers に静的配信。バックエンドなし。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (WebGL)", sublabel: "Three.js / 回転軸・重心軌跡の可視化", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
-        { nodes: [{ label: "Vercel", sublabel: "静的ホスティング / CDN", kind: "edge" }] },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "静的ホスティング / CDN", kind: "edge" }] },
       ],
     },
     emoji: "🤸",
@@ -785,11 +785,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://resume.saitotakuya0719.workers.dev",
     favicon: "/favicons/resume.svg",
     technicalOverview:
-      "Next.js App Router で構築した静的中心の職務経歴書サイト(ja/en)。shadcn/ui + Tailwind CSS で UI を組み、問い合わせフォームは Server Action から Resend 経由でメール送信する。Vercel に配信。",
+      "Next.js App Router で構築した静的中心の職務経歴書サイト(ja/en)。shadcn/ui + Tailwind CSS で UI を組み、問い合わせフォームは Server Action から Resend 経由でメール送信する。Cloudflare Workers に配信。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "ja/en 切替 / shadcn/ui", kind: "client" }], connector: "問い合わせ送信 (Server Action)" },
-        { nodes: [{ label: "Next.js · Vercel", sublabel: "App Router / Server Action", kind: "server" }], connector: "メール送信 (API)" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "App Router / Server Action", kind: "server" }], connector: "メール送信 (API)" },
         { nodes: [{ label: "Resend", sublabel: "メール配信", kind: "external" }] },
       ],
     },
@@ -818,11 +818,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://elparaiso.saitotakuya0719.workers.dev",
     favicon: "/favicons/elparaiso.svg",
     technicalOverview:
-      "Next.js App Router によるコミュニティブランドサイト。ギャラリーや商品情報は Supabase(Postgres・Storage)から取得し、認証は @supabase/auth-ui を利用する。Vercel に配信。",
+      "Next.js App Router によるコミュニティブランドサイト。ギャラリーや商品情報は Supabase(Postgres・Storage)から取得し、認証は @supabase/auth-ui を利用する。Cloudflare Workers に配信。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "ギャラリー / 認証UI", kind: "client" }], connector: "ページ取得 (HTTPS)" },
-        { nodes: [{ label: "Next.js · Vercel", sublabel: "App Router", kind: "server" }], connector: "データ取得 / 認証" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "App Router", kind: "server" }], connector: "データ取得 / 認証" },
         { nodes: [{ label: "Supabase", sublabel: "Postgres / Auth / Storage(画像)", kind: "storage" }] },
       ],
     },
@@ -854,7 +854,7 @@ export const rawProjects: RawProject[] = [
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "フィルタ・ソート / 詳細モーダル", kind: "client" }], connector: "ページ取得 (HTTPS)" },
-        { nodes: [{ label: "Next.js · Vercel", sublabel: "Server Components / api/ogp / 1h・24hキャッシュ", kind: "server" }], connector: "集約取得" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "Server Components / api/ogp / 1h・24hキャッシュ", kind: "server" }], connector: "集約取得" },
         { nodes: [
           { label: "npm registry", kind: "external" },
           { label: "OSV API", kind: "external" },
@@ -939,11 +939,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://snippet-sprint.saitotakuya0719.workers.dev",
     favicon: "/favicons/snippet-sprint.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js 構成。タイピング判定・統計・スコア・出題は src/engine の純関数（Vitest 100%）にまとめる。コード文字は DOM、背景は入力に反応する WebGL ステージ。初期ロードを軽くするため Three.js は動的 import で遅延読込し、Vite でビルドして Vercel に静的配信。PWA（Service Worker）でオフライン対応。",
+      "バニラ TypeScript + Three.js 構成。タイピング判定・統計・スコア・出題は src/engine の純関数（Vitest 100%）にまとめる。コード文字は DOM、背景は入力に反応する WebGL ステージ。初期ロードを軽くするため Three.js は動的 import で遅延読込し、Vite でビルドして Cloudflare Workers に静的配信。PWA（Service Worker）でオフライン対応。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (WebGL)", sublabel: "Three.js / CodeView(DOM) / Service Worker", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
-        { nodes: [{ label: "Vercel", sublabel: "静的ホスティング / CDN / CSP", kind: "edge" }] },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "静的ホスティング / CDN / CSP", kind: "edge" }] },
       ],
     },
     emoji: "⌨️",
@@ -983,11 +983,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://css-atelier.saitotakuya0719.workers.dev",
     favicon: "/favicons/css-atelier.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js。学習者の自由記述 CSS を同一オリジンの iframe(srcdoc) に constructable stylesheet（adoptedStyleSheets + replaceSync）で注入するため、厳格な CSP（unsafe-inline 不使用）のままライブ適用できる。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は app チャンクに分離し初回操作で遅延読込。Vite でビルドして Vercel に静的配信、PWA でオフライン対応。",
+      "バニラ TypeScript + Three.js。学習者の自由記述 CSS を同一オリジンの iframe(srcdoc) に constructable stylesheet（adoptedStyleSheets + replaceSync）で注入するため、厳格な CSP（unsafe-inline 不使用）のままライブ適用できる。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は app チャンクに分離し初回操作で遅延読込。Vite でビルドして Cloudflare Workers に静的配信、PWA でオフライン対応。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "エディタ(DOM) / サンドボックス iframe(constructable stylesheet) / Three.js 概念ビジュアライザ / Service Worker", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
-        { nodes: [{ label: "Vercel", sublabel: "静的ホスティング / CDN / CSP(frame-src 'self')", kind: "edge" }] },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "静的ホスティング / CDN / CSP(frame-src 'self')", kind: "edge" }] },
       ],
     },
     emoji: "🎨",
@@ -1027,11 +1027,11 @@ export const rawProjects: RawProject[] = [
     liveUrl: "https://glsl-atelier.saitotakuya0719.workers.dev",
     favicon: "/favicons/glsl-atelier.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js。学習者のコードを実際に実行して採点する。\n\nGLSL シェーダーは GPU 専用言語で任意 JS を実行しないためメインページで直接コンパイル＆描画し gl.readPixels で採点（CSP 厳格・eval 不要）。Three.js（任意 JS）は sandbox=\"allow-scripts\" の不透明オリジン iframe（/sandbox.html だけ緩和 CSP・connect-src 'none'）に隔離し、postMessage でコードを渡してシーングラフを読み戻す。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は背景(bloom)/サンドボックスに分離して遅延読込。Vite でビルドし Vercel に静的配信、PWA 対応。",
+      "バニラ TypeScript + Three.js。学習者のコードを実際に実行して採点する。\n\nGLSL シェーダーは GPU 専用言語で任意 JS を実行しないためメインページで直接コンパイル＆描画し gl.readPixels で採点（CSP 厳格・eval 不要）。Three.js（任意 JS）は sandbox=\"allow-scripts\" の不透明オリジン iframe（/sandbox.html だけ緩和 CSP・connect-src 'none'）に隔離し、postMessage でコードを渡してシーングラフを読み戻す。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は背景(bloom)/サンドボックスに分離して遅延読込。Vite でビルドし Cloudflare Workers に静的配信、PWA 対応。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "エディタ(DOM) / WebGL シェーダー実行(readPixels) / 不透明オリジン sandbox iframe(Three.js) / 宇宙背景(bloom) / Service Worker", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
-        { nodes: [{ label: "Vercel", sublabel: "静的ホスティング / CDN / 厳格CSP + /sandbox.html ルート限定の緩和CSP(connect-src none)", kind: "edge" }] },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "静的ホスティング / CDN / 厳格CSP + /sandbox.html ルート限定の緩和CSP(connect-src none)", kind: "edge" }] },
       ],
     },
     emoji: "🌌",

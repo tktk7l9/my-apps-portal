@@ -23,7 +23,7 @@ export function FeaturedWorks({
 
   return (
     <section className="mb-12 sm:mb-16">
-      <h2 className="mb-4 text-lg font-bold text-white sm:text-xl">代表作</h2>
+      <h2 className="mb-4 text-lg font-bold text-white sm:text-xl">ピックアップ</h2>
       <div className="grid gap-4 sm:grid-cols-2">
         {projects.map((project, index) => (
           <FeaturedCard

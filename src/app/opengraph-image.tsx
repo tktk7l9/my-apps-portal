@@ -87,7 +87,7 @@ export default function OpengraphImage() {
               maxWidth: "960px",
             }}
           >
-            齋藤拓也 — フロントエンドエンジニア（業務委託）。企画から運用まで一人で。
+            齋藤拓也 — フルスタックエンジニア（業務委託）。企画から運用まで一人で。
           </div>
         </div>
 

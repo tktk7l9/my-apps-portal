@@ -48,22 +48,22 @@ export const rawProjects: RawProject[] = [
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
-    services: ["Vercel", "Vercel Analytics"],
+    services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-16",
     updatedAt: "2026-07-16",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
-    // Vercel Firewall の bot_protection(challenge) が有効で、サーバー側からの取得は
-    // どの User-Agent でも 429 になる。本物の OG 画像を静的コピーで持つ
-    // （記事OGP生成は Fast Origin Transfer を消費するため、都度取得はしない）
+    liveUrl: "https://service-anatomy.saitotakuya0719.workers.dev",
+    // Vercel Firewall 時代に 429 を避けるため用意した静的コピー。Workers 移行後も
+    // 記事OGP生成のコストを避けたいのでそのまま使う
     ogImage: "/og/service-anatomy.png",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートをforce-dynamic + per-request nonce CSP(proxy.ts)で配信しObservatory A+。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で861ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダー方式。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
-        { nodes: [{ label: "Vercel", sublabel: "Next.js SSR(force-dynamic) / proxy.tsでnonce CSP発行 / 記事md実行時読込(outputFileTracingIncludes)", kind: "edge" }], connector: "remark/rehype+directive変換" },
+        { nodes: [{ label: "Vercel", sublabel: "Next.js SSR(SSG) / next.configの静的CSP / 記事mdはビルド時読込", kind: "edge" }], connector: "remark/rehype+directive変換" },
         { nodes: [{ label: "GitHub Actions", sublabel: "CI(gitleaks/audit/typecheck/coverage100%/build/Lighthouseガード)", kind: "server" }] },
       ],
     },
@@ -73,7 +73,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 943, measuredAt: "2026-08-06",
+      tests: 960, measuredAt: "2026-09-14",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -87,8 +87,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 87, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 115, passed: 10, total: 10, measuredAt: "2026-07-16",
-      notes: "Mozilla Observatory v2。per-request nonce CSP(strict-dynamic)+セキュリティヘッダー一式。desktop Lighthouseは100/100/100/100(mobileはperf 99)",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-14",
+      notes:
+        "Mozilla Observatory v2（2026-09-14 に Workers の本番URLで実測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
   {
@@ -860,21 +861,22 @@ export const rawProjects: RawProject[] = [
     trackedPackages: ["next", "react", "typescript"],
     category: "Tool",
     platform: "web",
-    services: ["Vercel", "Vercel Analytics"],
+    services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-05-20",
     updatedAt: "2026-05-20",
     githubUrl: "https://github.com/tktk7l9/acro-finder",
     githubVisibility: "public",
-    // Vercel 稼働中のみ公開のため liveUrl を持たない。カードは生成画像で表す
+    liveUrl: "https://acro-finder.saitotakuya0719.workers.dev",
+    // OGP は Vercel 停止中に用意した生成画像をそのまま使う
     ogImage: "/api/og/acro-finder",
     favicon: "/favicons/acro-finder.svg",
     technicalOverview:
-      "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。proxy.ts で nonce ベースの CSP を付与し、Vercel に配信。",
+      "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。CSP は next.config.ts の静的ヘッダー方式(lib/csp.ts が正本)で、Cloudflare Workers(@opennextjs/cloudflare)に配信。問い合わせは Resend の Server Action。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "Leaflet / markercluster / 現在地距離計算", kind: "client" }], connector: "データ・タイル取得 (HTTPS)" },
         { nodes: [
-          { label: "Next.js · Vercel", sublabel: "proxy.ts nonce CSP / 施設データ配信", kind: "server" },
+          { label: "Next.js · Vercel", sublabel: "next.configの静的CSP / 施設データ配信", kind: "server" },
           { label: "OpenStreetMap", sublabel: "地図タイル", kind: "external" },
         ] },
       ],
@@ -885,8 +887,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-05-20",
     },
     testCoverage: {
-      statements: 70.97, branches: 68.09, functions: 65.96, lines: 74.77,
-      tests: 132, measuredAt: "2026-08-06",
+      statements: 70.78, branches: 68.31, functions: 65.69, lines: 74.55,
+      tests: 150, measuredAt: "2026-09-14",
       notes: "計測対象は lib層 + コンポーネント(地図ライブラリ依存の InteractiveMap を除く)。lib層は95%だがコンポーネント層は65%で、特に SkillGraph.tsx(18%)・SkillsApp.tsx(62%)・ContactForm.tsx(56%) が薄い。閾値ゲートは未設定",
     },
     securityScores: {
@@ -896,8 +898,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 36, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 115, passed: 10, total: 10, measuredAt: "2026-05-20",
-      notes: "nonce ベース CSP + HSTS / X-Frame-Options 等で全10テスト通過",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-14",
+      notes:
+        "Mozilla Observatory v2（2026-09-14 に Workers の本番URLで実測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
   {
@@ -1040,27 +1043,28 @@ export const rawProjects: RawProject[] = [
     trackedPackages: ["next", "react", "unified"],
     category: "Tool",
     platform: "web",
-    services: ["Vercel", "Vercel Analytics"],
+    services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-15",
     updatedAt: "2026-07-15",
     githubUrl: "https://github.com/tktk7l9/ai-primer",
     githubVisibility: "public",
-    // Vercel 稼働中のみ公開のため liveUrl を持たない。カードは生成画像で表す
+    liveUrl: "https://ai-primer.saitotakuya0719.workers.dev",
+    // OGP は Vercel 停止中に用意した生成画像をそのまま使う
     ogImage: "/api/og/ai-primer",
     favicon: "/favicons/ai-primer.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。CSPはacro-finder方式のper-request nonce(proxy.ts、force-dynamic)でObservatory A+を維持しつつSSR。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
+      "Next.js 16 (App Router) + React 19。CSPは next.config.ts の静的ヘッダー方式(src/lib/csp.ts が正本)。2026-09-12 に per-request nonce から移行した — Next 16 の proxy は Node ランタイム専用で、OpenNext(Cloudflare Workers)が Node middleware 非対応のため nonce を残すと移行できなかった。全ルート SSG で CDN に載る。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "クイズ(useSyncExternalStore)/進捗ローカルストレージ/言語切替", kind: "client" }], connector: "HTTPS" },
-        { nodes: [{ label: "Vercel", sublabel: "Next.js SSR(force-dynamic) / proxy.tsでnonce CSP発行 / CDN", kind: "edge" }], connector: "Markdownビルド時変換" },
+        { nodes: [{ label: "Vercel", sublabel: "Next.js SSR(SSG) / next.configの静的CSP / CDN", kind: "edge" }], connector: "Markdownビルド時変換" },
         { nodes: [{ label: "GitHub Actions", sublabel: "CI(typecheck/coverage/build) / 月次鮮度チェック→Issue化", kind: "server" }] },
       ],
     },
     emoji: "🧭",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 408, measuredAt: "2026-08-06",
+      tests: 422, measuredAt: "2026-09-14",
       notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが40レッスン+モデル15件+年表25件+用語21語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正",
     },
     securityScores: {
@@ -1074,8 +1078,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 50, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 115, passed: 10, total: 10, measuredAt: "2026-07-15",
-      notes: "Mozilla Observatory v2。acro-finder方式のper-request nonce CSP(strict-dynamic)+セキュリティヘッダー一式",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-14",
+      notes:
+        "Mozilla Observatory v2（2026-09-14 に Workers の本番URLで実測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
 ];

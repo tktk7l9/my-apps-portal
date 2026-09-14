@@ -41,7 +41,7 @@ export function collectVersionCheckEntries(
  *
  * ProjectTable は渡された versionStatuses の Object.values() 件数をそのまま
  * 「アップデートあり N 件」として表示するため、テーブルに出さないプロジェクト
- * （代表作・実務案件）の分まで含んだ全体マップを渡すと集計が実際の表示行と
+ * （ピックアップ・実務案件）の分まで含んだ全体マップを渡すと集計が実際の表示行と
  * 食い違う。呼び出し側でテーブルに載る projects だけに絞ってから渡す。
  */
 export function filterVersionStatusesForProjects(

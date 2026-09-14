@@ -22,8 +22,8 @@ export function ClientWork({ projects }: { projects: Project[] }) {
               key={project.id}
               className="overflow-hidden rounded-xl border border-white/8 bg-white/3"
             >
-              {/* sm 以上では画像を左に回す。全幅で敷くと代表作カード（2列で約560px）より
-                  大きくなり、実務案件が代表作より目立つ逆転が起きるため */}
+              {/* sm 以上では画像を左に回す。全幅で敷くとピックアップカード（2列で約560px）より
+                  大きくなり、実務案件がピックアップより目立つ逆転が起きるため */}
               <div className="flex flex-col sm:flex-row">
                 {eyecatch && (
                   <div className="relative aspect-[1200/630] w-full shrink-0 overflow-hidden bg-[#0b1018] sm:w-[38%] sm:self-start">

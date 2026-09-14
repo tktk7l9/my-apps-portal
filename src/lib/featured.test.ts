@@ -14,13 +14,13 @@ describe("selectFeatured", () => {
     expect(result.map((p) => p.id)).toEqual(["a", "b", "c"]);
   });
 
-  it("代表作が無ければ空配列を返す", () => {
+  it("ピックアップが無ければ空配列を返す", () => {
     expect(selectFeatured([makeProject()])).toEqual([]);
   });
 });
 
 describe("selectRest", () => {
-  it("代表作と実務案件を除いたものを元の順序で返す", () => {
+  it("ピックアップと実務案件を除いたものを元の順序で返す", () => {
     const result = selectRest([
       makeProject({ id: "featured", featuredRank: 1 }),
       makeProject({ id: "client", kind: "client" }),
@@ -31,10 +31,10 @@ describe("selectRest", () => {
   });
 });
 
-describe("実データの代表作", () => {
+describe("実データのピックアップ", () => {
   const featured = selectFeatured(rawProjects);
 
-  it("代表作はちょうど 4 件である", () => {
+  it("ピックアップはちょうど 4 件である", () => {
     expect(featured).toHaveLength(4);
   });
 
@@ -45,7 +45,7 @@ describe("実データの代表作", () => {
     );
   });
 
-  it("代表作にはすべて highlight が設定されている", () => {
+  it("ピックアップにはすべて highlight が設定されている", () => {
     for (const project of featured) {
       expect(project.highlight, `${project.id} に highlight がない`).toBeTruthy();
     }
@@ -89,7 +89,7 @@ describe("実データの selectRest", () => {
     expect(rest.every((p) => p.featuredRank === undefined)).toBe(true);
   });
 
-  it("件数は 全体 - 代表作 - 実務案件 の数と一致する", () => {
+  it("件数は 全体 - ピックアップ - 実務案件 の数と一致する", () => {
     const featuredCount = selectFeatured(rawProjects).length;
     const clientCount = rawProjects.filter((p) => p.kind === "client").length;
     expect(rest.length).toBe(rawProjects.length - featuredCount - clientCount);

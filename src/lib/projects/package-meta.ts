@@ -108,6 +108,7 @@ export const serviceUrls: Record<string, string> = {
   "Cloudflare D1":        "https://developers.cloudflare.com/d1/",
   "Cloudflare R2":        "https://developers.cloudflare.com/r2/",
   "Cloudflare Access":    "https://developers.cloudflare.com/cloudflare-one/access-controls/",
+  "Cloudflare Web Analytics": "https://developers.cloudflare.com/web-analytics/",
   "YouTube Data API":     "https://developers.google.com/youtube/v3",
   "Open-Meteo":           "https://open-meteo.com/",
 };

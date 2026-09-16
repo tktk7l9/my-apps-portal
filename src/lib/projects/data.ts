@@ -359,6 +359,68 @@ export const rawProjects: RawProject[] = [
     },
   },
   {
+    id: "sumai-log",
+    name: "sumai-log（住まいログ）",
+    description:
+      "戸建て（親の土地に新築）とマンションを並行して検討する夫婦のための記録アプリ。見学記録（写真つき）、予定カレンダー、候補の業者・物件（施工エリアと建築予定地の照合、公式サイト/SNS リンク）、行った場所の地図（地理院タイル・住所→座標）、YouTube メモ（oEmbed で題名/サムネを自動取得）、二人の更新を並べるホームのフィード、家づくり用語集（46 語・図解 14 点）を持つ。採点や比較表は持たず「記録だけ」に徹する設計。Cloudflare Access（Google IdP）で二人だけに公開し、公開リポジトリには実データを一切置かない。",
+    trackedPackages: ["@tanstack/react-start", "react", "typescript", "vite", "leaflet"],
+    category: "Tool",
+    platform: "web",
+    kind: "personal",
+    services: ["Cloudflare Workers", "Cloudflare D1", "Cloudflare R2", "Cloudflare Access", "国土地理院 API"],
+    createdAt: "2026-09-15",
+    updatedAt: "2026-09-16",
+    githubUrl: "https://github.com/tktk7l9/sumai-log",
+    githubVisibility: "public",
+    liveUrl: "https://sumai-log.saitotakuya0719.workers.dev",
+    favicon: "/favicons/sumai-log.svg",
+    emoji: "\u{1F3E0}",
+    technicalOverview:
+      "TanStack Start（React 19）+ Mantine v9 を Cloudflare Workers で動かし、D1（Drizzle）と R2 を使う。認証は Cloudflare Access の JWT を Worker 側でも検証する二重防御で、グローバルミドルウェアが SSR・server function・API ルートの全入口を覆う（fail closed、Origin による CSRF 検査、セキュリティヘッダは throw された Response にも付与）。利用者テーブルは持たず、メール→表示名/色の対応は secret に置く。\n\n公開リポジトリと私的データを両立させるため、実データは gitignore した seed と `.dev.vars` にだけ存在し、`check:pii` が `.dev.vars` の値を追跡ファイル全件と照合してコミットを止める。seed の取り込みは slug から導いた UUID 形の id で冪等（INSERT OR REPLACE）。\n\n写真はスマホから直接上げる。`accept=\"image/*\"` だけを指定して iOS に HEIC→JPEG を任せ、端末側 Canvas で 1600px の表示用と 400px のサムネを生成して R2 に置く（原本は保存しない）。配信は認証後に Worker が R2 をストリームし、`Cache-Control: private, immutable` と ETag で二度目以降を軽くする。マジックバイト検査・1 回 20 枚・2 MB の上限は純粋関数で持つ。\n\n地図は Leaflet + 地理院タイルで、住所→座標は国土地理院の住所検索 API を Worker 経由で 1 回だけ引いて D1 にキャッシュする。取れない住所は座標の手貼り（度分秒/十進の解析を流用）に落とす。YouTube メモは oEmbed を Worker 経由で取得し、受け付けるホストを allowlist・動画 ID を 11 文字に固定して SSRF 面を閉じる。ホームのフィードは各ドメインの直近 N 件を取り純粋関数で並べる（UNION は書かない）。updated_at を更新側だけ ISO 形式で書いていた不整合が D1 の文字列比較で行選択を狂わせる問題を見つけ、書式を `datetime('now')` に統一した。\n\n`src/lib` は純粋関数のみで 100% カバレッジをゲートにし、DB 層は実 D1 に対する vitest（workers pool）で検証する。実装はサブエージェント駆動（タスクごとに実装→仕様準拠と品質のレビュー→修正、最後にブランチ全体のレビュー）で進め、台帳に裁定を残した。",
+    architecture: {
+      layers: [
+        {
+          nodes: [
+            {
+              label: "ブラウザ (React 19 + Mantine)",
+              sublabel: "モバイルファースト / PWA / 写真は端末側で縮小",
+              kind: "client",
+            },
+          ],
+          connector: "Cloudflare Access (Google IdP) を通過した HTTPS のみ",
+        },
+        {
+          nodes: [
+            {
+              label: "Cloudflare Worker (TanStack Start)",
+              sublabel: "グローバル認証ミドルウェア / server function / oEmbed・住所検索プロキシ",
+              kind: "edge",
+            },
+            { label: "D1 (Drizzle)", sublabel: "候補・場所・予定・見学記録・動画・コメント", kind: "storage" },
+            { label: "R2", sublabel: "写真 (表示用 1600px + サムネ 400px)。非公開・認証後に配信", kind: "storage" },
+          ],
+          connector: "キー不要の外部 API は Worker から取得して D1 にキャッシュ",
+        },
+        {
+          nodes: [
+            { label: "国土地理院", sublabel: "地図タイル / 住所検索 API", kind: "external" },
+            { label: "YouTube oEmbed", sublabel: "動画の題名・チャンネル・サムネ", kind: "external" },
+          ],
+        },
+      ],
+    },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 432,
+      measuredAt: "2026-09-16",
+      notes: "src/lib（純粋関数）を 100% ゲート。321 の lib テストに加え、実 D1 に対する server テスト 76・seed スクリプトのテスト 35",
+    },
+    securityScores: {
+      score: 100, critical: 0, high: 0, moderate: 0, low: 0,
+      totalDependencies: 461, tool: "npm", measuredAt: "2026-09-16",
+    },
+  },
+  {
     id: "somewhere-now",
     name: "Somewhere Now",
     featuredRank: 1,

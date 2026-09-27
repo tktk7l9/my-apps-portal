@@ -295,7 +295,7 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1829〜現在の国内外の歴史ニュース27,051件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,666件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,051件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画の特集7本185件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史37件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
+      "1829〜現在の国内外の歴史ニュース27,137件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,666件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,137件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画の特集7本185件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史37件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
@@ -309,7 +309,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,051件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク54シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,137本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残り93ファイルは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,137件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク54シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,137本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残り93ファイルは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
     architecture: {
       layers: [
         {
@@ -325,9 +325,14 @@ export const rawProjects: RawProject[] = [
         {
           nodes: [
             {
-              label: "SvelteKit static · Vercel",
-              sublabel: "厳格CSP / 27,014件を25チャンク配信",
+              label: "SvelteKit static · Cloudflare Workers",
+              sublabel: "厳格CSP / 27,137件を28チャンク配信 / /e/* は Worker が R2 から返す",
               kind: "edge",
+            },
+            {
+              label: "R2 (chronoscroll-pages)",
+              sublabel: "イベント個別ページ 27,137本の prerender 済み HTML（ビルド時に差分同期）",
+              kind: "storage",
             },
             {
               label: "Wikipedia / Wikidata",
@@ -339,23 +344,23 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-07-30",
+      performance: 89, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-27",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 287, measuredAt: "2026-08-06",
-      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド)を100%閾値ゲート。実ブラウザスモーク37シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UIコンポーネント層は対象外",
+      tests: 356, measuredAt: "2026-09-27",
+      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク54シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UIコンポーネント層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
-      totalDependencies: 158, tool: "npm", measuredAt: "2026-08-06",
-      notes: "npm audit 0件（cookieはoverrideで^0.7.2に固定）。実行時依存はminisearch/@vercel/analyticsのみ",
+      totalDependencies: 256, tool: "npm", measuredAt: "2026-09-27",
+      notes: "npm audit 0件（cookieはoverrideで^0.7.2に固定）。実行時依存はminisearchのみ（@vercel/analyticsは削除）。wrangler / @aws-sdk/client-s3 はデプロイ・R2同期用のdevDependencies",
     },
-    secretScan: { leaks: 0, commits: 42, measuredAt: "2026-08-06" },
+    secretScan: { leaks: 0, commits: 65, measuredAt: "2026-09-27" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-30",
-      notes: "Mozilla Observatory v2 満点。Lighthouseはmobile 98/100/100/100（median-of-3・LCP 2.3s・CLS 0・TBT 0ms）/ desktop 100/100/100/100。JSなしの特集ページは mobile 99〜100（LCP 0.9〜1.1s）",
+      grade: "A+", score: 115, passed: 11, total: 12, measuredAt: "2026-09-27",
+      notes: "Mozilla Observatory v2 A+（115・11/12）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 89/100/100/100（median-of-3・LCP 3.5s・CLS 0・TBT 0ms・TTFB 36ms）/ desktop 98/100/100/100（LCP 1.0s）。JSなしの特集ページとイベント個別ページは mobile 100（LCP 1.6s）。mobileのLCPは2026-07-30（Vercel時 2.3s）から伸びており、要因の切り分けは未実施",
     },
   },
   {

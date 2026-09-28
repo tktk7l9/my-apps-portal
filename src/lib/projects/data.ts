@@ -56,8 +56,9 @@ export const rawProjects: RawProject[] = [
     // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
     liveUrl: "https://serviceanatomy.com",
     // Static copy made to avoid 429s in the Vercel Firewall era. Still used after the Workers
-    // migration to avoid the cost of generating article OGP images
-    ogImage: "/og/service-anatomy.png",
+    // migration to avoid the cost of generating article OGP images. WebP because it is the
+    // second featured card and loads eagerly (59KB PNG -> 21KB)
+    ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
       "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で861ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダー方式。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
@@ -533,7 +534,8 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-08",
     githubUrl: "https://github.com/tktk7l9/skydial",
     githubVisibility: "public",
-    ogImage: "/og/skydial.png",
+    // WebP because it is a featured card whose request starts before LCP (108KB PNG -> 31KB)
+    ogImage: "/og/skydial.webp",
     liveUrl: "https://skydial.saitotakuya0719.workers.dev",
     favicon: "/favicons/skydial.svg",
     emoji: "🌗",

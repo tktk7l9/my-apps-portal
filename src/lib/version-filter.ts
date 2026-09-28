@@ -1,10 +1,10 @@
 import type { TechVersion } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
 
-/** techVersions を持つ最小限の形。Project 全体を要求しないことで呼び出し側の結合を減らす */
+/** Minimal shape with techVersions. Not requiring a full Project reduces coupling for callers */
 type HasTechVersions = { techVersions: TechVersion[] };
 
-/** getVersionStatuses に渡す照会単位 */
+/** Lookup unit passed to getVersionStatuses */
 export type VersionCheckEntry = {
   techName: string;
   version: string;
@@ -12,14 +12,14 @@ export type VersionCheckEntry = {
 };
 
 /**
- * npm registry / OSV への照会対象となる techName@version を集める。
+ * Collects the techName@version entries to look up in the npm registry / OSV.
  *
- * `staticTech` を宣言したプロジェクトは npm 監視をバイパスする意図なので除外する。
- * staticTech の version にはメジャーのみ（React "19"）や npm のバージョン体系に
- * 乗らない値（macOS "arm64"）が入るため、そのまま npm registry と比較すると
- * displayName がたまたま npm パッケージ名と一致するもの（React / TypeScript）
- * だけが「アップデートあり」と誤判定される。Electron や CodeMirror が無害なのは
- * packageMeta に登録が無く unknown へ落ちるからにすぎない。
+ * Projects that declare `staticTech` intend to bypass npm tracking, so they are excluded.
+ * staticTech versions hold majors only (React "19") or values outside npm's versioning
+ * (macOS "arm64"), so comparing them against the npm registry as-is would misreport
+ * "update available" for exactly those whose displayName happens to match an npm package
+ * name (React / TypeScript). Electron and CodeMirror are harmless only because
+ * they are not registered in packageMeta and fall through to unknown.
  */
 export function collectVersionCheckEntries(
   projects: (HasTechVersions & { staticTech?: unknown })[]
@@ -36,13 +36,13 @@ export function collectVersionCheckEntries(
 }
 
 /**
- * versionStatuses（全プロジェクト分）を、指定した projects が実際に使っている
- * `techName@version` キーだけに絞り込む。
+ * Narrows versionStatuses (for all projects) to the `techName@version` keys
+ * actually used by the given projects.
  *
- * ProjectTable は渡された versionStatuses の Object.values() 件数をそのまま
- * 「アップデートあり N 件」として表示するため、テーブルに出さないプロジェクト
- * （ピックアップ・実務案件）の分まで含んだ全体マップを渡すと集計が実際の表示行と
- * 食い違う。呼び出し側でテーブルに載る projects だけに絞ってから渡す。
+ * ProjectTable shows the Object.values() count of the versionStatuses it receives as
+ * "アップデートあり N 件", so passing the full map, including projects not in the table
+ * (featured picks, client work), makes the count disagree with the rows shown.
+ * Callers narrow it to the projects in the table before passing it.
  */
 export function filterVersionStatusesForProjects(
   versionStatuses: Record<string, VersionStatus>,

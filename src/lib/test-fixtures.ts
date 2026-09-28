@@ -1,6 +1,6 @@
 import type { RawProject } from "@/lib/projects";
 
-/** テスト用の最小 RawProject。必要なフィールドだけ上書きして使う */
+/** Minimal RawProject for tests. Override only the fields you need */
 export function makeProject(overrides: Partial<RawProject> = {}): RawProject {
   return {
     id: "sample",

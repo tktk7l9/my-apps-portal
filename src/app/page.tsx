@@ -44,7 +44,7 @@ export default function Home() {
 async function ProjectDataLoader() {
   const projects = await enrichProjectsWithVersions(rawProjects);
 
-  // staticTech 宣言のアプリは npm 監視の対象外（詳細は collectVersionCheckEntries）
+  // Apps that declare staticTech are excluded from npm tracking (see collectVersionCheckEntries)
   const allEntries = collectVersionCheckEntries(projects);
   const publicRepos = projects
     .filter((p) => p.githubVisibility === "public")
@@ -59,11 +59,11 @@ async function ProjectDataLoader() {
   const rest = selectRest(projects);
   const clientWorks = projects.filter((p) => p.kind === "client");
 
-  // ProjectTable が表示するのは rest だけなので、そこに載る行の
-  // techName@version キーだけに絞った versionStatuses を渡す
-  // （featured / clientWorks 分まで数に入ると「アップデートあり N 件」が
-  //  テーブルの表示内容と食い違うため）。FeaturedWorks のモーダルは
-  //  featured を含む全プロジェクトの情報が要るので、そちらには全体を渡す。
+  // ProjectTable shows only rest, so pass versionStatuses narrowed to the
+  // techName@version keys of the rows it lists
+  // (counting featured / clientWorks too would make "アップデートあり N 件"
+  //  disagree with what the table shows). The FeaturedWorks modal needs
+  //  every project including featured, so it gets the full map.
   const restVersionStatuses = filterVersionStatusesForProjects(versionStatuses, rest);
 
   return (

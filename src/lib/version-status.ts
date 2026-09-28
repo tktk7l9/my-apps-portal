@@ -36,7 +36,7 @@ async function fetchLatestVersions(pkgs: string[]): Promise<Record<string, strin
 async function fetchVulnerableKeys(
   queries: { key: string; pkg: string; version: string }[]
 ): Promise<Set<string>> {
-  // 照会対象が無いなら空リクエストを投げない
+  // Do not send an empty request when there is nothing to look up
   if (queries.length === 0) return new Set();
   try {
     const body = {
@@ -74,10 +74,10 @@ export async function getVersionStatuses(
     ...new Set(checkable.map(({ techName }) => npmNames[techName]).filter(Boolean)),
   ];
 
-  // レンジ宣言（`^16.2.10`）で表示している version はレンジの下限であって
-  // lockfile が解決する実体ではない。そのまま OSV に投げると下限の脆弱性を
-  // 拾って恒久的に「脆弱性あり」と出るため、厳密指定のものだけを照会する。
-  // 同じ techName@version が別プロジェクトで厳密指定されていればそちらを採る。
+  // For a range declaration (`^16.2.10`) the displayed version is the range's lower bound,
+  // not what the lockfile resolves. Sending it to OSV as-is would pick up the lower bound's
+  // vulnerabilities and permanently show "vulnerable", so only exact pins are looked up.
+  // If another project pins the same techName@version exactly, that one is used.
   const exactKeys = new Set(
     checkable
       .filter(({ versionIsRange }) => !versionIsRange)

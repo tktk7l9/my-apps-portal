@@ -3,8 +3,8 @@ import { getVersionStatuses } from "@/lib/version-status";
 
 type FetchArgs = Parameters<typeof fetch>;
 
-/** npm registry と OSV の応答を差し替える。
- *  npmVersions に載っていないパッケージは 404 を返す。 */
+/** Stubs the npm registry and OSV responses.
+ *  Packages not listed in npmVersions return 404. */
 function mockFetch(options: {
   npmVersions?: Record<string, string>;
   osv?: { ok: boolean; vulnFlags?: boolean[]; throws?: boolean };
@@ -52,20 +52,20 @@ describe("getVersionStatuses", () => {
     expect(statuses["Next.js@—"]).toBe("unknown");
     expect(statuses["Next.js@latest"]).toBe("unknown");
     expect(statuses["Next.js@16.x"]).toBe("unknown");
-    // isCheckable でふるい落とされていれば、npm registry には一切問い合わせないはず。
+    // If isCheckable filtered them out, the npm registry should never be queried.
     const calledUrls = fetchMock.mock.calls.map((c) => String(c[0]));
     expect(calledUrls.some((u) => u.startsWith("https://registry.npmjs.org/"))).toBe(false);
   });
 
   it("packageMeta に無い技術名は unknown にする", async () => {
-    // "next" に実体を持たせておく: 逆引きが誤って解決してしまう回帰があれば
-    // このエントリが registry に問い合わせられてしまい、下の検証で捕捉できる。
+    // Give "next" a real entry: if a regression makes the reverse lookup resolve by mistake,
+    // this entry gets queried from the registry and the check below catches it.
     const fetchMock = mockFetch({ npmVersions: { next: "16.2.12" } });
     const { statuses } = await getVersionStatuses([
       { techName: "Swift", version: "6.3" },
     ]);
     expect(statuses["Swift@6.3"]).toBe("unknown");
-    // displayName → npm 名の逆引きが undefined を返していれば、npm registry には問い合わせないはず。
+    // If the displayName → npm name reverse lookup returns undefined, the npm registry should not be queried.
     const calledUrls = fetchMock.mock.calls.map((c) => String(c[0]));
     expect(calledUrls.some((u) => u.startsWith("https://registry.npmjs.org/"))).toBe(false);
   });
@@ -124,9 +124,9 @@ describe("getVersionStatuses", () => {
   });
 
   it("レンジ宣言のバージョンは OSV に問い合わせない", async () => {
-    // acro-finder の `^16.2.10` のような宣言。表示している 16.2.10 はレンジの
-    // 下限であって lockfile が解決する実体ではないため、下限の脆弱性を拾って
-    // 恒久的に vulnerable と表示されてしまうのを防ぐ。
+    // A declaration like acro-finder's `^16.2.10`. The displayed 16.2.10 is the range's
+    // lower bound, not what the lockfile resolves, so this prevents picking up the lower bound's
+    // vulnerabilities and permanently showing it as vulnerable.
     const fetchMock = mockFetch({
       npmVersions: { next: "16.3.0" },
       osv: { ok: true, vulnFlags: [true] },
@@ -136,7 +136,7 @@ describe("getVersionStatuses", () => {
       { techName: "Next.js", version: "16.2.10", versionIsRange: true },
     ]);
 
-    // 脆弱性判定は行わず、最新版との比較だけは従来どおり効く
+    // No vulnerability check, but the comparison with the latest version still works as before
     expect(statuses["Next.js@16.2.10"]).toBe("outdated");
 
     const osvCalls = fetchMock.mock.calls.filter(
@@ -146,7 +146,7 @@ describe("getVersionStatuses", () => {
   });
 
   it("同じキーが厳密指定でも現れるならそちらを採用して OSV に問い合わせる", async () => {
-    // 別プロジェクトが同じ版を厳密指定しているなら実体が確定するので照会してよい
+    // If another project pins the same version exactly, the real version is known, so querying is fine
     mockFetch({
       npmVersions: { next: "16.3.0" },
       osv: { ok: true, vulnFlags: [true] },

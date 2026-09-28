@@ -9,19 +9,19 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
 }
 
-/* スクロールバー
+/* Scrollbars
  *
- * 既定のスクロールバーは環境によって 16px 前後の帯になり（macOS でも
- * 「スクロールバーを常に表示」設定や、クラシックスクロールバーの環境）、
- * モーダルでは全幅画像の右に明確な余白として出てしまう。
- * 細い角丸・半透明のつまみ＋トラック透明にして、コンテンツを邪魔しない
- * 主張の弱い見た目にする。
+ * Depending on the environment the default scrollbar is a band of about 16px (even on macOS
+ * with "Always show scroll bars" or with classic scrollbars), and in the modal it
+ * shows up as an obvious gap to the right of full-width images.
+ * Use a thin, rounded, translucent thumb with a transparent track for an understated
+ * look that does not get in the way of the content.
  *
- * scrollbar-width は Chromium も解釈するようになったが、指定すると
- * ::-webkit-scrollbar 側が丸ごと無視されて幅を 8px に制御できなくなる
- * （ブラウザ既定の thin = 実測 11px になる）。そのため標準プロパティは
- * ::-webkit-scrollbar を持たない環境（Firefox）だけに当てる。
- * scrollbar-color は継承するが scrollbar-width は継承しないので全要素指定。 */
+ * Chromium now understands scrollbar-width too, but setting it makes Chromium
+ * ignore ::-webkit-scrollbar entirely, so the width can no longer be held at 8px
+ * (the browser's default thin measures 11px). So the standard properties apply only
+ * where ::-webkit-scrollbar is unsupported (Firefox).
+ * scrollbar-color is inherited but scrollbar-width is not, so it is set on every element. */
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
@@ -47,7 +47,7 @@ body {
   background-color: rgb(148 163 184 / 0.45);
 }
 
-/* 縦横のスクロールバーが交差する角。既定の白い四角を消す */
+/* Corner where the vertical and horizontal scrollbars meet. Removes the default white square */
 ::-webkit-scrollbar-corner {
   background: transparent;
 }

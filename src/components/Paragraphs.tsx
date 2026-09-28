@@ -1,6 +1,6 @@
 import { toParagraphs } from "@/lib/paragraphs";
 
-/** 説明文を段落に分けて描画する。フックを使わないのでサーバー/クライアント両方から使える。 */
+/** Renders a description split into paragraphs. Uses no hooks, so it works from both server and client. */
 export function Paragraphs({
   text,
   className = "",
@@ -14,7 +14,7 @@ export function Paragraphs({
   return (
     <div className={`flex flex-col gap-3 ${className}`}>
       {paragraphs.map((paragraph, index) => (
-        // 静的なテキストで並び替えが起きないため index キーで問題ない
+        // Static text that never reorders, so an index key is fine
         <p key={index}>{paragraph}</p>
       ))}
     </div>

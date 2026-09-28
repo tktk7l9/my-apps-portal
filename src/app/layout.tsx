@@ -42,12 +42,12 @@ export default function RootLayout({
     <html lang="ja" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         {children}
-        {/* Cloudflare Web Analytics（トークンは公開前提の識別子。秘密ではない）。
-            gitleaks は 32桁hex を generic-api-key として検出するので、検出行に
-            gitleaks:allow を置いて抑止する。.gitleaks.toml を置く手もあるが、あれは
-            既定ルールセットごと差し替える設定なので他の本物の秘密まで隠す余地ができる。 */}
+        {/* Cloudflare Web Analytics (the token is an identifier meant to be public, not a secret).
+            gitleaks flags a 32-digit hex as generic-api-key, so gitleaks:allow on the
+            flagged line suppresses it. A .gitleaks.toml would also work, but it replaces
+            the whole default ruleset, which leaves room to hide real secrets too. */}
         {/* eslint-disable-next-line @next/next/no-sync-scripts --
-            type="module" のスクリプトは仕様上 defer されるため、パーサーを止めない */}
+            type="module" scripts are deferred by spec, so this does not block the parser */}
         <script
           type="module"
           src="https://static.cloudflareinsights.com/beacon.min.js"

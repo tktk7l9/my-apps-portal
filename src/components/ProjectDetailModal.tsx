@@ -36,8 +36,8 @@ const visibilityConfig: Record<GithubVisibility, { label: string; className: str
   "local-only": { label: "Local only", className: "bg-yellow-500/10 text-yellow-600 ring-yellow-500/20" },
 };
 
-/** ダイアログ内のフォーカス可能要素を判定するセレクタ。
- *  非表示 (offsetParent === null) は getFocusableElements 側で追加除外する。 */
+/** Selector for focusable elements inside the dialog.
+ *  Hidden ones (offsetParent === null) are additionally excluded in getFocusableElements. */
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -77,8 +77,8 @@ export function ProjectDetailModal({
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  // フォーカストラップ: 開いたらモーダル内へフォーカス移動し、Tab/Shift+Tab を
-  // モーダル内で循環させ、閉じたら開く前のフォーカスへ戻す。
+  // Focus trap: on open, move focus into the modal, cycle Tab/Shift+Tab
+  // within it, and on close return focus to where it was before opening.
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const dialog = dialogRef.current;
@@ -91,7 +91,7 @@ export function ProjectDetailModal({
 
       const current = getFocusableElements(dialog);
       if (current.length === 0) {
-        // フォーカス可能要素が無い場合はダイアログ自体に留める（例外・無限ループ防止）
+        // With no focusable elements, keep focus on the dialog itself (prevents exceptions / infinite loops)
         e.preventDefault();
         dialog?.focus();
         return;
@@ -136,8 +136,8 @@ export function ProjectDetailModal({
         aria-modal="true"
         aria-labelledby="modal-title"
         tabIndex={-1}
-        // max-w-3xl(768px) は本文が1行50字。日本語の快適域(35〜50字)の上限で、
-        // これ以上広げると長文の可読性が落ちる（4xl=59字・5xl=69字と実測）
+        // max-w-3xl (768px) gives 50 characters per line, the upper end of the comfortable range for Japanese (35-50);
+        // any wider hurts readability of long text (measured 4xl = 59 chars, 5xl = 69 chars)
         className="relative flex max-h-[calc(100dvh_-_1rem)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1117] shadow-2xl sm:max-h-[calc(100dvh_-_3rem)] focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
@@ -145,7 +145,7 @@ export function ProjectDetailModal({
         <button
           onClick={onClose}
           aria-label="閉じる"
-          // 本文がボタンの下を流れるようになったため、背景を敷いて可読性を保つ
+          // Body text now scrolls under the button, so give it a background to stay readable
           className="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-1.5 text-slate-300 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
@@ -155,10 +155,10 @@ export function ProjectDetailModal({
         </button>
 
         <div className="min-h-0 grow overflow-y-auto overscroll-contain p-4 sm:p-6">
-          {/* OGP image — スクロール領域の「中」に置いて本文と一緒に流す。
-              外に出すと上部に貼り付いたままになり、モーダル高さの4割前後を
-              常時占有して本文の可読領域を圧迫する。
-              負のマージンでコンテナのパディングを打ち消し、画像だけ全幅にする */}
+          {/* OGP image — placed inside the scroll area so it scrolls with the body.
+              Outside it would stay pinned at the top, permanently taking about 40% of
+              the modal height and squeezing the readable area of the body.
+              Negative margins cancel the container padding so only the image is full width */}
           {eyecatchSrc(project) && !ogpError && (
             <div className="relative -mx-4 -mt-4 mb-4 aspect-[1.91/1] overflow-hidden bg-white/5 sm:-mx-6 sm:-mt-6 sm:mb-6">
               {!ogpLoaded && (
@@ -354,7 +354,7 @@ export function ProjectDetailModal({
             </>
           )}
 
-          {/* Native quality (Lighthouse 非該当のネイティブアプリ向け) */}
+          {/* Native quality (for native apps where Lighthouse does not apply) */}
           {!project.lighthouseScores && project.nativeQuality && (
             <>
               <div className="my-5 border-t border-white/5" />
@@ -486,12 +486,12 @@ function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
   );
 }
 
-/** 指標を4つ並べる共通セル。
+/** Shared cells that lay out four metrics side by side.
  *
- *  以前は指標ごとに「ラベル列＋全幅バー＋数値」の行を積んでいたが、
- *  Lighthouse もカバレッジもほぼ 98〜100 に張り付くため、バーの長さは
- *  どれも見分けがつかず面積だけ食っていた（4セクション計11本）。
- *  値そのものと色（緑/黄/赤）で十分に読めるので、数値主体の4列に畳む。 */
+ *  Previously each metric was a row of "label column + full-width bar + value", but
+ *  Lighthouse and coverage almost always sit at 98-100, so the bars were
+ *  indistinguishable and only took up space (11 bars across 4 sections).
+ *  The value itself plus its color (green/yellow/red) reads well enough, so fold them into 4 number-first columns. */
 function MetricCells({
   items,
 }: {
@@ -546,7 +546,7 @@ function SecurityScoresDetail({ scores }: { scores: SecurityScores }) {
   ];
   return (
     <div className="space-y-3">
-      {/* スコアはこの下の内訳から算出される値なので、バーは重複表示になる */}
+      {/* The score is derived from the breakdown below, so a bar would duplicate it */}
       <p className="flex items-baseline gap-2">
         <span className={`text-3xl tabular-nums font-bold ${securityColor(scores.score)}`}>
           {scores.score}
@@ -590,8 +590,8 @@ function SecurityHeadersDetail({ headers }: { headers: SecurityHeaders }) {
   if (!headers.grade) {
     return <p className="text-sm text-slate-500">スキャンに失敗しました (詳細は notes 参照)</p>;
   }
-  // グレード・スコア・合格数は同じ計測の3つの見え方でしかないので1行にまとめる
-  // （スコアのバーは隣に数値が出ている時点で情報が重複していた）
+  // Grade, score and pass count are just three views of the same measurement, so keep them on one line
+  // (the score bar duplicated information as soon as the number was shown next to it)
   return (
     <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
       <span className={`text-3xl tabular-nums font-bold ${headerGradeColor(headers.grade)}`}>

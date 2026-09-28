@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
 import { rawProjects } from "@/lib/projects";
 
-// Web を持たないアプリ（ネイティブ/CLI）用のアイキャッチ生成。
-// project データから作るので、highlight や技術を更新すれば画像も追随する。
-// ポータル本体の opengraph-image.tsx と同じ配色トークンを使う。
+// Generates eyecatch images for apps without a web page (native/CLI).
+// Built from the project data, so the image follows updates to highlight or tech.
+// Uses the same color tokens as the portal's own opengraph-image.tsx.
 
 const BG = "#080c14";
 const ACCENT = "#7dd3fc";
@@ -72,7 +72,7 @@ export async function GET(
           >
             t
           </div>
-          {/* platform "other" は「その他」以上の情報が無いのでカテゴリだけ出す */}
+          {/* platform "other" carries no information beyond "other", so show only the category */}
           {project.platform === "other"
             ? project.category.toUpperCase()
             : `${project.category.toUpperCase()} · ${project.platform.toUpperCase()}`}
@@ -147,7 +147,7 @@ export async function GET(
     ),
     {
       ...size,
-      // /api/ogp と同じ 24 時間キャッシュ。毎リクエストの再生成を避ける
+      // Same 24-hour cache as /api/ogp, to avoid regenerating on every request
       headers: {
         "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
       },

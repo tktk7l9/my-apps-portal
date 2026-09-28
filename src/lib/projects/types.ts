@@ -1,6 +1,6 @@
 export type Category = "All" | "Game" | "Simulator" | "Tool" | "Other";
 
-/** プラットフォーム種別。Webアプリ・Chrome拡張・その他を区別 */
+/** Platform kind. Distinguishes web apps, Chrome extensions and others */
 export type Platform = "web" | "chrome-extension" | "other";
 
 export type TechVersion = {
@@ -9,9 +9,9 @@ export type TechVersion = {
   version: string;
   versionUrl?: string;
   /**
-   * package.json の宣言が `^16.2.10` のようなレンジだった場合 true。
-   * このとき version はレンジの下限であって実際に解決される版ではないため、
-   * OSV への脆弱性照会には使えない（下限の脆弱性を誤検出する）。
+   * true when the package.json declaration is a range such as `^16.2.10`.
+   * version is then the lower bound of the range, not the version actually resolved,
+   * so it cannot be used for OSV vulnerability lookups (it would falsely flag the lower bound's vulnerabilities).
    */
   versionIsRange?: boolean;
 };
@@ -32,15 +32,15 @@ export type TestCoverage = {
   branches: number;
   functions: number;
   lines: number;
-  /** テスト総数 */
+  /** Total number of tests */
   tests: number;
-  /** ISO 日付 */
+  /** ISO date */
   measuredAt: string;
-  /** 範囲メモ (e.g. "lib 100% / 全体 80%") */
+  /** Scope note (e.g. "lib 100% / 全体 80%") */
   notes?: string;
 };
 
-/** npm/pnpm audit ベースのセキュリティスコア。
+/** Security score based on npm/pnpm audit.
  *  score = max(0, 100 - 25*critical - 10*high - 3*moderate - 1*low) */
 export type SecurityScores = {
   /** 0..100 */
@@ -49,41 +49,41 @@ export type SecurityScores = {
   high: number;
   moderate: number;
   low: number;
-  /** audit が走査した依存数 (production + dev) */
+  /** Number of dependencies scanned by audit (production + dev) */
   totalDependencies: number;
-  /** "npm" | "pnpm" など */
+  /** "npm" | "pnpm", etc. */
   tool: "npm" | "pnpm" | "none";
-  /** ISO 日付 */
+  /** ISO date */
   measuredAt: string;
   notes?: string;
 };
 
-/** gitleaks による secrets スキャン結果 (git履歴含む) */
+/** Secrets scan result from gitleaks (including git history) */
 export type SecretScan = {
-  /** 検出された潜在的なシークレット数 (false positive は .gitleaksignore で除外済み) */
+  /** Number of potential secrets found (false positives already excluded via .gitleaksignore) */
   leaks: number;
-  /** スキャン対象のcommit数 */
+  /** Number of commits scanned */
   commits: number;
   measuredAt: string;
   notes?: string;
 };
 
-/** Mozilla Observatory による HTTPセキュリティヘッダー評価 */
+/** HTTP security header rating from Mozilla Observatory */
 export type SecurityHeaders = {
-  /** "A+" | "A" | "A-" | "B+" | "B" | ... | "F" | null (未スキャン or 失敗) */
+  /** "A+" | "A" | "A-" | "B+" | "B" | ... | "F" | null (not scanned or failed) */
   grade: string | null;
-  /** 0..135 (Observatory のスコア、100超で A+) */
+  /** 0..135 (Observatory score; above 100 is A+) */
   score: number | null;
-  /** 通過テスト数 (10中) */
+  /** Number of tests passed (out of 10) */
   passed?: number;
   total?: number;
-  /** ISO 日付 */
+  /** ISO date */
   measuredAt: string;
   notes?: string;
 };
 
-/** ネイティブ/CLI アプリ向けの品質チェック（Lighthouse の代替）。
- *  Web ページを持たないアプリで、客観的に検証可能な項目のみを pass/warn/fail で示す。 */
+/** Quality checks for native/CLI apps (a Lighthouse substitute).
+ *  For apps without a web page, shows only objectively verifiable items as pass/warn/fail. */
 export type NativeCheckStatus = "pass" | "warn" | "fail";
 
 export type NativeCheck = {
@@ -94,29 +94,29 @@ export type NativeCheck = {
 
 export type NativeQuality = {
   checks: NativeCheck[];
-  /** ISO 日付 */
+  /** ISO date */
   measuredAt: string;
   notes?: string;
 };
 
-/** システム構成図のノード種別。色分け・凡例に使用 */
+/** Node kind in the system architecture diagram. Used for colors and the legend */
 export type ArchNodeKind = "client" | "edge" | "server" | "external" | "storage" | "build";
 
-/** 構成図の 1 ノード（ボックス） */
+/** One node (box) in the architecture diagram */
 export type ArchNode = {
   label: string;
   sublabel?: string;
   kind: ArchNodeKind;
 };
 
-/** 構成図の 1 レイヤー。同一レイヤーのノードは横並び、レイヤー間は上→下へ矢印で接続 */
+/** One layer of the architecture diagram. Nodes in a layer sit side by side; layers connect top to bottom with arrows */
 export type ArchLayer = {
   nodes: ArchNode[];
-  /** 次（下）のレイヤーへ向かう接続ラベル（プロトコル・データ等）。最下層では無視 */
+  /** Label for the connection to the next (lower) layer (protocol, data, etc.). Ignored on the bottom layer */
   connector?: string;
 };
 
-/** システム構成図。layers を上から下へ描画する */
+/** System architecture diagram. Draws layers from top to bottom */
 export type Architecture = {
   layers: ArchLayer[];
 };
@@ -126,8 +126,8 @@ export type RawProject = {
   name: string;
   description: string;
   trackedPackages: string[];
-  /** 主要技術を直接宣言する（npm に無い技術＝Swift 等向け）。
-   *  設定時は trackedPackages の npm バージョン監視より優先される。 */
+  /** Declares the main technologies directly (for tech not on npm, e.g. Swift).
+   *  When set, it takes precedence over npm version tracking via trackedPackages. */
   staticTech?: TechVersion[];
   category: Exclude<Category, "All">;
   platform: Platform;
@@ -137,28 +137,28 @@ export type RawProject = {
   githubUrl: string;
   githubVisibility: GithubVisibility;
   liveUrl?: string;
-  /** カードのアイキャッチ画像を明示指定する。未設定なら liveUrl の OGP を取りに行く。
-   *  liveUrl があっても使う場面がある（ボット対策で 429 を返すサイト・Web を持たないアプリ）。 */
+  /** Explicit eyecatch image for the card. When unset, the OGP of liveUrl is fetched.
+   *  Useful even with a liveUrl (sites that return 429 for bot protection, apps without a web page). */
   ogImage?: string;
   favicon?: string;
   emoji: string;
   lighthouseScores?: LighthouseScores;
-  /** Web を持たないネイティブ/CLI アプリの品質指標（Lighthouse の代替）。 */
+  /** Quality metrics for native/CLI apps without a web page (a Lighthouse substitute). */
   nativeQuality?: NativeQuality;
   testCoverage?: TestCoverage;
   securityScores?: SecurityScores;
   secretScan?: SecretScan;
   securityHeaders?: SecurityHeaders;
-  /** 実務案件か個人開発か。未設定は "personal" 扱い。
-   *  "client" の項目はサマリ集計と一覧テーブルから除外し、専用セクションにのみ出す。 */
+  /** Client work or personal project. Unset is treated as "personal".
+   *  "client" entries are excluded from the summary stats and the table and shown only in their own section. */
   kind?: "personal" | "client";
-  /** ピックアップの並び順。設定されたものだけヒーローセクションに出る（1 始まりの連番） */
+  /** Order among the featured picks. Only entries with it appear in the hero section (consecutive, starting at 1) */
   featuredRank?: number;
-  /** ピックアップカード用の見どころ 1 行（80 文字以内）。featuredRank がある作品にだけ付ける */
+  /** One-line highlight for the featured card (80 characters max). Only for works with featuredRank */
   highlight?: string;
-  /** 技術的概要（2〜4文） */
+  /** Technical summary (2-4 sentences) */
   technicalOverview?: string;
-  /** システム構成図 */
+  /** System architecture diagram */
   architecture?: Architecture;
 };
 

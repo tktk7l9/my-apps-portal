@@ -10,7 +10,7 @@ export function RefreshButton() {
     <button
       onClick={() => startTransition(() => revalidateHome())}
       disabled={isPending}
-      className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+      className="flex min-h-11 items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 text-xs sm:min-h-8 text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
       title="キャッシュをクリアして最新情報に更新"
     >
       <svg

@@ -5,13 +5,15 @@ import Image from "next/image";
 import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibility, type LighthouseScores, type NativeQuality, type Project, type SecretScan, type SecurityHeaders, type SecurityScores, type TestCoverage } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
 import { eyecatchSrc } from "@/lib/eyecatch";
+import { nativeCheckLabel } from "@/lib/project-list";
 import { Paragraphs } from "@/components/Paragraphs";
+import { ExternalIcon, GitHubIcon } from "@/components/icons";
 
 const versionColors: Record<VersionStatus, string> = {
   latest:     "text-emerald-500",
   outdated:   "text-amber-500",
   vulnerable: "text-red-500",
-  unknown:    "text-slate-600",
+  unknown:    "text-slate-400",
 };
 
 const categoryColors: Record<string, string> = {
@@ -123,7 +125,6 @@ export function ProjectDetailModal({
   }, []);
 
   const displayUpdatedAt = lastCommitDates[project.id] ?? project.updatedAt;
-  const vis = visibilityConfig[project.githubVisibility];
 
   return (
     <div
@@ -146,7 +147,7 @@ export function ProjectDetailModal({
           onClick={onClose}
           aria-label="閉じる"
           // Body text now scrolls under the button, so give it a background to stay readable
-          className="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-1.5 text-slate-300 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
+          className="absolute right-2 top-2 z-10 rounded-full bg-black/50 p-3.5 sm:right-3 sm:top-3 sm:p-2 text-slate-300 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -199,41 +200,7 @@ export function ProjectDetailModal({
           />
 
           {/* Links */}
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-md bg-indigo-500/15 px-3 py-1.5 text-xs font-medium text-indigo-300 transition-colors hover:bg-indigo-500/25"
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-                Live
-              </a>
-            )}
-            <a
-              href={project.githubVisibility !== "local-only" ? project.githubUrl : undefined}
-              target={project.githubVisibility !== "local-only" ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-                project.githubVisibility !== "local-only"
-                  ? "bg-white/8 text-slate-300 hover:bg-white/15"
-                  : "cursor-default bg-white/5 text-slate-600"
-              }`}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
-              </svg>
-              GitHub
-              <span className={`rounded-md px-1.5 py-0.5 text-[10px] ring-1 ${vis.className}`}>
-                {vis.label}
-              </span>
-            </a>
-          </div>
+          <ModalLinks project={project} />
 
           {/* Technical overview */}
           {project.technicalOverview && (
@@ -295,10 +262,10 @@ export function ProjectDetailModal({
                         <span className={`tabular-nums ${versionColors[status]}`}>{t.version}</span>
                       )
                     ) : (
-                      <span className="text-slate-600">—</span>
+                      <span className="text-slate-500">—</span>
                     )}
                     {(status === "outdated" || status === "vulnerable") && latest && (
-                      <span className="flex items-center gap-1.5 text-xs text-slate-600">
+                      <span className="flex items-center gap-1.5 text-xs text-slate-500">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <line x1="5" y1="12" x2="19" y2="12" />
                           <polyline points="12 5 19 12 12 19" />
@@ -347,7 +314,7 @@ export function ProjectDetailModal({
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">
                   Lighthouse スコア
-                  <span className="ml-2 text-slate-700">({project.lighthouseScores.measuredAt} 計測)</span>
+                  <span className="ml-2 text-slate-500">({project.lighthouseScores.measuredAt} 計測)</span>
                 </p>
                 <LighthouseScoresDetail scores={project.lighthouseScores} />
               </div>
@@ -361,7 +328,7 @@ export function ProjectDetailModal({
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">
                   Native 品質チェック
-                  <span className="ml-2 text-slate-700">({project.nativeQuality.measuredAt} 計測)</span>
+                  <span className="ml-2 text-slate-500">({project.nativeQuality.measuredAt} 計測)</span>
                 </p>
                 <NativeQualityDetail quality={project.nativeQuality} />
                 {project.nativeQuality.notes && (
@@ -378,7 +345,7 @@ export function ProjectDetailModal({
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">
                   Vitest カバレッジ
-                  <span className="ml-2 text-slate-700">
+                  <span className="ml-2 text-slate-500">
                     ({project.testCoverage.tests} tests, {project.testCoverage.measuredAt} 計測)
                   </span>
                 </p>
@@ -397,7 +364,7 @@ export function ProjectDetailModal({
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">
                   セキュリティスコア
-                  <span className="ml-2 text-slate-700">
+                  <span className="ml-2 text-slate-500">
                     ({project.securityScores.tool === "none" ? "依存なし" : `${project.securityScores.tool} audit`},
                     {" "}{project.securityScores.totalDependencies} deps, {project.securityScores.measuredAt} 計測)
                   </span>
@@ -417,7 +384,7 @@ export function ProjectDetailModal({
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">
                   Secret スキャン
-                  <span className="ml-2 text-slate-700">
+                  <span className="ml-2 text-slate-500">
                     (gitleaks, {project.secretScan.commits} commits, {project.secretScan.measuredAt} 計測)
                   </span>
                 </p>
@@ -436,7 +403,7 @@ export function ProjectDetailModal({
               <div>
                 <p className="mb-3 text-xs font-medium text-slate-500">
                   HTTP セキュリティヘッダー
-                  <span className="ml-2 text-slate-700">
+                  <span className="ml-2 text-slate-500">
                     (Mozilla Observatory, {project.securityHeaders.measuredAt} 計測)
                   </span>
                 </p>
@@ -449,12 +416,53 @@ export function ProjectDetailModal({
           )}
 
           {/* Dates */}
-          <div className="mt-5 flex gap-4 text-xs tabular-nums text-slate-600">
+          <div className="mt-5 flex gap-4 text-xs tabular-nums text-slate-500">
             <span>作成 {project.createdAt}</span>
             <span>更新 {displayUpdatedAt}</span>
           </div>
+
+          {/* Repeat the actions at the end of a long read so the visitor does not
+              have to scroll back up to open the work (SHIG 41, 47) */}
+          <div className="my-5 border-t border-white/5" />
+          <ModalLinks project={project} />
         </div>
       </div>
+    </div>
+  );
+}
+
+function ModalLinks({ project }: { project: Project }) {
+  const vis = visibilityConfig[project.githubVisibility];
+  const hasRepo = project.githubVisibility !== "local-only";
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-2">
+      {project.liveUrl && (
+        <a
+          href={project.liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-indigo-500/15 px-3 text-xs font-medium text-indigo-300 transition-colors hover:bg-indigo-500/25 sm:min-h-9"
+        >
+          <ExternalIcon size={11} />
+          Live
+        </a>
+      )}
+      <a
+        href={hasRepo ? project.githubUrl : undefined}
+        target={hasRepo ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        className={`inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-xs font-medium transition-colors sm:min-h-9 ${
+          hasRepo
+            ? "bg-white/8 text-slate-300 hover:bg-white/15"
+            : "cursor-default bg-white/5 text-slate-500"
+        }`}
+      >
+        <GitHubIcon />
+        GitHub
+        <span className={`rounded-md px-1.5 py-0.5 text-xs ring-1 ${vis.className}`}>
+          {vis.label}
+        </span>
+      </a>
     </div>
   );
 }
@@ -467,7 +475,6 @@ function lighthouseColor(score: number): string {
 
 
 function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
-  const mark = { pass: "✓", warn: "⚠", fail: "✕" } as const;
   const color = {
     pass: "text-emerald-400",
     warn: "text-amber-400",
@@ -477,7 +484,7 @@ function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
     <div className="space-y-2">
       {quality.checks.map((c) => (
         <div key={c.label} className="flex items-start gap-2 text-xs sm:text-sm">
-          <span className={`shrink-0 font-semibold ${color[c.status]}`}>{mark[c.status]}</span>
+          <span className={`w-12 shrink-0 font-semibold ${color[c.status]}`}>{nativeCheckLabel[c.status]}</span>
           <span className="w-28 shrink-0 text-slate-300 sm:w-36">{c.label}</span>
           {c.detail && <span className="text-slate-500">{c.detail}</span>}
         </div>
@@ -504,7 +511,7 @@ function MetricCells({
           key={label}
           className="rounded-md bg-white/3 px-2 py-1.5 text-center ring-1 ring-white/5"
         >
-          <p className="text-[10px] text-slate-500">{label}</p>
+          <p className="text-xs text-slate-500">{label}</p>
           <p className={`text-sm tabular-nums font-semibold ${tone}`}>{value}</p>
         </div>
       ))}
@@ -557,7 +564,7 @@ function SecurityScoresDetail({ scores }: { scores: SecurityScores }) {
         items={items.map(({ label, value, color }) => ({
           label,
           value: String(value),
-          tone: value > 0 ? color : "text-slate-600",
+          tone: value > 0 ? color : "text-slate-500",
         }))}
       />
     </div>
@@ -571,7 +578,7 @@ function SecretScanDetail({ scan }: { scan: SecretScan }) {
       <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">検出件数</span>
       <span className={`text-2xl tabular-nums font-bold ${color}`}>{scan.leaks}</span>
       <span className="text-xs text-slate-500">
-        {scan.leaks === 0 ? "✓ git履歴含めて漏洩なし" : "要対応"}
+        {scan.leaks === 0 ? "合格：git履歴含めて漏洩なし" : "要対応"}
       </span>
     </div>
   );
@@ -676,7 +683,7 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
                 >
                   <span className="text-xs font-medium leading-tight sm:text-sm">{node.label}</span>
                   {node.sublabel && (
-                    <span className="mt-0.5 text-[10px] leading-tight text-slate-500">{node.sublabel}</span>
+                    <span className="mt-0.5 text-xs leading-tight text-slate-500">{node.sublabel}</span>
                   )}
                 </div>
               ))}
@@ -684,11 +691,11 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
             {i < architecture.layers.length - 1 && (
               <div className="flex flex-col items-center py-1.5">
                 {layer.connector && (
-                  <span className="mb-1 rounded bg-white/5 px-1.5 py-0.5 text-[10px] leading-none text-slate-500">
+                  <span className="mb-1 rounded bg-white/5 px-1.5 py-0.5 text-xs leading-none text-slate-500">
                     {layer.connector}
                   </span>
                 )}
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500" aria-hidden="true">
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
@@ -699,7 +706,7 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
       {/* Legend */}
       <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
         {usedKinds.map((kind) => (
-          <span key={kind} className="inline-flex items-center gap-1.5 text-[10px] text-slate-500">
+          <span key={kind} className="inline-flex items-center gap-1.5 text-xs text-slate-500">
             <span className={`h-2 w-2 rounded-full ${archDotStyles[kind]}`} />
             {archKindLabels[kind]}
           </span>

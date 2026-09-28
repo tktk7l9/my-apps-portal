@@ -4,7 +4,10 @@ import { useState } from "react";
 import type { Project } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
 import { eyecatchSrc } from "@/lib/eyecatch";
+import { summaryMetrics } from "@/lib/project-list";
 import { ProjectDetailModal } from "@/components/ProjectDetailModal";
+import { WorkLinks } from "@/components/WorkLinks";
+import { useWorkSelection } from "@/components/useWorkSelection";
 
 export function FeaturedWorks({
   projects,
@@ -17,7 +20,7 @@ export function FeaturedWorks({
   latestVersions: Record<string, string>;
   lastCommitDates: Record<string, string>;
 }) {
-  const [selected, setSelected] = useState<Project | null>(null);
+  const { selected, open, close } = useWorkSelection(projects);
 
   if (projects.length === 0) return null;
 
@@ -30,7 +33,7 @@ export function FeaturedWorks({
             key={project.id}
             project={project}
             index={index}
-            onSelect={() => setSelected(project)}
+            onSelect={() => open(project)}
           />
         ))}
       </div>
@@ -41,7 +44,7 @@ export function FeaturedWorks({
           versionStatuses={versionStatuses}
           latestVersions={latestVersions}
           lastCommitDates={lastCommitDates}
-          onClose={() => setSelected(null)}
+          onClose={close}
         />
       )}
     </section>
@@ -113,28 +116,18 @@ function FeaturedCard({
           ))}
         </div>
         <FeaturedMetrics project={project} />
+        <WorkLinks project={project} />
       </div>
     </article>
   );
 }
 
 function FeaturedMetrics({ project }: { project: Project }) {
-  const metrics: string[] = [];
-
-  if (project.lighthouseScores) {
-    metrics.push(`Lighthouse ${project.lighthouseScores.performance}`);
-  }
-  if (project.testCoverage) {
-    metrics.push(`${project.testCoverage.tests} テスト`);
-  }
-  if (project.securityHeaders?.grade) {
-    metrics.push(`Observatory ${project.securityHeaders.grade}`);
-  }
-
+  const metrics = summaryMetrics(project);
   if (metrics.length === 0) return null;
 
   return (
-    <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
+    <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400">
       {metrics.map((metric) => (
         <li key={metric} className="tabular-nums">
           {metric}

@@ -1,3 +1,4 @@
+import { parseDeclaredVersion } from "@/lib/version-spec";
 import {
   packageMeta,
   type Project,
@@ -9,10 +10,6 @@ type PackageJson = {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
 };
-
-function stripRange(raw: string): string {
-  return raw.replace(/^[\s^~>=<]+/, "").trim();
-}
 
 async function fetchPublicPackageJson(
   owner: string,
@@ -82,16 +79,16 @@ function buildTechVersions(
   return trackedPackages.flatMap((npmName) => {
     const meta = packageMeta[npmName];
     if (!meta) return [];
-    const raw = allDeps[npmName];
-    const version = raw ? stripRange(raw) : "—";
-    const versionUrl = version !== "—" ? meta.versionUrl(version) : undefined;
+    // Non-version specs ("latest", "workspace:*") are shown as unknown ("—") instead of leaking the spec text
+    const parsed = parseDeclaredVersion(allDeps[npmName]);
+    const version = parsed?.version ?? "—";
+    const versionUrl = parsed ? meta.versionUrl(parsed.version) : undefined;
     return [{
       name: meta.displayName,
       docsUrl: meta.docsUrl,
       version,
       versionUrl,
-      // stripRange removed something = it was a range declaration with `^`, `~`, etc.
-      versionIsRange: raw ? raw !== version : false,
+      versionIsRange: parsed?.isRange ?? false,
     }];
   });
 }

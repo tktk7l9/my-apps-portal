@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { rawProjects } from "@/lib/projects";
-import { selectFeatured, selectRest } from "@/lib/featured";
+import { featuredImageHints, selectFeatured, selectRest } from "@/lib/featured";
+import { eyecatchSrc } from "@/lib/eyecatch";
 import { makeProject } from "@/lib/test-fixtures";
 
 describe("selectFeatured", () => {
@@ -31,7 +32,7 @@ describe("selectRest", () => {
   });
 });
 
-describe("実データのピックアップ", () => {
+describe("featured picks in the real data", () => {
   const featured = selectFeatured(rawProjects);
 
   it("ピックアップはちょうど 4 件である", () => {
@@ -93,5 +94,30 @@ describe("実データの selectRest", () => {
     const featuredCount = selectFeatured(rawProjects).length;
     const clientCount = rawProjects.filter((p) => p.kind === "client").length;
     expect(rest.length).toBe(rawProjects.length - featuredCount - clientCount);
+  });
+});
+
+describe("featuredImageHints", () => {
+  it("preloads the first card at high priority because it is the LCP candidate", () => {
+    expect(featuredImageHints(0)).toEqual({ loading: "eager", fetchPriority: "high", preload: true });
+  });
+
+  it("loads the second card eagerly without competing with the first", () => {
+    expect(featuredImageHints(1)).toEqual({ loading: "eager", fetchPriority: "auto", preload: false });
+  });
+
+  it("lazy-loads the third card onwards", () => {
+    expect(featuredImageHints(2)).toEqual({ loading: "lazy", fetchPriority: "auto", preload: false });
+    expect(featuredImageHints(5)).toEqual({ loading: "lazy", fetchPriority: "auto", preload: false });
+  });
+});
+
+describe("featured picks in the real data", () => {
+  it("serve their eyecatch from the portal itself (a cross-origin image delays LCP by seconds)", () => {
+    for (const project of selectFeatured(rawProjects)) {
+      const src = eyecatchSrc(project);
+      expect(src, `${project.id} eyecatch`).not.toBeNull();
+      expect(src!.startsWith("/") && !src!.startsWith("//"), `${project.id}: ${src}`).toBe(true);
+    }
   });
 });

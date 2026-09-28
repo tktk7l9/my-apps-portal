@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { preload } from "react-dom";
 import type { Project } from "@/lib/projects";
 import type { VersionStatus } from "@/lib/version-status";
 import { eyecatchSrc } from "@/lib/eyecatch";
+import { featuredImageHints } from "@/lib/featured";
 import { summaryMetrics } from "@/lib/project-list";
 import { ProjectDetailModal } from "@/components/ProjectDetailModal";
 import { WorkLinks } from "@/components/WorkLinks";
@@ -63,8 +65,10 @@ function FeaturedCard({
   const [ogpFailed, setOgpFailed] = useState(false);
   const src = eyecatchSrc(project);
   const showOgp = src !== null && !ogpFailed;
-  // Load only the first two (above the fold) eagerly and lazy-load the rest
-  const imageLoading = index < 2 ? "eager" : "lazy";
+  const hints = featuredImageHints(index);
+  // React hoists this into <head> during SSR, so the LCP image request starts
+  // before the browser reaches the card markup
+  if (showOgp && hints.preload) preload(src!, { as: "image", fetchPriority: "high" });
 
   return (
     <article className="relative overflow-hidden rounded-xl border border-white/8 bg-white/3 transition-colors hover:border-white/15">
@@ -75,7 +79,8 @@ function FeaturedCard({
             src={src!}
             alt={`${project.name} のプレビュー`}
             className="h-full w-full object-cover"
-            loading={imageLoading}
+            loading={hints.loading}
+            fetchPriority={hints.fetchPriority}
             onError={() => setOgpFailed(true)}
           />
         ) : (

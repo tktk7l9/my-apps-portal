@@ -10,7 +10,7 @@ export function ClientWork({ projects }: { projects: Project[] }) {
       <h2 className="mb-1 text-lg font-bold text-white sm:text-xl">
         実務プロジェクト
       </h2>
-      <p className="mb-4 text-xs text-slate-500">
+      <p className="mb-4 text-xs text-muted">
         守秘のため、技術構成と担当範囲のみ掲載しています。
       </p>
       <div className="grid gap-4">
@@ -56,7 +56,7 @@ export function ClientWork({ projects }: { projects: Project[] }) {
                   {project.technicalOverview && (
                     <Paragraphs
                       text={project.technicalOverview}
-                      className="mt-3 border-l-2 border-white/10 pl-3 text-xs leading-relaxed text-slate-500"
+                      className="mt-3 border-l-2 border-white/10 pl-3 text-xs leading-relaxed text-muted"
                     />
                   )}
 

@@ -5,6 +5,15 @@
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
+/* Muted text (notes, captions, "—" placeholders).
+ * slate-500 (#62748e) is only 3.3-4.1:1 on this page's dark surfaces and fails WCAG AA
+ * (SHIG 96). This sits just below slate-400 so the hierarchy survives while staying at
+ * >= 4.8:1 on every surface it is used on: page #080c14, cards white/3-5, modal #0d1117
+ * and its white/5-8 chips. */
+@theme {
+  --color-muted: #8091a9;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
 }

@@ -89,3 +89,21 @@ export function createWorkNavigator(
 export function isStrayClick(event: Activation, settling: boolean): boolean {
   return settling && event.detail > 0;
 }
+
+/** The part of a DOM mouse event that `swallowStray` touches */
+export type GuardedEvent = Activation & { preventDefault(): void; stopPropagation(): void };
+
+/**
+ * Swallows the tail of a double click that lands on the freshly opened modal.
+ * - `click`: cancel the default (a link opening a new tab) and stop it reaching the
+ *   backdrop's close handler.
+ * - `mousedown`: cancel only the default, so the second press does not select the word
+ *   under the pointer or move focus off the close button; propagation is left alone.
+ * Returns whether the event was swallowed.
+ */
+export function swallowStray(event: GuardedEvent, settling: boolean, kind: "click" | "mousedown"): boolean {
+  if (!isStrayClick(event, settling)) return false;
+  event.preventDefault();
+  if (kind === "click") event.stopPropagation();
+  return true;
+}

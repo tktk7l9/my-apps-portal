@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ACTIVATION_GUARD_MS, createWorkNavigator, isStrayClick, WORK_STATE_KEY, type WorkWindow } from "@/lib/work-history";
+import { ACTIVATION_GUARD_MS, createWorkNavigator, isStrayClick, swallowStray, WORK_STATE_KEY, type WorkWindow } from "@/lib/work-history";
 
 /** Minimal in-memory session history: back() fires popstate asynchronously, like browsers do */
 function fakeWindow(startUrl = "https://example.com/") {
@@ -220,5 +220,31 @@ describe("isStrayClick", () => {
 
   it("lets every click through once the page has settled", () => {
     expect(isStrayClick({ detail: 1 }, false)).toBe(false);
+  });
+});
+
+describe("swallowStray", () => {
+  const event = (detail: number) => ({ detail, preventDefault: vi.fn(), stopPropagation: vi.fn() });
+
+  it("cancels the stray click and keeps it from reaching the backdrop's close handler", () => {
+    const e = event(2);
+    expect(swallowStray(e, true, "click")).toBe(true);
+    expect(e.preventDefault).toHaveBeenCalledOnce();
+    expect(e.stopPropagation).toHaveBeenCalledOnce();
+  });
+
+  it("cancels only the default of the stray press, so no word is selected and focus stays put", () => {
+    const e = event(2);
+    expect(swallowStray(e, true, "mousedown")).toBe(true);
+    expect(e.preventDefault).toHaveBeenCalledOnce();
+    expect(e.stopPropagation).not.toHaveBeenCalled();
+  });
+
+  it("leaves keyboard activation and settled clicks untouched", () => {
+    for (const [e, settling] of [[event(0), true], [event(1), false]] as const) {
+      expect(swallowStray(e, settling, "click")).toBe(false);
+      expect(e.preventDefault).not.toHaveBeenCalled();
+      expect(e.stopPropagation).not.toHaveBeenCalled();
+    }
   });
 });

@@ -24,8 +24,14 @@ export function StatsSummary({ stats }: { stats: PortfolioStats }) {
   return (
     <section aria-label="実績サマリ" className="mb-10 sm:mb-14">
       <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/8 sm:grid-cols-3 lg:grid-cols-5">
-        {items.map(({ label, value }) => (
-          <div key={label} className="bg-[#0b1018] px-4 py-4 sm:px-5 sm:py-5">
+        {items.map(({ label, value }, i) => (
+          <div
+            key={label}
+            // With an odd tile count the 2-column mobile grid leaves an empty cell; let the last tile fill the row (SHIG 85)
+            className={`bg-[#0b1018] px-4 py-4 sm:px-5 sm:py-5 ${
+              items.length % 2 === 1 && i === items.length - 1 ? "col-span-2 sm:col-span-1" : ""
+            }`}
+          >
             <dt className="text-xs text-slate-400">{label}</dt>
             <dd className="mt-1 text-2xl font-bold tabular-nums text-white sm:text-3xl">
               {value}

@@ -31,7 +31,7 @@ export default function Home() {
             href="https://github.com/tktk7l9"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-slate-300"
+            className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-slate-300"
           >
             github.com/tktk7l9
           </a>

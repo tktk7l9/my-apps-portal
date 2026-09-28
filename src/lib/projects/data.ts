@@ -21,9 +21,9 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-28",
     githubUrl: "",
     githubVisibility: "private",
-    // 非公開リポジトリで liveUrl も無いため、project データからカードを生成する。
-    // 生成元は name / category / platform / staticTech のみで、社名・物件・
-    // テナントは含めない（description は使わない）＝守秘の範囲を越えない
+    // Private repository with no liveUrl, so the card is generated from the project data.
+    // It uses only name / category / platform / staticTech and includes no company names,
+    // properties or tenants (description is not used), staying within confidentiality
     ogImage: "/api/og/client-realestate-admin",
     emoji: "🏢",
     kind: "client",
@@ -54,8 +54,8 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     liveUrl: "https://service-anatomy.saitotakuya0719.workers.dev",
-    // Vercel Firewall 時代に 429 を避けるため用意した静的コピー。Workers 移行後も
-    // 記事OGP生成のコストを避けたいのでそのまま使う
+    // Static copy made to avoid 429s in the Vercel Firewall era. Still used after the Workers
+    // migration to avoid the cost of generating article OGP images
     ogImage: "/og/service-anatomy.png",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
@@ -173,7 +173,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/agent-cockpit",
     githubVisibility: "public",
     favicon: "/favicons/agent-cockpit.svg",
-    // Web ページを持たない Electron アプリのため、project データからカードを生成する
+    // Electron app without a web page, so the card is generated from the project data
     ogImage: "/api/og/agent-cockpit",
     emoji: "🎛️",
     technicalOverview:
@@ -243,7 +243,7 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-03",
     githubUrl: "https://github.com/tktk7l9/roba-hud",
     githubVisibility: "public",
-    // Web ページを持たない macOS アプリのため、project データからカードを生成する
+    // macOS app without a web page, so the card is generated from the project data
     ogImage: "/api/og/roba-hud",
     emoji: "🖲️",
     featuredRank: 4,
@@ -934,7 +934,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/acro-finder",
     githubVisibility: "public",
     liveUrl: "https://acro-finder.saitotakuya0719.workers.dev",
-    // OGP は Vercel 停止中に用意した生成画像をそのまま使う
+    // Keeps using the OGP image generated while Vercel was down
     ogImage: "/api/og/acro-finder",
     favicon: "/favicons/acro-finder.svg",
     technicalOverview:
@@ -1116,7 +1116,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/ai-primer",
     githubVisibility: "public",
     liveUrl: "https://ai-primer.saitotakuya0719.workers.dev",
-    // OGP は Vercel 停止中に用意した生成画像をそのまま使う
+    // Keeps using the OGP image generated while Vercel was down
     ogImage: "/api/og/ai-primer",
     favicon: "/favicons/ai-primer.svg",
     technicalOverview:

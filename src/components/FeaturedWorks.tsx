@@ -60,7 +60,7 @@ function FeaturedCard({
   const [ogpFailed, setOgpFailed] = useState(false);
   const src = eyecatchSrc(project);
   const showOgp = src !== null && !ogpFailed;
-  // 最初の2枚（above the fold）だけ即時読み込みし、残りは遅延読み込みする
+  // Load only the first two (above the fold) eagerly and lazy-load the rest
   const imageLoading = index < 2 ? "eager" : "lazy";
 
   return (
@@ -84,11 +84,11 @@ function FeaturedCard({
 
       <div className="p-4 sm:p-5">
         <h3 className="text-base font-bold text-white sm:text-lg">
-          {/* ::after のオーバーレイでカード全体をクリック可能にする（stretched button）。
-              article 側の position:relative が ::after (position:absolute, inset:0) の
-              基準になる。ボタン自体はテキストサイズのままで、見出しの外に出した
-              highlight / tech chips / FeaturedMetrics を button で覆わないため、
-              それらはスクリーンリーダーの見出しアウトラインや本文として正しく読み上げられる */}
+          {/* An ::after overlay makes the whole card clickable (stretched button).
+              The article's position:relative is the containing block for ::after (position:absolute, inset:0).
+              The button itself stays text-sized and does not wrap highlight / tech chips /
+              FeaturedMetrics, which sit outside the heading, so screen readers read them
+              correctly as part of the heading structure and body text */}
           <button
             type="button"
             onClick={onSelect}

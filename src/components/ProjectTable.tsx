@@ -174,7 +174,7 @@ export function ProjectTable({
         </div>
       </div>
 
-      {/* Tech filter: モバイルは toggle 式、sm以上は常時表示 */}
+      {/* Tech filter: a toggle on mobile, always shown from sm up */}
       <div>
         <button
           onClick={() => setTechFilterOpen((v) => !v)}
@@ -246,7 +246,7 @@ export function ProjectTable({
         </div>
       )}
 
-      {/* Desktop table (lg+) - 11列あるので tablet 以下ではカード表示にフォールバック */}
+      {/* Desktop table (lg+) - 11 columns, so tablet and below fall back to cards */}
       <div className="hidden overflow-x-auto rounded-xl border border-white/8 lg:block">
         <table className="w-full border-collapse text-sm">
           <thead>
@@ -285,7 +285,7 @@ export function ProjectTable({
         </table>
       </div>
 
-      {/* Mobile cards (lg未満) */}
+      {/* Mobile cards (below lg) */}
       <div className="grid gap-3 lg:hidden">
         {filtered.length === 0 ? (
           <p className="py-16 text-center text-slate-600">該当するプロジェクトがありません</p>
@@ -577,7 +577,7 @@ function ProjectCard({
         <p className="line-clamp-2 text-xs leading-relaxed text-slate-400">{project.description}</p>
       </div>
 
-      {/* Compact metrics grid: 2列 (xs) / 3列 (sm+) */}
+      {/* Compact metrics grid: 2 columns (xs) / 3 columns (sm+) */}
       {hasMetrics && (
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {project.lighthouseScores && (
@@ -794,7 +794,7 @@ function SecurityRow({
   );
 }
 
-// Security / Secrets / Headers を1セルに縦並びでまとめる。各行に説明ツールチップ付き。
+// Stacks Security / Secrets / Headers vertically in one cell, each row with an explanatory tooltip.
 function SecurityGroupCell({ project }: { project: Project }) {
   const sec = project.securityScores;
   const scan = project.secretScan;

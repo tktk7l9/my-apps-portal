@@ -1,37 +1,37 @@
 import type { RawProject } from "@/lib/projects";
 
 export type PortfolioStats = {
-  /** 個人開発作品の総数（kind: "client" を除く） */
+  /** Total number of personal projects (excluding kind: "client") */
   totalProjects: number;
-  /** liveUrl を持つ作品数 */
+  /** Number of works with a liveUrl */
   liveProjects: number;
-  /** testCoverage.tests の合計 */
+  /** Sum of testCoverage.tests */
   totalTests: number;
-  /** npm audit の critical + high + moderate + low の合計 */
+  /** Sum of npm audit critical + high + moderate + low */
   totalVulnerabilities: number;
-  /** gitleaks 検出数の合計 */
+  /** Sum of gitleaks findings */
   totalSecretLeaks: number;
-  /** Lighthouse Performance の平均（小数第1位）。対象 0 件なら null */
+  /** Average Lighthouse Performance (1 decimal place). null when there are none */
   avgLighthousePerformance: number | null;
-  /** Performance 90 以上の件数 */
+  /** Number with Performance 90 or higher */
   lighthouse90Count: number;
-  /** lighthouseScores を持つ件数 */
+  /** Number with lighthouseScores */
   lighthouseMeasuredCount: number;
-  /** 集計に寄与した計測値のうち最も古い measuredAt（YYYY-MM-DD）。対象が無ければ null */
+  /** Oldest measuredAt (YYYY-MM-DD) among the measurements that contributed to the stats. null when there are none */
   oldestMeasuredAt: string | null;
-  /** 集計に寄与した計測値のうち最も新しい measuredAt（YYYY-MM-DD）。対象が無ければ null */
+  /** Newest measuredAt (YYYY-MM-DD) among the measurements that contributed to the stats. null when there are none */
   newestMeasuredAt: string | null;
 };
 
-/** 実務案件を除いた個人開発作品だけを集計対象とする */
+/** Only personal projects, excluding client work, are counted */
 function isPersonal(project: RawProject): boolean {
   return project.kind !== "client";
 }
 
 /**
- * ISO 日付文字列（YYYY-MM-DD）の配列から最も古い/新しい日付を求める。
- * ISO 形式は文字列比較でそのまま日付順になるため localeCompare 等は不要。
- * 空配列なら null。
+ * Finds the oldest/newest date in an array of ISO date strings (YYYY-MM-DD).
+ * ISO format sorts chronologically by plain string comparison, so localeCompare etc. is unnecessary.
+ * null for an empty array.
  */
 export function computeMeasurementDateRange(
   dates: string[]
@@ -57,8 +57,8 @@ export function computePortfolioStats(projects: RawProject[]): PortfolioStats {
   let performanceSum = 0;
   let lighthouseMeasuredCount = 0;
   let lighthouse90Count = 0;
-  // StatsSummary に表示される集計（テスト総数・Lighthouse系）に実際に
-  // 寄与した measuredAt だけを集める。footnote の計測日レンジ表示に使う。
+  // Collect only the measuredAt values that actually contributed to the stats shown in
+  // StatsSummary (total tests, Lighthouse). Used for the measurement date range in the footnote.
   const contributingMeasuredDates: string[] = [];
 
   for (const project of targets) {

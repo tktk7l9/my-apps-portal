@@ -39,7 +39,7 @@ describe("実データのピックアップ", () => {
   });
 
   it("featuredRank は 1 から始まる連番で重複しない", () => {
-    // 件数を変えてもこのテストが意図どおり働くよう、長さではなく連番性を検査する
+    // Check that ranks are consecutive rather than the length, so this test keeps working when the count changes
     expect(featured.map((p) => p.featuredRank)).toEqual(
       Array.from({ length: featured.length }, (_, i) => i + 1)
     );

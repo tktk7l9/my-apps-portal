@@ -80,7 +80,7 @@ describe("filterVersionStatusesForProjects", () => {
       },
     ];
 
-    // バージョンが一致しないので "Next.js@16.2.12" は残らない
+    // The version does not match, so "Next.js@16.2.12" is not kept
     expect(filterVersionStatusesForProjects(versionStatuses, projects)).toEqual({});
   });
 });
@@ -109,8 +109,8 @@ describe("collectVersionCheckEntries", () => {
   });
 
   it("staticTech を宣言したプロジェクトは丸ごと除外する", () => {
-    // agent-cockpit は React "19" / TypeScript "6.0" とメジャーのみ宣言しており、
-    // npm registry と比較すると常に outdated になってしまう
+    // agent-cockpit declares only majors, React "19" / TypeScript "6.0",
+    // so comparing against the npm registry would always report outdated
     const projects = [
       { techVersions: [nextTech] },
       {

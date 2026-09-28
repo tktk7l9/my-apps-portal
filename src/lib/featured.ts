@@ -1,13 +1,13 @@
 import type { RawProject } from "@/lib/projects";
 
-/** ピックアップを featuredRank の昇順で返す */
+/** Returns the featured picks in ascending featuredRank order */
 export function selectFeatured<T extends RawProject>(projects: T[]): T[] {
   return projects
     .filter((p) => p.featuredRank !== undefined)
     .sort((a, b) => a.featuredRank! - b.featuredRank!);
 }
 
-/** ピックアップと実務案件を除いた作品を、元の順序のまま返す */
+/** Returns the works other than featured picks and client work, in their original order */
 export function selectRest<T extends RawProject>(projects: T[]): T[] {
   return projects.filter(
     (p) => p.featuredRank === undefined && p.kind !== "client"

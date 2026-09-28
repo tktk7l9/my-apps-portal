@@ -2,12 +2,12 @@ import type { RawProject } from "@/lib/projects";
 
 type EyecatchSource = Pick<RawProject, "ogImage" | "liveUrl">;
 
-/** カードのアイキャッチ画像 URL を決める。
+/** Picks the card's eyecatch image URL.
  *
- *  優先順は ogImage の明示指定 → liveUrl の OGP スクレイプ → null（emoji フォールバック）。
- *  liveUrl があるのに ogImage を優先するのは、公開サイトでもサーバー側からは
- *  取得できない場合があるため（Vercel Firewall の bot_protection が
- *  challenge を返すサイトは、どの User-Agent でも 429 になりスクレイプが成立しない）。
+ *  Priority: explicit ogImage → OGP scraped from liveUrl → null (emoji fallback).
+ *  ogImage wins even when liveUrl exists because some public sites cannot be
+ *  fetched from the server side (sites where Vercel Firewall bot_protection returns
+ *  a challenge answer 429 to every User-Agent, so scraping never works).
  */
 export function eyecatchSrc(project: EyecatchSource): string | null {
   if (project.ogImage) return project.ogImage;

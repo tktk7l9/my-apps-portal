@@ -1,8 +1,8 @@
-/** 説明文を段落の配列に分解する。
+/** Splits a description into an array of paragraphs.
  *
- *  データ側は 1 行の文字列リテラルなので、段落の区切りは改行エスケープで表す。
- *  `\n\n` でも `\n` でも段落として扱い（書き分けの揺れを許容する）、
- *  前後の空白と空段落は落とす。改行が無ければ 1 段落として返す。
+ *  The data is a single-line string literal, so paragraph breaks are written as newline escapes.
+ *  Both `\n\n` and `\n` count as a break (tolerating inconsistent authoring);
+ *  surrounding whitespace and empty paragraphs are dropped. Without newlines it returns one paragraph.
  */
 export function toParagraphs(text: string): string[] {
   return text

@@ -18,6 +18,7 @@ export default defineConfig({
         "src/lib/eyecatch.ts",
         "src/lib/paragraphs.ts",
         "src/lib/work-param.ts",
+        "src/lib/work-history.ts",
         "src/lib/commit-date.ts",
         "src/lib/version-spec.ts",
         "src/lib/project-list.ts",

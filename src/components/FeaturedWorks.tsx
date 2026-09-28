@@ -33,7 +33,7 @@ export function FeaturedWorks({
             key={project.id}
             project={project}
             index={index}
-            onSelect={() => open(project)}
+            onSelect={(event) => open(project, event)}
           />
         ))}
       </div>
@@ -58,7 +58,7 @@ function FeaturedCard({
 }: {
   project: Project;
   index: number;
-  onSelect: () => void;
+  onSelect: (event: { detail: number }) => void;
 }) {
   const [ogpFailed, setOgpFailed] = useState(false);
   const src = eyecatchSrc(project);

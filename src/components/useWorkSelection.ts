@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { readWorkParam } from "@/lib/work-param";
-import { createWorkNavigator } from "@/lib/work-history";
+import { createWorkNavigator, type Activation } from "@/lib/work-history";
 
 /**
  * Keeps the open detail modal in the URL (`?work=<id>`, SHIG 59, 60, 82).
@@ -37,11 +37,15 @@ function workNavigator() {
   return sharedNavigator;
 }
 
-const open = (project: { id: string }) => workNavigator().open(project.id);
-const close = () => workNavigator().close();
+/** Pass the click event from pointer handlers so a double click cannot open and then close (SHIG 57) */
+const open = (project: { id: string }, event?: Activation) => workNavigator().open(project.id, event);
+const close = (event?: Activation) => workNavigator().close(event);
+
+/** True right after the modal opened or closed; see work-history.ts */
+export const isWorkSettling = () => workNavigator().isSettling();
 
 export function useWorkSelection<T extends { id: string }>(projects: T[]) {
   const workId = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const selected = workId ? (projects.find((p) => p.id === workId) ?? null) : null;
-  return { selected, open: open as (project: T) => void, close };
+  return { selected, open: open as (project: T, event?: Activation) => void, close };
 }

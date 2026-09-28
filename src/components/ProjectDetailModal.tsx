@@ -207,7 +207,7 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">技術的概要</p>
+                <p className="mb-3 text-xs font-medium text-muted">技術的概要</p>
                 <Paragraphs
                   text={project.technicalOverview}
                   className="text-sm leading-relaxed text-slate-400"
@@ -221,7 +221,7 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">システム構成図</p>
+                <p className="mb-3 text-xs font-medium text-muted">システム構成図</p>
                 <ArchitectureDiagram architecture={project.architecture} />
               </div>
             </>
@@ -232,7 +232,7 @@ export function ProjectDetailModal({
 
           {/* Tech stack */}
           <div>
-            <p className="mb-3 text-xs font-medium text-slate-500">技術スタック</p>
+            <p className="mb-3 text-xs font-medium text-muted">技術スタック</p>
             <div className="space-y-2.5">
               {project.techVersions.map((t) => {
                 const key = `${t.name}@${t.version}`;
@@ -262,10 +262,10 @@ export function ProjectDetailModal({
                         <span className={`tabular-nums ${versionColors[status]}`}>{t.version}</span>
                       )
                     ) : (
-                      <span className="text-slate-500">—</span>
+                      <span className="text-muted">—</span>
                     )}
                     {(status === "outdated" || status === "vulnerable") && latest && (
-                      <span className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <span className="flex items-center gap-1.5 text-xs text-muted">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <line x1="5" y1="12" x2="19" y2="12" />
                           <polyline points="12 5 19 12 12 19" />
@@ -289,7 +289,7 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">使用サービス</p>
+                <p className="mb-3 text-xs font-medium text-muted">使用サービス</p>
                 <div className="flex flex-wrap gap-1.5">
                   {project.services.map((s) => (
                     <a
@@ -312,9 +312,9 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">
+                <p className="mb-3 text-xs font-medium text-muted">
                   Lighthouse スコア
-                  <span className="ml-2 text-slate-500">({project.lighthouseScores.measuredAt} 計測)</span>
+                  <span className="ml-2 text-muted">({project.lighthouseScores.measuredAt} 計測)</span>
                 </p>
                 <LighthouseScoresDetail scores={project.lighthouseScores} />
               </div>
@@ -326,13 +326,13 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">
+                <p className="mb-3 text-xs font-medium text-muted">
                   Native 品質チェック
-                  <span className="ml-2 text-slate-500">({project.nativeQuality.measuredAt} 計測)</span>
+                  <span className="ml-2 text-muted">({project.nativeQuality.measuredAt} 計測)</span>
                 </p>
                 <NativeQualityDetail quality={project.nativeQuality} />
                 {project.nativeQuality.notes && (
-                  <p className="mt-3 text-xs leading-relaxed text-slate-500">{project.nativeQuality.notes}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted">{project.nativeQuality.notes}</p>
                 )}
               </div>
             </>
@@ -343,15 +343,15 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">
+                <p className="mb-3 text-xs font-medium text-muted">
                   Vitest カバレッジ
-                  <span className="ml-2 text-slate-500">
+                  <span className="ml-2 text-muted">
                     ({project.testCoverage.tests} tests, {project.testCoverage.measuredAt} 計測)
                   </span>
                 </p>
                 <TestCoverageDetail coverage={project.testCoverage} />
                 {project.testCoverage.notes && (
-                  <p className="mt-3 text-xs leading-relaxed text-slate-500">{project.testCoverage.notes}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted">{project.testCoverage.notes}</p>
                 )}
               </div>
             </>
@@ -362,16 +362,16 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">
+                <p className="mb-3 text-xs font-medium text-muted">
                   セキュリティスコア
-                  <span className="ml-2 text-slate-500">
+                  <span className="ml-2 text-muted">
                     ({project.securityScores.tool === "none" ? "依存なし" : `${project.securityScores.tool} audit`},
                     {" "}{project.securityScores.totalDependencies} deps, {project.securityScores.measuredAt} 計測)
                   </span>
                 </p>
                 <SecurityScoresDetail scores={project.securityScores} />
                 {project.securityScores.notes && (
-                  <p className="mt-3 text-xs leading-relaxed text-slate-500">{project.securityScores.notes}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted">{project.securityScores.notes}</p>
                 )}
               </div>
             </>
@@ -382,15 +382,15 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">
+                <p className="mb-3 text-xs font-medium text-muted">
                   Secret スキャン
-                  <span className="ml-2 text-slate-500">
+                  <span className="ml-2 text-muted">
                     (gitleaks, {project.secretScan.commits} commits, {project.secretScan.measuredAt} 計測)
                   </span>
                 </p>
                 <SecretScanDetail scan={project.secretScan} />
                 {project.secretScan.notes && (
-                  <p className="mt-3 text-xs leading-relaxed text-slate-500">{project.secretScan.notes}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted">{project.secretScan.notes}</p>
                 )}
               </div>
             </>
@@ -401,22 +401,22 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-slate-500">
+                <p className="mb-3 text-xs font-medium text-muted">
                   HTTP セキュリティヘッダー
-                  <span className="ml-2 text-slate-500">
+                  <span className="ml-2 text-muted">
                     (Mozilla Observatory, {project.securityHeaders.measuredAt} 計測)
                   </span>
                 </p>
                 <SecurityHeadersDetail headers={project.securityHeaders} />
                 {project.securityHeaders.notes && (
-                  <p className="mt-3 text-xs leading-relaxed text-slate-500">{project.securityHeaders.notes}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted">{project.securityHeaders.notes}</p>
                 )}
               </div>
             </>
           )}
 
           {/* Dates */}
-          <div className="mt-5 flex gap-4 text-xs tabular-nums text-slate-500">
+          <div className="mt-5 flex gap-4 text-xs tabular-nums text-muted">
             <span>作成 {project.createdAt}</span>
             <span>更新 {displayUpdatedAt}</span>
           </div>
@@ -454,7 +454,7 @@ function ModalLinks({ project }: { project: Project }) {
         className={`inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-xs font-medium transition-colors sm:min-h-9 ${
           hasRepo
             ? "bg-white/8 text-slate-300 hover:bg-white/15"
-            : "cursor-default bg-white/5 text-slate-500"
+            : "cursor-default bg-white/5 text-muted"
         }`}
       >
         <GitHubIcon />
@@ -486,7 +486,7 @@ function NativeQualityDetail({ quality }: { quality: NativeQuality }) {
         <div key={c.label} className="flex items-start gap-2 text-xs sm:text-sm">
           <span className={`w-12 shrink-0 font-semibold ${color[c.status]}`}>{nativeCheckLabel[c.status]}</span>
           <span className="w-28 shrink-0 text-slate-300 sm:w-36">{c.label}</span>
-          {c.detail && <span className="text-slate-500">{c.detail}</span>}
+          {c.detail && <span className="text-muted">{c.detail}</span>}
         </div>
       ))}
     </div>
@@ -511,7 +511,7 @@ function MetricCells({
           key={label}
           className="rounded-md bg-white/3 px-2 py-1.5 text-center ring-1 ring-white/5"
         >
-          <p className="text-xs text-slate-500">{label}</p>
+          <p className="text-xs text-muted">{label}</p>
           <p className={`text-sm tabular-nums font-semibold ${tone}`}>{value}</p>
         </div>
       ))}
@@ -558,13 +558,13 @@ function SecurityScoresDetail({ scores }: { scores: SecurityScores }) {
         <span className={`text-3xl tabular-nums font-bold ${securityColor(scores.score)}`}>
           {scores.score}
         </span>
-        <span className="text-xs text-slate-500">/ 100</span>
+        <span className="text-xs text-muted">/ 100</span>
       </p>
       <MetricCells
         items={items.map(({ label, value, color }) => ({
           label,
           value: String(value),
-          tone: value > 0 ? color : "text-slate-500",
+          tone: value > 0 ? color : "text-muted",
         }))}
       />
     </div>
@@ -577,7 +577,7 @@ function SecretScanDetail({ scan }: { scan: SecretScan }) {
     <div className="flex items-center gap-3">
       <span className="w-24 shrink-0 text-xs text-slate-300 sm:w-32 sm:text-sm">検出件数</span>
       <span className={`text-2xl tabular-nums font-bold ${color}`}>{scan.leaks}</span>
-      <span className="text-xs text-slate-500">
+      <span className="text-xs text-muted">
         {scan.leaks === 0 ? "合格：git履歴含めて漏洩なし" : "要対応"}
       </span>
     </div>
@@ -585,7 +585,7 @@ function SecretScanDetail({ scan }: { scan: SecretScan }) {
 }
 
 function headerGradeColor(grade: string | null): string {
-  if (!grade) return "text-slate-500";
+  if (!grade) return "text-muted";
   if (grade.startsWith("A")) return "text-emerald-400";
   if (grade.startsWith("B")) return "text-lime-400";
   if (grade.startsWith("C")) return "text-amber-400";
@@ -595,7 +595,7 @@ function headerGradeColor(grade: string | null): string {
 
 function SecurityHeadersDetail({ headers }: { headers: SecurityHeaders }) {
   if (!headers.grade) {
-    return <p className="text-sm text-slate-500">スキャンに失敗しました (詳細は notes 参照)</p>;
+    return <p className="text-sm text-muted">スキャンに失敗しました (詳細は notes 参照)</p>;
   }
   // Grade, score and pass count are just three views of the same measurement, so keep them on one line
   // (the score bar duplicated information as soon as the number was shown next to it)
@@ -608,7 +608,7 @@ function SecurityHeadersDetail({ headers }: { headers: SecurityHeaders }) {
         <span className="text-sm tabular-nums text-slate-400">{headers.score} / 100</span>
       )}
       {headers.passed !== undefined && headers.total !== undefined && (
-        <span className="text-xs tabular-nums text-slate-500">
+        <span className="text-xs tabular-nums text-muted">
           合格 {headers.passed} / {headers.total}
         </span>
       )}
@@ -683,7 +683,7 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
                 >
                   <span className="text-xs font-medium leading-tight sm:text-sm">{node.label}</span>
                   {node.sublabel && (
-                    <span className="mt-0.5 text-xs leading-tight text-slate-500">{node.sublabel}</span>
+                    <span className="mt-0.5 text-xs leading-tight text-muted">{node.sublabel}</span>
                   )}
                 </div>
               ))}
@@ -691,11 +691,11 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
             {i < architecture.layers.length - 1 && (
               <div className="flex flex-col items-center py-1.5">
                 {layer.connector && (
-                  <span className="mb-1 rounded bg-white/5 px-1.5 py-0.5 text-xs leading-none text-slate-500">
+                  <span className="mb-1 rounded bg-white/5 px-1.5 py-0.5 text-xs leading-none text-muted">
                     {layer.connector}
                   </span>
                 )}
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted" aria-hidden="true">
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
@@ -706,7 +706,7 @@ function ArchitectureDiagram({ architecture }: { architecture: Architecture }) {
       {/* Legend */}
       <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
         {usedKinds.map((kind) => (
-          <span key={kind} className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+          <span key={kind} className="inline-flex items-center gap-1.5 text-xs text-muted">
             <span className={`h-2 w-2 rounded-full ${archDotStyles[kind]}`} />
             {archKindLabels[kind]}
           </span>

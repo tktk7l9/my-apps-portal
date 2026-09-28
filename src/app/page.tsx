@@ -82,7 +82,7 @@ async function ProjectDataLoader() {
           <h2 className="text-lg font-bold text-white sm:text-xl">
             他の作品
           </h2>
-          <span className="text-sm text-slate-500 tabular-nums">{rest.length} 件</span>
+          <span className="text-sm text-muted tabular-nums">{rest.length} 件</span>
           <div className="ml-auto">
             <RefreshButton />
           </div>

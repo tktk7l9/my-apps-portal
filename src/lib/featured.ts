@@ -13,3 +13,22 @@ export function selectRest<T extends RawProject>(projects: T[]): T[] {
     (p) => p.featuredRank === undefined && p.kind !== "client"
   );
 }
+
+export type FeaturedImageHints = {
+  loading: "eager" | "lazy";
+  fetchPriority: "high" | "auto";
+  /** Emit a <link rel="preload"> so the image starts before the card markup is parsed */
+  preload: boolean;
+};
+
+/** Loading hints for the eyecatch of the featured card at `index`.
+ *
+ *  The first card is the LCP element on mobile (one column), so it is preloaded at high
+ *  priority. The second is still above the fold on desktop (two columns) and loads eagerly
+ *  at normal priority so it does not compete with the first. The rest are lazy.
+ */
+export function featuredImageHints(index: number): FeaturedImageHints {
+  if (index === 0) return { loading: "eager", fetchPriority: "high", preload: true };
+  if (index === 1) return { loading: "eager", fetchPriority: "auto", preload: false };
+  return { loading: "lazy", fetchPriority: "auto", preload: false };
+}

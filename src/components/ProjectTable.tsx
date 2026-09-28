@@ -158,7 +158,7 @@ export function ProjectTable({
   );
 
   const searchClass =
-    "rounded-md border border-white/10 bg-white/5 px-3 text-sm text-slate-200 placeholder-slate-500 outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/60";
+    "rounded-md border border-white/10 bg-white/5 px-3 text-sm text-slate-200 placeholder-muted outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/60";
 
   return (
     <div className="space-y-3">
@@ -401,7 +401,7 @@ function Th({ children }: { children: React.ReactNode }) {
 
 function SortArrow({ active, dir }: { active: boolean; dir: SortDir }) {
   return (
-    <span aria-hidden="true" className={active ? "text-indigo-400" : "text-slate-500"}>
+    <span aria-hidden="true" className={active ? "text-indigo-400" : "text-muted"}>
       {active && dir === "asc" ? "↑" : active && dir === "desc" ? "↓" : "↕"}
     </span>
   );
@@ -582,7 +582,7 @@ function ProjectRow({
         ) : project.nativeQuality ? (
           <NativeQualityCell quality={project.nativeQuality} />
         ) : (
-          <span className="text-slate-500">—</span>
+          <span className="text-muted">—</span>
         )}
       </td>
 
@@ -590,7 +590,7 @@ function ProjectRow({
         {project.testCoverage ? (
           <VitestCell coverage={project.testCoverage} />
         ) : (
-          <span className="text-slate-500">—</span>
+          <span className="text-muted">—</span>
         )}
       </td>
 
@@ -607,7 +607,7 @@ function ProjectRow({
 
       <td className="px-3 py-3">
         {project.services.length === 0 ? (
-          <span className="text-slate-500">—</span>
+          <span className="text-muted">—</span>
         ) : (
           <div className="flex flex-col gap-1">
             {project.services.map((s) => (
@@ -646,7 +646,7 @@ function ProjectRow({
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex min-h-7 items-center gap-1 text-xs ${
-              hasRepo ? "text-slate-400 hover:text-white" : "cursor-default text-slate-500"
+              hasRepo ? "text-slate-400 hover:text-white" : "cursor-default text-muted"
             }`}
           >
             <GitHubIcon />
@@ -792,7 +792,7 @@ function SecurityGroupCell({ project }: { project: Project }) {
   const sec = project.securityScores;
   const scan = project.secretScan;
   const hdr = project.securityHeaders;
-  if (!sec && !scan && !hdr) return <span className="text-slate-500">—</span>;
+  if (!sec && !scan && !hdr) return <span className="text-muted">—</span>;
 
   return (
     <dl className="flex min-w-[88px] flex-col gap-1.5">

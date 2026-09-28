@@ -53,7 +53,8 @@ export const rawProjects: RawProject[] = [
     updatedAt: "2026-07-16",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
-    liveUrl: "https://service-anatomy.saitotakuya0719.workers.dev",
+    // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
+    liveUrl: "https://serviceanatomy.com",
     // Static copy made to avoid 429s in the Vercel Firewall era. Still used after the Workers
     // migration to avoid the cost of generating article OGP images
     ogImage: "/og/service-anatomy.png",
@@ -442,7 +443,9 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/somewhere-now",
     githubVisibility: "public",
     liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
-    ogImage: "https://somewhere-now.saitotakuya0719.workers.dev/og.png",
+    // Static copy of the app's og.png, re-encoded as WebP (309KB -> 28KB). It is the first
+    // featured card and so the mobile LCP element; a cross-origin fetch cost about 2s of LCP
+    ogImage: "/og/somewhere-now.webp",
     favicon: "/favicons/somewhere-now.svg",
     emoji: "\u{1F30D}",
     technicalOverview:

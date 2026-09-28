@@ -39,7 +39,7 @@ export function StatsSummary({ stats }: { stats: PortfolioStats }) {
           </div>
         ))}
       </dl>
-      <p className="mt-2 text-xs text-slate-500">
+      <p className="mt-2 text-xs text-muted">
         各作品の最新の計測値から自動集計しています。
         {stats.oldestMeasuredAt && stats.newestMeasuredAt && (
           <>

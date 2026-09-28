@@ -6,6 +6,8 @@ import { serviceUrls, type Architecture, type ArchNodeKind, type GithubVisibilit
 import type { VersionStatus } from "@/lib/version-status";
 import { eyecatchSrc } from "@/lib/eyecatch";
 import { nativeCheckLabel } from "@/lib/project-list";
+import { swallowStray } from "@/lib/work-history";
+import { isWorkSettling } from "@/components/useWorkSelection";
 import { Paragraphs } from "@/components/Paragraphs";
 import { ExternalIcon, GitHubIcon } from "@/components/icons";
 
@@ -61,7 +63,7 @@ export function ProjectDetailModal({
   versionStatuses: Record<string, VersionStatus>;
   latestVersions: Record<string, string>;
   lastCommitDates: Record<string, string>;
-  onClose: () => void;
+  onClose: (event?: { detail: number }) => void;
 }) {
   const [ogpLoaded, setOgpLoaded] = useState(false);
   const [ogpError, setOgpError] = useState(false);
@@ -129,6 +131,11 @@ export function ProjectDetailModal({
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-2 backdrop-blur-sm sm:items-center sm:p-6"
+      // The second click of the double click that opened the modal must not close it again,
+      // follow a link that rendered under the pointer, or select the word under it (SHIG 57).
+      // Keyboard clicks pass.
+      onMouseDownCapture={(e) => swallowStray(e, isWorkSettling(), "mousedown")}
+      onClickCapture={(e) => swallowStray(e, isWorkSettling(), "click")}
       onClick={onClose}
     >
       <div

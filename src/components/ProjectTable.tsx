@@ -535,7 +535,7 @@ function ProjectRow({
   isLast: boolean;
   versionStatuses: Record<string, VersionStatus>;
   lastCommitDates: Record<string, string>;
-  onSelect: (p: Project) => void;
+  onSelect: (p: Project, event?: { detail: number }) => void;
 }) {
   const vis = visibilityConfig[project.githubVisibility];
   const displayUpdatedAt = lastCommitDates[project.id] ?? project.updatedAt;
@@ -548,7 +548,7 @@ function ProjectRow({
           <ProjectIcon project={project} />
           <button
             type="button"
-            onClick={() => onSelect(project)}
+            onClick={(e) => onSelect(project, e)}
             className="underline-offset-2 hover:text-indigo-300 hover:underline transition-colors text-left"
           >
             {project.name}
@@ -672,7 +672,7 @@ function ProjectCard({
   onSelect,
 }: {
   project: Project;
-  onSelect: (p: Project) => void;
+  onSelect: (p: Project, event?: { detail: number }) => void;
 }) {
   const metrics = summaryMetrics(project);
 
@@ -684,7 +684,7 @@ function ProjectCard({
           {/* Stretched button: the whole card opens the detail modal (links below sit above it with z-10) */}
           <button
             type="button"
-            onClick={() => onSelect(project)}
+            onClick={(e) => onSelect(project, e)}
             className="text-left after:absolute after:inset-0 after:content-['']"
           >
             {project.name}

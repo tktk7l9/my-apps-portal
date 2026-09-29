@@ -84,14 +84,14 @@ export const rawProjects: RawProject[] = [
       notes: "npm audit --audit-level=low 0件(postcssをoverridesで8.5.10+に固定)。CIにgitleaks/npm audit/Lighthouseリグレッションガードを組み込み済み",
     },
     lighthouseScores: {
-      performance: 99, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-07-16",
+      performance: 88, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     secretScan: { leaks: 0, commits: 87, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-14",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30",
       notes:
-        "Mozilla Observatory v2（2026-09-14 に Workers の本番URLで実測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-09-30 に独自ドメイン serviceanatomy.com で実測。Always Use HTTPS 有効化で http→https の減点は解消）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
   {
@@ -134,8 +134,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 92, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-07-14",
+      performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
@@ -149,8 +149,8 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 33, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-14",
-      notes: "Mozilla Observatory v2 満点。Lighthouseはdesktop 99/100/100/100・mobile 92/100/100/100（常時3D描画のTBTは適応fpsで280msまで削減）",
+      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-09-30",
+      notes: "Mozilla Observatory v2 満点。Lighthouseはdesktop 100/100/100/100・mobile 98/100/100/100（2026-09-30・median-of-3・TBT 0ms）",
     },
   },
   {
@@ -346,8 +346,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 89, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-27",
+      performance: 88, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
@@ -361,8 +361,8 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 65, measuredAt: "2026-09-27" },
     securityHeaders: {
-      grade: "A+", score: 115, passed: 11, total: 12, measuredAt: "2026-09-27",
-      notes: "Mozilla Observatory v2 A+（115・11/12）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 89/100/100/100（median-of-3・LCP 3.5s・CLS 0・TBT 0ms・TTFB 36ms）/ desktop 98/100/100/100（LCP 1.0s）。JSなしの特集ページとイベント個別ページは mobile 100（LCP 1.6s）。mobileのLCPは2026-07-30（Vercel時 2.3s）から伸びており、要因の切り分けは未実施",
+      grade: "A+", score: 115, passed: 11, total: 12, measuredAt: "2026-09-30",
+      notes: "Mozilla Observatory v2 A+（115・11/12）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 88/100/100/100（2026-09-30・median-of-3・LCP 3.6s・CLS 0・TBT 0ms）/ desktop 99/100/100/100（LCP 0.8s）。JSなしの特集ページとイベント個別ページは mobile 100（LCP 1.6s）。mobileのLCPは2026-07-30（Vercel時 2.3s）から伸びており、要因の切り分けは未実施",
     },
   },
   {
@@ -483,11 +483,11 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 96,
-      accessibility: 96,
+      performance: 91,
+      accessibility: 100,
       bestPractices: 96,
       seo: 100,
-      measuredAt: "2026-08-28",
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 100,
@@ -514,11 +514,11 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+",
       score: 120,
-      passed: 10,
-      total: 10,
-      measuredAt: "2026-08-28",
+      passed: 12,
+      total: 12,
+      measuredAt: "2026-09-30",
       notes:
-        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100で安定。モバイルperfは50→96(カメラ5,720件をバンドルから外して静的JSONにし、ピンをまとめてクラスタに渡した。LCP 7.8→2.7秒、TBT 2,940→51ms)。a11y 96は密集したLeafletマーカーのタップ標的間隔、best-practices 96はOSMラスタタイルに@2xが無いことによる構造的上限",
+        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100で安定。モバイルperfは50→96(カメラ5,720件をバンドルから外して静的JSONにし、ピンをまとめてクラスタに渡した。LCP 7.8→2.7秒、TBT 2,940→51ms)。2026-09-30 の再計測は mobile 91/100/96/100（median-of-3）・desktop 100/100/100/100。a11y は 96→100 に改善。best-practices 96はOSMラスタタイルに@2xが無いことによる構造的上限",
     },
   },
   {
@@ -565,8 +565,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-07-08",
+      performance: 96, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
@@ -580,7 +580,7 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 33, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-07-08",
+      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-09-30",
       notes: "Mozilla Observatory v2 満点。デスクトップLighthouseも100/100/100/100",
     },
   },
@@ -619,8 +619,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 100, accessibility: 100, bestPractices: 100, seo: 60,
-      measuredAt: "2026-07-01",
+      performance: 99, accessibility: 100, bestPractices: 100, seo: 63,
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
@@ -634,8 +634,8 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 51, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-07-01",
-      notes: "Mozilla Observatory v2 で 9/10。CSP は recharts / Next のインライン用に script-src 'unsafe-inline' を許容しており CSP 項目で減点（A+ 化には nonce 化が必要）",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30",
+      notes: "Mozilla Observatory v2 で 10/12（2026-09-30）。失点は CSP -20 と Cloudflare Web Analytics ビーコンの SRI -5。CSP は recharts / Next のインライン用に script-src 'unsafe-inline' を許容しており CSP 項目で減点（A+ 化には nonce 化が必要）",
     },
   },
   {
@@ -663,7 +663,7 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🏔️",
-    lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 95, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     testCoverage: {
       statements: 92.44, branches: 77.63, functions: 88.77, lines: 93.63,
       tests: 372, measuredAt: "2026-08-06",
@@ -675,7 +675,7 @@ export const rawProjects: RawProject[] = [
       notes: "vitest v4 / @vitejs/plugin-react v6 へ更新 + brace-expansion override で0件化",
     },
     secretScan: { leaks: 0, commits: 98, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "hyper-tetris",
@@ -701,13 +701,13 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🟦",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 69, tool: "npm", measuredAt: "2026-08-06",
     },
     secretScan: { leaks: 0, commits: 24, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B+", score: 80, passed: 11, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "housing-performance-simulator",
@@ -733,7 +733,7 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🏠",
-    lighthouseScores: { performance: 99, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     testCoverage: {
       statements: 96.45, branches: 90.57, functions: 93.99, lines: 97.01,
       tests: 324, measuredAt: "2026-08-06",
@@ -745,7 +745,7 @@ export const rawProjects: RawProject[] = [
       notes: "vitest v4 / @vitejs/plugin-react v6 へ更新 + brace-expansion override で0件化",
     },
     secretScan: { leaks: 0, commits: 70, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "ai-news-feed-app",
@@ -774,14 +774,14 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "📰",
-    lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 446, tool: "npm", measuredAt: "2026-08-06",
       notes: "brace-expansion (ReDoS) 解消済。/api/tts に同一オリジン確認+レート制限を追加",
     },
     secretScan: { leaks: 0, commits: 81, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B", score: 75, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "tricking-3d",
@@ -807,13 +807,13 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🤸",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 69, tool: "npm", measuredAt: "2026-08-06",
     },
     secretScan: { leaks: 0, commits: 22, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B+", score: 80, passed: 11, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "resume",
@@ -840,14 +840,14 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "📄",
-    lighthouseScores: { performance: 99, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 96, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 137, tool: "pnpm", measuredAt: "2026-08-06",
       notes: "pnpm-workspace.yaml の overrides で transitive な glob/minimatch/picomatch/brace-expansion/yaml/postcss を新版に固定",
     },
     secretScan: { leaks: 0, commits: 88, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B+", score: 80, passed: 11, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "elparaiso",
@@ -874,13 +874,13 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🌴",
-    lighthouseScores: { performance: 99, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 447, tool: "npm", measuredAt: "2026-08-06",
     },
     secretScan: { leaks: 0, commits: 99, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B", score: 75, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "my-apps-portal",
@@ -912,7 +912,7 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🗂️",
-    lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-05-17" },
+    lighthouseScores: { performance: 91, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
       tests: 39, measuredAt: "2026-08-06",
@@ -924,7 +924,7 @@ export const rawProjects: RawProject[] = [
       notes: "brace-expansion の override を ^5.0.9 に引き上げ GHSA-rgw5-rvv9-x895 (high) を解消。CI で npm audit --audit-level=high / gitleaks を強制",
     },
     secretScan: { leaks: 0, commits: 86, measuredAt: "2026-08-06" },
-    securityHeaders: { grade: "B+", score: 80, passed: 9, total: 10, measuredAt: "2026-05-20" },
+    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30" },
   },
   {
     id: "acro-finder",
@@ -955,8 +955,8 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "📍",
     lighthouseScores: {
-      performance: 93, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-05-20",
+      performance: 87, accessibility: 100, bestPractices: 96, seo: 100,
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 70.78, branches: 68.31, functions: 65.69, lines: 74.55,
@@ -970,9 +970,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 36, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-14",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30",
       notes:
-        "Mozilla Observatory v2（2026-09-14 に Workers の本番URLで実測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-09-30 に Workers の本番URLで再計測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
   {
@@ -1000,8 +1000,8 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "⌨️",
     lighthouseScores: {
-      performance: 99, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-06-23",
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
@@ -1015,8 +1015,8 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 23, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-06-23",
-      notes: "Mozilla Observatory v2 全10通過。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ HSTS/XFO 等",
+      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-09-30",
+      notes: "Mozilla Observatory v2 全12通過。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ HSTS/XFO 等",
     },
   },
   {
@@ -1054,13 +1054,13 @@ export const rawProjects: RawProject[] = [
       notes: "依存は three のみ（+ dev: vite/vitest/typescript）。npm audit 0件",
     },
     lighthouseScores: {
-      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-06-23",
+      performance: 99, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     secretScan: { leaks: 0, commits: 18, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-06-23",
-      notes: "Mozilla Observatory v2 全10通過（A+/120）。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ frame-src 'self' + HSTS/XFO 等",
+      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-09-30",
+      notes: "Mozilla Observatory v2 全12通過（A+/120）。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ frame-src 'self' + HSTS/XFO 等",
     },
   },
   {
@@ -1098,12 +1098,12 @@ export const rawProjects: RawProject[] = [
       notes: "依存は three のみ（+ dev: vite/vitest/typescript/esbuild）。npm audit 0件",
     },
     lighthouseScores: {
-      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-06-24",
+      performance: 97, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     secretScan: { leaks: 0, commits: 15, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 10, total: 10, measuredAt: "2026-06-24",
+      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-09-30",
       notes: "メインは厳格CSP（unsafe-inline/eval 不使用・script-src 'self'）+ HSTS/XFO/Referrer/Permissions。/sandbox.html のみ不透明オリジン内に緩和CSP(connect-src none)を限定。Observatory はサイトルート評価のため A+ 維持",
     },
   },
@@ -1145,14 +1145,14 @@ export const rawProjects: RawProject[] = [
       notes: "npm audit --audit-level=low 0件(postcssをoverridesで8.5.10+に固定しNext 16同梱分の脆弱性を回避)。CIにgitleaks/npm audit/Lighthouseリグレッションガードを組み込み済み",
     },
     lighthouseScores: {
-      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-07-15",
+      performance: 95, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-09-30",
     },
     secretScan: { leaks: 0, commits: 50, measuredAt: "2026-08-06" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-14",
+      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-09-30",
       notes:
-        "Mozilla Observatory v2（2026-09-14 に Workers の本番URLで実測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-09-30 に Workers の本番URLで再計測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
 ];

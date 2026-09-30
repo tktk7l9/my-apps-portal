@@ -170,12 +170,12 @@ export function ProjectDetailModal({
           {eyecatchSrc(project) && !ogpError && (
             <div className="relative -mx-4 -mt-4 mb-4 aspect-[1.91/1] overflow-hidden bg-white/5 sm:-mx-6 sm:-mt-6 sm:mb-6">
               {!ogpLoaded && (
-                <div className="absolute inset-0 animate-pulse bg-white/5" />
+                <div className="absolute inset-0 animate-pulse bg-white/5 motion-reduce:animate-none" />
               )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={eyecatchSrc(project)!}
-                alt={`${project.name} preview`}
+                alt={`${project.name} のプレビュー`}
                 className={`h-full w-full object-cover transition-opacity duration-300 ${ogpLoaded ? "opacity-100" : "opacity-0"}`}
                 onLoad={() => setOgpLoaded(true)}
                 onError={() => setOgpError(true)}
@@ -214,7 +214,7 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">技術的概要</p>
+                <h3 className="mb-3 text-xs font-medium text-muted">技術的概要</h3>
                 <Paragraphs
                   text={project.technicalOverview}
                   className="text-sm leading-relaxed text-slate-400"
@@ -228,7 +228,7 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">システム構成図</p>
+                <h3 className="mb-3 text-xs font-medium text-muted">システム構成図</h3>
                 <ArchitectureDiagram architecture={project.architecture} />
               </div>
             </>
@@ -239,7 +239,7 @@ export function ProjectDetailModal({
 
           {/* Tech stack */}
           <div>
-            <p className="mb-3 text-xs font-medium text-muted">技術スタック</p>
+            <h3 className="mb-3 text-xs font-medium text-muted">技術スタック</h3>
             <div className="space-y-2.5">
               {project.techVersions.map((t) => {
                 const key = `${t.name}@${t.version}`;
@@ -296,7 +296,7 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">使用サービス</p>
+                <h3 className="mb-3 text-xs font-medium text-muted">使用サービス</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {project.services.map((s) => (
                     <a
@@ -319,10 +319,10 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">
+                <h3 className="mb-3 text-xs font-medium text-muted">
                   Lighthouse スコア
                   <span className="ml-2 text-muted">({project.lighthouseScores.measuredAt} 計測)</span>
-                </p>
+                </h3>
                 <LighthouseScoresDetail scores={project.lighthouseScores} />
               </div>
             </>
@@ -333,10 +333,10 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">
+                <h3 className="mb-3 text-xs font-medium text-muted">
                   Native 品質チェック
                   <span className="ml-2 text-muted">({project.nativeQuality.measuredAt} 計測)</span>
-                </p>
+                </h3>
                 <NativeQualityDetail quality={project.nativeQuality} />
                 {project.nativeQuality.notes && (
                   <p className="mt-3 text-xs leading-relaxed text-muted">{project.nativeQuality.notes}</p>
@@ -350,12 +350,12 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">
+                <h3 className="mb-3 text-xs font-medium text-muted">
                   Vitest カバレッジ
                   <span className="ml-2 text-muted">
                     ({project.testCoverage.tests} tests, {project.testCoverage.measuredAt} 計測)
                   </span>
-                </p>
+                </h3>
                 <TestCoverageDetail coverage={project.testCoverage} />
                 {project.testCoverage.notes && (
                   <p className="mt-3 text-xs leading-relaxed text-muted">{project.testCoverage.notes}</p>
@@ -369,13 +369,13 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">
+                <h3 className="mb-3 text-xs font-medium text-muted">
                   セキュリティスコア
                   <span className="ml-2 text-muted">
                     ({project.securityScores.tool === "none" ? "依存なし" : `${project.securityScores.tool} audit`},
                     {" "}{project.securityScores.totalDependencies} deps, {project.securityScores.measuredAt} 計測)
                   </span>
-                </p>
+                </h3>
                 <SecurityScoresDetail scores={project.securityScores} />
                 {project.securityScores.notes && (
                   <p className="mt-3 text-xs leading-relaxed text-muted">{project.securityScores.notes}</p>
@@ -389,12 +389,12 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">
+                <h3 className="mb-3 text-xs font-medium text-muted">
                   Secret スキャン
                   <span className="ml-2 text-muted">
                     (gitleaks, {project.secretScan.commits} commits, {project.secretScan.measuredAt} 計測)
                   </span>
-                </p>
+                </h3>
                 <SecretScanDetail scan={project.secretScan} />
                 {project.secretScan.notes && (
                   <p className="mt-3 text-xs leading-relaxed text-muted">{project.secretScan.notes}</p>
@@ -408,12 +408,12 @@ export function ProjectDetailModal({
             <>
               <div className="my-5 border-t border-white/5" />
               <div>
-                <p className="mb-3 text-xs font-medium text-muted">
+                <h3 className="mb-3 text-xs font-medium text-muted">
                   HTTP セキュリティヘッダー
                   <span className="ml-2 text-muted">
                     (Mozilla Observatory, {project.securityHeaders.measuredAt} 計測)
                   </span>
-                </p>
+                </h3>
                 <SecurityHeadersDetail headers={project.securityHeaders} />
                 {project.securityHeaders.notes && (
                   <p className="mt-3 text-xs leading-relaxed text-muted">{project.securityHeaders.notes}</p>
@@ -452,24 +452,33 @@ function ModalLinks({ project }: { project: Project }) {
         >
           <ExternalIcon size={11} />
           Live
+          <span className="sr-only">（新しいタブ）</span>
         </a>
       )}
-      <a
-        href={hasRepo ? project.githubUrl : undefined}
-        target={hasRepo ? "_blank" : undefined}
-        rel="noopener noreferrer"
-        className={`inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-xs font-medium transition-colors sm:min-h-9 ${
-          hasRepo
-            ? "bg-white/8 text-slate-300 hover:bg-white/15"
-            : "cursor-default bg-white/5 text-muted"
-        }`}
-      >
-        <GitHubIcon />
-        GitHub
-        <span className={`rounded-md px-1.5 py-0.5 text-xs ring-1 ${vis.className}`}>
-          {vis.label}
+      {/* A repository that is not on GitHub is plain text, not a link that goes nowhere (SHIG 22, 55) */}
+      {hasRepo ? (
+        <a
+          href={project.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-white/8 px-3 text-xs font-medium text-slate-300 transition-colors hover:bg-white/15 sm:min-h-9"
+        >
+          <GitHubIcon />
+          GitHub
+          <span className={`rounded-md px-1.5 py-0.5 text-xs ring-1 ${vis.className}`}>
+            {vis.label}
+          </span>
+          <span className="sr-only">（新しいタブ）</span>
+        </a>
+      ) : (
+        <span className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-white/5 px-3 text-xs font-medium text-muted sm:min-h-9">
+          <GitHubIcon />
+          GitHub
+          <span className={`rounded-md px-1.5 py-0.5 text-xs ring-1 ${vis.className}`}>
+            {vis.label}
+          </span>
         </span>
-      </a>
+      )}
     </div>
   );
 }

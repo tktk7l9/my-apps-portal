@@ -74,7 +74,7 @@ export type SecurityHeaders = {
   grade: string | null;
   /** 0..135 (Observatory score; above 100 is A+) */
   score: number | null;
-  /** Number of tests passed (out of 10) */
+  /** Number of tests passed (out of `total`; Observatory v2 runs 12 tests) */
   passed?: number;
   total?: number;
   /** ISO date */

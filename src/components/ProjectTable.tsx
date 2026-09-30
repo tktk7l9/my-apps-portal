@@ -646,14 +646,15 @@ function ProjectRow({
               サイト
             </a>
           )}
-          {/* Every row says "repo", so the accessible name carries the project (WCAG 2.4.4);
+          {/* Every row says "repo", so the accessible name carries the project (WCAG 2.4.4) and
+              keeps the visible word "repo" so voice control can target it (WCAG 2.5.3);
               a repository that is not on GitHub is plain text, not a link that goes nowhere (SHIG 22, 55) */}
           {hasRepo ? (
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${project.name} の GitHub リポジトリ（新しいタブ）`}
+              aria-label={`${project.name} の GitHub repo（新しいタブ）`}
               className="inline-flex min-h-7 items-center gap-1 text-xs text-slate-400 hover:text-white"
             >
               <GitHubIcon />

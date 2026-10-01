@@ -1,6 +1,6 @@
 export function ProjectTableSkeleton() {
   return (
-    <div className="space-y-3 animate-pulse">
+    <div className="space-y-3 animate-pulse motion-reduce:animate-none">
       {/* Category + search row */}
       <div className="flex flex-wrap items-center gap-2">
         {[56, 60, 76, 60, 56].map((w, i) => (

@@ -399,11 +399,16 @@ function Th({ children }: { children: React.ReactNode }) {
   return <th className="px-3 py-3 font-medium">{children}</th>;
 }
 
+/** The arrow is decorative; the active sort is also named in text so a screen reader
+ *  can tell which of two buttons in one column (作成日 / 更新日) drives the order (SHIG 96) */
 function SortArrow({ active, dir }: { active: boolean; dir: SortDir }) {
   return (
-    <span aria-hidden="true" className={active ? "text-indigo-400" : "text-muted"}>
-      {active && dir === "asc" ? "↑" : active && dir === "desc" ? "↓" : "↕"}
-    </span>
+    <>
+      <span aria-hidden="true" className={active ? "text-indigo-400" : "text-muted"}>
+        {active && dir === "asc" ? "↑" : active && dir === "desc" ? "↓" : "↕"}
+      </span>
+      {active && <span className="sr-only">{dir === "asc" ? "（昇順で並び替え中）" : "（降順で並び替え中）"}</span>}
+    </>
   );
 }
 
@@ -641,17 +646,26 @@ function ProjectRow({
               サイト
             </a>
           )}
-          <a
-            href={hasRepo ? project.githubUrl : undefined}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex min-h-7 items-center gap-1 text-xs ${
-              hasRepo ? "text-slate-400 hover:text-white" : "cursor-default text-muted"
-            }`}
-          >
-            <GitHubIcon />
-            repo
-          </a>
+          {/* Every row says "repo", so the accessible name carries the project (WCAG 2.4.4) and
+              keeps the visible word "repo" so voice control can target it (WCAG 2.5.3);
+              a repository that is not on GitHub is plain text, not a link that goes nowhere (SHIG 22, 55) */}
+          {hasRepo ? (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${project.name} の GitHub repo（新しいタブ）`}
+              className="inline-flex min-h-7 items-center gap-1 text-xs text-slate-400 hover:text-white"
+            >
+              <GitHubIcon />
+              repo
+            </a>
+          ) : (
+            <span className="inline-flex min-h-7 items-center gap-1 text-xs text-muted">
+              <GitHubIcon />
+              repo
+            </span>
+          )}
           <span className={`inline-flex w-fit items-center gap-1 rounded-md px-2 py-0.5 text-xs ring-1 ${vis.className}`}>
             {project.githubVisibility === "private" && <LockIcon />}
             {vis.label}

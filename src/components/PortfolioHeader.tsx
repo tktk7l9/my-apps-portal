@@ -29,6 +29,7 @@ export function PortfolioHeader() {
             className="inline-flex items-center gap-1.5 rounded-md bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 ring-1 ring-white/10 transition-colors hover:bg-white/10 hover:text-white"
           >
             {label}
+            <span className="sr-only">（新しいタブ）</span>
             <svg
               className="h-3.5 w-3.5"
               viewBox="0 0 24 24"

@@ -1,4 +1,5 @@
 import { pickMeaningfulCommitDate, type CommitLike } from "@/lib/commit-date";
+import { fulfilledEntries } from "@/lib/settled";
 
 /**
  * Returns the date of the last meaningful change per repository.
@@ -30,12 +31,5 @@ export async function getLastCommitDates(
       return [id, date];
     })
   );
-  return Object.fromEntries(
-    results
-      .filter(
-        (r): r is PromiseFulfilledResult<[string, string]> =>
-          r.status === "fulfilled"
-      )
-      .map((r) => r.value)
-  );
+  return fulfilledEntries(results);
 }

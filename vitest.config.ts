@@ -23,6 +23,7 @@ export default defineConfig({
         "src/lib/version-spec.ts",
         "src/lib/project-list.ts",
         "src/lib/ogp.ts",
+        "src/lib/settled.ts",
       ],
       thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
     },

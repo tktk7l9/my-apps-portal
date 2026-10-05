@@ -1,4 +1,5 @@
 import { packageMeta } from "@/lib/projects";
+import { fulfilledEntries } from "@/lib/settled";
 
 export type VersionStatus = "latest" | "outdated" | "vulnerable" | "unknown";
 
@@ -26,11 +27,7 @@ async function fetchLatestVersions(pkgs: string[]): Promise<Record<string, strin
       return [pkg, data.version];
     })
   );
-  return Object.fromEntries(
-    results
-      .filter((r): r is PromiseFulfilledResult<[string, string]> => r.status === "fulfilled")
-      .map((r) => r.value)
-  );
+  return fulfilledEntries(results);
 }
 
 async function fetchVulnerableKeys(

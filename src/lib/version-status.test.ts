@@ -42,7 +42,7 @@ afterEach(() => {
 });
 
 describe("getVersionStatuses", () => {
-  it("チェック対象外のバージョン表記は unknown にする", async () => {
+  it("marks unsupported version notations as unknown", async () => {
     const fetchMock = mockFetch({});
     const { statuses } = await getVersionStatuses([
       { techName: "Next.js", version: "—" },
@@ -57,7 +57,7 @@ describe("getVersionStatuses", () => {
     expect(calledUrls.some((u) => u.startsWith("https://registry.npmjs.org/"))).toBe(false);
   });
 
-  it("packageMeta に無い技術名は unknown にする", async () => {
+  it("marks tech names missing from packageMeta as unknown", async () => {
     // Give "next" a real entry: if a regression makes the reverse lookup resolve by mistake,
     // this entry gets queried from the registry and the check below catches it.
     const fetchMock = mockFetch({ npmVersions: { next: "16.2.12" } });
@@ -70,7 +70,7 @@ describe("getVersionStatuses", () => {
     expect(calledUrls.some((u) => u.startsWith("https://registry.npmjs.org/"))).toBe(false);
   });
 
-  it("最新版と一致すれば latest、古ければ outdated にする", async () => {
+  it("marks latest when it matches the newest version, outdated otherwise", async () => {
     mockFetch({
       npmVersions: { next: "16.2.12", react: "19.2.8" },
       osv: { ok: true, vulnFlags: [false, false] },
@@ -84,7 +84,7 @@ describe("getVersionStatuses", () => {
     expect(latestVersions["React@19.0.0"]).toBe("19.2.8");
   });
 
-  it("OSV が脆弱性を返したら vulnerable を最優先にする", async () => {
+  it("gives vulnerable top priority when OSV reports a vulnerability", async () => {
     mockFetch({
       npmVersions: { next: "16.2.12" },
       osv: { ok: true, vulnFlags: [true] },
@@ -95,7 +95,7 @@ describe("getVersionStatuses", () => {
     expect(statuses["Next.js@16.2.12"]).toBe("vulnerable");
   });
 
-  it("npm registry が 404 を返したら unknown にする", async () => {
+  it("marks unknown when the npm registry returns 404", async () => {
     mockFetch({ npmVersions: {}, osv: { ok: true, vulnFlags: [false] } });
     const { statuses, latestVersions } = await getVersionStatuses([
       { techName: "Next.js", version: "16.2.12" },
@@ -104,7 +104,7 @@ describe("getVersionStatuses", () => {
     expect(latestVersions["Next.js@16.2.12"]).toBeUndefined();
   });
 
-  it("OSV がエラー応答を返しても脆弱性なしとして続行する", async () => {
+  it("continues as not vulnerable when OSV returns an error response", async () => {
     mockFetch({ npmVersions: { next: "16.2.12" }, osv: { ok: false } });
     const { statuses } = await getVersionStatuses([
       { techName: "Next.js", version: "16.2.12" },
@@ -112,7 +112,7 @@ describe("getVersionStatuses", () => {
     expect(statuses["Next.js@16.2.12"]).toBe("latest");
   });
 
-  it("OSV への通信が例外を投げても脆弱性なしとして続行する", async () => {
+  it("continues as not vulnerable when the OSV request throws", async () => {
     mockFetch({
       npmVersions: { next: "16.2.12" },
       osv: { ok: true, throws: true },
@@ -123,7 +123,7 @@ describe("getVersionStatuses", () => {
     expect(statuses["Next.js@16.2.12"]).toBe("latest");
   });
 
-  it("レンジ宣言のバージョンは OSV に問い合わせない", async () => {
+  it("does not query OSV for range-declared versions", async () => {
     // A declaration like acro-finder's `^16.2.10`. The displayed 16.2.10 is the range's
     // lower bound, not what the lockfile resolves, so this prevents picking up the lower bound's
     // vulnerabilities and permanently showing it as vulnerable.
@@ -145,7 +145,7 @@ describe("getVersionStatuses", () => {
     expect(osvCalls).toHaveLength(0);
   });
 
-  it("同じキーが厳密指定でも現れるならそちらを採用して OSV に問い合わせる", async () => {
+  it("uses the exact version and queries OSV when the same key also appears pinned", async () => {
     // If another project pins the same version exactly, the real version is known, so querying is fine
     mockFetch({
       npmVersions: { next: "16.3.0" },

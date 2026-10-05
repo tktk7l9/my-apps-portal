@@ -4,7 +4,7 @@
  * modal and a specific work can be linked or shared.
  */
 
-export const WORK_PARAM = "work";
+const WORK_PARAM = "work";
 
 /** Returns the work id in a `location.search` string, or null when absent/empty */
 export function readWorkParam(search: string): string | null {

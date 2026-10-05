@@ -5,7 +5,7 @@ import {
 } from "@/lib/version-filter";
 
 describe("filterVersionStatusesForProjects", () => {
-  it("渡した projects の techVersions に含まれるキーだけを残す", () => {
+  it("keeps only keys found in the given projects' techVersions", () => {
     const versionStatuses = {
       "Next.js@16.2.12": "latest" as const,
       "React@19.0.0": "outdated" as const,
@@ -24,7 +24,7 @@ describe("filterVersionStatusesForProjects", () => {
     expect(result).toEqual({ "Next.js@16.2.12": "latest" });
   });
 
-  it("複数プロジェクト分のキーを和集合で残す", () => {
+  it("keeps the union of keys across projects", () => {
     const versionStatuses = {
       "Next.js@16.2.12": "latest" as const,
       "React@19.0.0": "outdated" as const,
@@ -51,12 +51,12 @@ describe("filterVersionStatusesForProjects", () => {
     });
   });
 
-  it("projects が空なら空オブジェクトを返す", () => {
+  it("returns an empty object when projects is empty", () => {
     const versionStatuses = { "Next.js@16.2.12": "latest" as const };
     expect(filterVersionStatusesForProjects(versionStatuses, [])).toEqual({});
   });
 
-  it("versionStatuses が空なら空オブジェクトを返す", () => {
+  it("returns an empty object when versionStatuses is empty", () => {
     const projects = [
       {
         techVersions: [
@@ -67,7 +67,7 @@ describe("filterVersionStatusesForProjects", () => {
     expect(filterVersionStatusesForProjects({}, projects)).toEqual({});
   });
 
-  it("projects の techVersions に無いキーは除外する", () => {
+  it("drops keys not in the projects' techVersions", () => {
     const versionStatuses = {
       "Next.js@16.2.12": "latest" as const,
       "React@19.0.0": "outdated" as const,
@@ -92,7 +92,7 @@ describe("collectVersionCheckEntries", () => {
     version: "16.3.0",
   };
 
-  it("techVersions を照会単位へ平坦化する", () => {
+  it("flattens techVersions into lookup entries", () => {
     const projects = [
       { techVersions: [nextTech] },
       {
@@ -108,7 +108,7 @@ describe("collectVersionCheckEntries", () => {
     ]);
   });
 
-  it("staticTech を宣言したプロジェクトは丸ごと除外する", () => {
+  it("skips projects that declare staticTech entirely", () => {
     // agent-cockpit declares only majors, React "19" / TypeScript "6.0",
     // so comparing against the npm registry would always report outdated
     const projects = [
@@ -129,7 +129,7 @@ describe("collectVersionCheckEntries", () => {
     ]);
   });
 
-  it("versionIsRange をそのまま引き継ぐ", () => {
+  it("carries versionIsRange over as is", () => {
     const projects = [
       {
         techVersions: [
@@ -145,7 +145,7 @@ describe("collectVersionCheckEntries", () => {
     ]);
   });
 
-  it("空配列なら空配列を返す", () => {
+  it("returns an empty array for an empty array", () => {
     expect(collectVersionCheckEntries([])).toEqual([]);
   });
 });

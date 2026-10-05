@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
 import "./globals.css";
@@ -33,11 +34,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Reading the request headers makes every page render per request, which the nonce CSP needs.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html lang="ja" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
@@ -50,6 +53,7 @@ export default function RootLayout({
             type="module" scripts are deferred by spec, so this does not block the parser */}
         <script
           type="module"
+          nonce={nonce}
           src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon={'{"token": "cd156fbf0fd24da0a12e58fdb4e63828"}' /* gitleaks:allow */}
         />

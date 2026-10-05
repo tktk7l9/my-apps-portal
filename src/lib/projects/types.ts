@@ -40,7 +40,8 @@ export type TestCoverage = {
   notes?: string;
 };
 
-/** Security score based on npm/pnpm audit.
+/** Security score based on npm/pnpm audit of production dependencies only
+ *  (`npm audit --omit=dev` / `pnpm audit --prod`); dev-only advisories go in `notes`.
  *  score = max(0, 100 - 25*critical - 10*high - 3*moderate - 1*low) */
 export type SecurityScores = {
   /** 0..100 */
@@ -49,7 +50,7 @@ export type SecurityScores = {
   high: number;
   moderate: number;
   low: number;
-  /** Number of dependencies scanned by audit (production + dev) */
+  /** Number of production dependencies scanned by audit */
   totalDependencies: number;
   /** "npm" | "pnpm", etc. */
   tool: "npm" | "pnpm" | "none";

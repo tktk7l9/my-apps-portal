@@ -372,7 +372,7 @@ export function ProjectDetailModal({
                 <h3 className="mb-3 text-xs font-medium text-muted">
                   セキュリティスコア
                   <span className="ml-2 text-muted">
-                    ({project.securityScores.tool === "none" ? "依存なし" : `${project.securityScores.tool} audit`},
+                    ({project.securityScores.tool === "none" ? "依存なし" : `本番依存・${project.securityScores.tool} audit`},
                     {" "}{project.securityScores.totalDependencies} deps, {project.securityScores.measuredAt} 計測)
                   </span>
                 </h3>

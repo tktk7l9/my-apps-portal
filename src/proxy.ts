@@ -18,12 +18,10 @@ export function proxy(request: NextRequest) {
 }
 
 // Only HTML routes need a nonce; skip static files, generated images and prefetches.
-// Skipped paths get FALLBACK_CSP from next.config.ts instead (see FALLBACK_CSP_SOURCES).
-// /api/ogp (third-party image relay) is not skipped, so it gets this CSP.
 export const config = {
   matcher: [
     {
-      source: "/((?!_next/static/|_next/image$|favicon\\.ico$|icon\\.svg$|opengraph-image$|api/og/|og/|favicons/).*)",
+      source: "/((?!_next/static|_next/image|favicon.ico|icon.svg|opengraph-image|api/og|og/|favicons/).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },

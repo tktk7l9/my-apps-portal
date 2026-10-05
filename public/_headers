@@ -1,8 +1,0 @@
-# Static files under public/ are served by Workers static assets without running the Worker,
-# so next.config headers never reach them. Same strict CSP as FALLBACK_CSP in src/lib/csp.ts.
-/og/*
-  Content-Security-Policy: default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
-  X-Content-Type-Options: nosniff
-/favicons/*
-  Content-Security-Policy: default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
-  X-Content-Type-Options: nosniff

@@ -1,0 +1,27 @@
+name: Scheduled rebuild
+
+# "/" is prerendered at build time and served as a static asset, so the versions, OSV
+# results and commit dates only change when the site is rebuilt. This calls the Workers
+# Builds deploy hook every 3 hours. Set the hook URL as the DEPLOY_HOOK_URL repository
+# secret (Workers & Pages > my-apps-portal > Settings > Builds > Deploy Hooks).
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the Workers Builds deploy hook
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::warning::DEPLOY_HOOK_URL is not set; skipping the rebuild"
+            exit 0
+          fi
+          curl -fsS -m 30 -X POST "$DEPLOY_HOOK_URL" > /dev/null

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { eyecatchSrc } from "@/lib/eyecatch";
+import { eyecatchSrc, generatedEyecatchIds, projectIdFromEyecatchParam } from "@/lib/eyecatch";
 
 describe("eyecatchSrc", () => {
   it("uses ogImage as is when it is set", () => {
@@ -31,5 +31,25 @@ describe("eyecatchSrc", () => {
 
   it("returns null when neither exists (the caller falls back to an emoji)", () => {
     expect(eyecatchSrc({})).toBeNull();
+  });
+});
+
+describe("generatedEyecatchIds", () => {
+  it("lists only projects whose ogImage points at their own generated image", () => {
+    expect(
+      generatedEyecatchIds([
+        { id: "a", ogImage: "/api/og/a.png" },
+        { id: "b", ogImage: "/og/b.png" },
+        { id: "c", ogImage: "/api/og/a.png" },
+        { id: "d" },
+      ])
+    ).toEqual(["a"]);
+  });
+});
+
+describe("projectIdFromEyecatchParam", () => {
+  it("strips the .png suffix and keeps the older extensionless form working", () => {
+    expect(projectIdFromEyecatchParam("roba-hud.png")).toBe("roba-hud");
+    expect(projectIdFromEyecatchParam("roba-hud")).toBe("roba-hud");
   });
 });

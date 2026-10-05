@@ -14,3 +14,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   `audit-allowlist.json`. An entry needs a reason and an `expires` date (keep it about a month out), and
   `devOnly: true` stops matching once the package becomes reachable from production dependencies. The gate also
   fails when an allowlisted advisory gets a fix, so the entry is removed by updating rather than forgotten.
+
+## Static home page and eyecatches
+
+- `/`, `/icon.svg`, `/opengraph-image` and `/api/og/<id>.png` are prerendered by `next build` and copied into
+  `public/` by `scripts/export-static.mjs` (the `build` script), so OpenNext ships them as Workers static assets.
+  Static assets are served without running the Worker; rendering per request exceeded the free plan's CPU
+  limit (error 1102). Do not make these routes dynamic.
+- Security headers live in `src/lib/security-headers.ts`: next.config.ts applies them to Worker responses and
+  the script writes them to `public/_headers` for static assets.
+- Data on `/` is as fresh as the last build. `.github/workflows/rebuild.yml` calls the Workers Builds deploy hook
+  every 3 hours (repository secret `DEPLOY_HOOK_URL`).

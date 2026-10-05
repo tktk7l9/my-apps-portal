@@ -43,3 +43,10 @@ next-env.d.ts
 # Cloudflare (OpenNext) build output
 .open-next/
 .wrangler/
+
+# Generated into public/ by scripts/export-static.ts (served as static assets)
+/public/index.html
+/public/icon.svg
+/public/opengraph-image
+/public/api/
+/public/_headers

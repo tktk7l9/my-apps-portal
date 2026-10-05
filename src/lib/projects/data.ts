@@ -24,7 +24,7 @@ export const rawProjects: RawProject[] = [
     // Private repository with no liveUrl, so the card is generated from the project data.
     // It uses only name / category / platform / staticTech and includes no company names,
     // properties or tenants (description is not used), staying within confidentiality
-    ogImage: "/api/og/client-realestate-admin",
+    ogImage: "/api/og/client-realestate-admin.png",
     emoji: "🏢",
     kind: "client",
     technicalOverview:
@@ -177,7 +177,7 @@ export const rawProjects: RawProject[] = [
     githubVisibility: "public",
     favicon: "/favicons/agent-cockpit.svg",
     // Electron app without a web page, so the card is generated from the project data
-    ogImage: "/api/og/agent-cockpit",
+    ogImage: "/api/og/agent-cockpit.png",
     emoji: "🎛️",
     technicalOverview:
       "Electron（electron-vite + React 19 + zustand + CodeMirror 6）。全ロジックを純関数の lib 層（FileSnapshot→FileEdit 変換・fs/Electron 非依存）に隔離し、書込は planMutation に一本化 — これにより lib を plain node の vitest で 100% カバレッジゲートできる。\n\n設定ファイルは絶対に全体再直列化しない: JSON は jsonc-parser の modify/applyEdits によるテキスト編集（~/.claude.json の約70個の無関係キー・整形をバイト単位で保存）、TOML は toml-eslint-parser の AST レンジを外科的にスプライス（コメント生存）、markdown frontmatter は yaml Document API。\n\nmain プロセスは薄い fs ゲートウェイで、realpath 二重チェックのパス allowlist・auth.json/.env* denylist・バックアップ・atomic write を担う。renderer は contextIsolation + sandbox + 厳格 CSP + 型付き contextBridge API 1本のみ（リモートコンテンツなし）。",
@@ -247,7 +247,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/roba-hud",
     githubVisibility: "public",
     // macOS app without a web page, so the card is generated from the project data
-    ogImage: "/api/og/roba-hud",
+    ogImage: "/api/og/roba-hud.png",
     emoji: "🖲️",
     featuredRank: 4,
     highlight:
@@ -308,7 +308,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/chronoscroll",
     githubVisibility: "public",
     liveUrl: "https://chronoscroll.saitotakuya0719.workers.dev",
-    ogImage: "/api/og/chronoscroll",
+    ogImage: "/api/og/chronoscroll.png",
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
@@ -586,7 +586,7 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/utility-tracker",
     githubVisibility: "public",
     liveUrl: "https://utility-tracker.saitotakuya0719.workers.dev",
-    ogImage: "/api/og/utility-tracker",
+    ogImage: "/api/og/utility-tracker.png",
     emoji: "💡",
     technicalOverview:
       "Next.js App Router（クライアント描画のデータ端末、noindex）。集計の心臓部は src/lib の純関数（Vitest 100%）で、隔月請求の水道はカレンダー月へ日割り按分して月次系列に正規化する。CSV は文字コード選択(UTF-8/Shift_JIS)＋列マッピングで正規化し、unique(種別,期間)で冪等取込。保存は Supabase(Postgres)、認証はメール+パスワードの単一ユーザーで RLS を適用。グラフは recharts。",
@@ -896,11 +896,11 @@ export const rawProjects: RawProject[] = [
     ogImage: "/opengraph-image",
     favicon: "/favicons/my-apps-portal.svg",
     technicalOverview:
-      "Next.js の Server Components が npm registry・OSV・GitHub API を取得(1時間キャッシュ)し、各アプリのバージョン / 脆弱性 / 最終コミットを集約する。OGP 画像は掲載アプリの URL だけを許可する /api/ogp プロキシ経由(24時間キャッシュ)。アプリ定義は projects.ts に集約。",
+      "ビルド時に Next.js の Server Components が npm registry・OSV・GitHub API を取得して各アプリのバージョン / 脆弱性 / 最終コミットを集約し、トップページを静的ファイルとして配信する(Workers Builds の Deploy Hook で3時間ごとに再ビルド)。OGP 画像は掲載アプリの URL だけを許可する /api/ogp プロキシ経由(24時間キャッシュ)。アプリ定義は projects.ts に集約。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "フィルタ・ソート / 詳細モーダル", kind: "client" }], connector: "ページ取得 (HTTPS)" },
-        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "Server Components / api/ogp / 1h・24hキャッシュ", kind: "server" }], connector: "集約取得" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "ビルド時に集約 → 静的配信 / api/ogp(24hキャッシュ)", kind: "server" }], connector: "集約取得" },
         { nodes: [
           { label: "npm registry", kind: "external" },
           { label: "OSV API", kind: "external" },
@@ -938,7 +938,7 @@ export const rawProjects: RawProject[] = [
     githubVisibility: "public",
     liveUrl: "https://acro-finder.saitotakuya0719.workers.dev",
     // Keeps using the OGP image generated while Vercel was down
-    ogImage: "/api/og/acro-finder",
+    ogImage: "/api/og/acro-finder.png",
     favicon: "/favicons/acro-finder.svg",
     technicalOverview:
       "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。CSP は next.config.ts の静的ヘッダー方式(lib/csp.ts が正本)で、Cloudflare Workers(@opennextjs/cloudflare)に配信。問い合わせは Resend の Server Action。",
@@ -1123,7 +1123,7 @@ export const rawProjects: RawProject[] = [
     githubVisibility: "public",
     liveUrl: "https://ai-primer.saitotakuya0719.workers.dev",
     // Keeps using the OGP image generated while Vercel was down
-    ogImage: "/api/og/ai-primer",
+    ogImage: "/api/og/ai-primer.png",
     favicon: "/favicons/ai-primer.svg",
     technicalOverview:
       "Next.js 16 (App Router) + React 19。CSPは next.config.ts の静的ヘッダー方式(src/lib/csp.ts が正本)。2026-09-12 に per-request nonce から移行した — Next 16 の proxy は Node ランタイム専用で、OpenNext(Cloudflare Workers)が Node middleware 非対応のため nonce を残すと移行できなかった。全ルート SSG で CDN に載る。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",

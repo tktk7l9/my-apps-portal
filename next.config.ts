@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
+import { FALLBACK_CSP, FALLBACK_CSP_SOURCES } from "./src/lib/csp";
 
-// The Content-Security-Policy header is set per request in src/proxy.ts (nonce-based).
+// The page CSP is set per request in src/proxy.ts (nonce-based). Paths the proxy skips get
+// a strict static CSP here, so every path carries exactly one CSP header.
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -27,6 +29,10 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      ...FALLBACK_CSP_SOURCES.map((source) => ({
+        source,
+        headers: [{ key: "Content-Security-Policy", value: FALLBACK_CSP }],
+      })),
     ];
   },
 };

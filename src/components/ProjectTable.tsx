@@ -296,7 +296,7 @@ export function ProjectTable({
       <p className="hidden text-xs leading-relaxed text-slate-400 lg:block">
         Lighthouse は P=Performance・A=Accessibility・BP=Best Practices・SEO、
         Vitest はカバレッジ S=Statements・Br=Branches・F=Functions・L=Lines（%）。
-        Security は依存パッケージの脆弱性スコア、Secrets は git 履歴の秘密情報の検出件数、Headers は HTTP セキュリティヘッダーの評価です。
+        Security は本番依存パッケージの脆弱性スコア、Secrets は git 履歴の秘密情報の検出件数、Headers は HTTP セキュリティヘッダーの評価です。
         計測日や内訳は作品名から詳細を開くと表示されます。
       </p>
 

@@ -7,7 +7,7 @@ export type PortfolioStats = {
   liveProjects: number;
   /** Sum of testCoverage.tests */
   totalTests: number;
-  /** Sum of npm audit critical + high + moderate + low */
+  /** Sum of production-dependency audit critical + high + moderate + low */
   totalVulnerabilities: number;
   /** Sum of gitleaks findings */
   totalSecretLeaks: number;

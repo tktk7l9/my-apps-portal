@@ -1,6 +1,20 @@
 import type { NextConfig } from "next";
 
-// The Content-Security-Policy header is set per request in src/proxy.ts (nonce-based).
+const isDev = process.env.NODE_ENV === "development";
+
+const cspHeader = `
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com${isDev ? " 'unsafe-eval'" : ""};
+  connect-src 'self' https://cloudflareinsights.com;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' blob: data: https://*.saitotakuya0719.workers.dev;
+  font-src 'self';
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+  frame-ancestors 'none';
+  upgrade-insecure-requests;
+`;
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -9,6 +23,10 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
+          {
+            key: "Content-Security-Policy",
+            value: cspHeader.replace(/\s{2,}/g, " ").trim(),
+          },
           {
             key: "X-Content-Type-Options",
             value: "nosniff",

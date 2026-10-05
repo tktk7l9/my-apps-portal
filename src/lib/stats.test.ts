@@ -4,7 +4,7 @@ import { makeProject } from "@/lib/test-fixtures";
 import { rawProjects } from "@/lib/projects";
 
 describe("computePortfolioStats", () => {
-  it("空配列ならすべて 0 で、平均・計測日レンジは null になる", () => {
+  it("returns all zeros and null average and measured date range for an empty array", () => {
     expect(computePortfolioStats([])).toEqual({
       totalProjects: 0,
       liveProjects: 0,
@@ -19,7 +19,7 @@ describe("computePortfolioStats", () => {
     });
   });
 
-  it("kind: client の実務案件を集計から除外する", () => {
+  it("excludes kind: client projects from the totals", () => {
     const stats = computePortfolioStats([
       makeProject({ id: "a" }),
       makeProject({ id: "b", kind: "client" }),
@@ -28,7 +28,7 @@ describe("computePortfolioStats", () => {
     expect(stats.totalProjects).toBe(2);
   });
 
-  it("liveUrl を持つ作品だけを liveProjects に数える", () => {
+  it("counts only projects with a liveUrl as liveProjects", () => {
     const stats = computePortfolioStats([
       makeProject({ id: "a", liveUrl: "https://example.com" }),
       makeProject({ id: "b" }),
@@ -36,7 +36,7 @@ describe("computePortfolioStats", () => {
     expect(stats.liveProjects).toBe(1);
   });
 
-  it("テスト数・脆弱性・シークレット検出を合計する", () => {
+  it("sums tests, vulnerabilities and secret findings", () => {
     const stats = computePortfolioStats([
       makeProject({
         id: "a",
@@ -68,7 +68,7 @@ describe("computePortfolioStats", () => {
     expect(stats.totalSecretLeaks).toBe(7);
   });
 
-  it("Lighthouse Performance の平均を小数第1位で丸め、90 以上の件数を数える", () => {
+  it("rounds the Lighthouse Performance average to one decimal and counts scores of 90 or more", () => {
     const lh = (performance: number) => ({
       performance, accessibility: 100, bestPractices: 100, seo: 100,
       measuredAt: "2026-01-01",
@@ -84,7 +84,7 @@ describe("computePortfolioStats", () => {
     expect(stats.lighthouseMeasuredCount).toBe(3);
   });
 
-  it("平均が割り切れない場合は小数第1位に丸める", () => {
+  it("rounds a non-terminating average to one decimal", () => {
     const lh = (performance: number) => ({
       performance, accessibility: 100, bestPractices: 100, seo: 100,
       measuredAt: "2026-01-01",
@@ -98,7 +98,7 @@ describe("computePortfolioStats", () => {
     expect(stats.avgLighthousePerformance).toBe(96.3);
   });
 
-  it("実務案件は Lighthouse 集計にも含めない", () => {
+  it("excludes client work from the Lighthouse totals too", () => {
     const stats = computePortfolioStats([
       makeProject({
         id: "client",
@@ -113,7 +113,7 @@ describe("computePortfolioStats", () => {
     expect(stats.lighthouseMeasuredCount).toBe(0);
   });
 
-  it("testCoverage / lighthouseScores の measuredAt から最も古い・新しい日付を求める", () => {
+  it("finds the oldest and newest measuredAt across testCoverage / lighthouseScores", () => {
     const stats = computePortfolioStats([
       makeProject({
         id: "a",
@@ -134,7 +134,7 @@ describe("computePortfolioStats", () => {
     expect(stats.newestMeasuredAt).toBe("2026-08-05");
   });
 
-  it("実務案件の measuredAt は計測日レンジの集計から除外する", () => {
+  it("excludes client work measuredAt from the measured date range", () => {
     const stats = computePortfolioStats([
       makeProject({
         id: "client",
@@ -156,7 +156,7 @@ describe("computePortfolioStats", () => {
     expect(stats.newestMeasuredAt).toBe("2026-06-01");
   });
 
-  it("testCoverage も lighthouseScores も無ければ計測日レンジは null になる", () => {
+  it("returns a null measured date range without testCoverage or lighthouseScores", () => {
     const stats = computePortfolioStats([makeProject({ id: "a" })]);
     expect(stats.oldestMeasuredAt).toBeNull();
     expect(stats.newestMeasuredAt).toBeNull();
@@ -164,40 +164,40 @@ describe("computePortfolioStats", () => {
 });
 
 describe("computeMeasurementDateRange", () => {
-  it("空配列なら null を返す", () => {
+  it("returns null for an empty array", () => {
     expect(computeMeasurementDateRange([])).toBeNull();
   });
 
-  it("要素が1件なら oldest と newest が同じ値になる", () => {
+  it("returns the same oldest and newest for a single element", () => {
     expect(computeMeasurementDateRange(["2026-05-19"])).toEqual({
       oldest: "2026-05-19",
       newest: "2026-05-19",
     });
   });
 
-  it("複数の ISO 日付から最古・最新を求める（順不同でも正しく求まる）", () => {
+  it("finds the oldest and newest of several ISO dates regardless of order", () => {
     expect(
       computeMeasurementDateRange(["2026-07-16", "2026-05-19", "2026-08-05", "2026-06-23"])
     ).toEqual({ oldest: "2026-05-19", newest: "2026-08-05" });
   });
 });
 
-describe("実データに対する集計", () => {
-  it("実務案件は集計対象に含まれない", () => {
+describe("totals on the real data", () => {
+  it("excludes client work from the totals", () => {
     const stats = computePortfolioStats(rawProjects);
     const clientCount = rawProjects.filter((p) => p.kind === "client").length;
     expect(clientCount).toBeGreaterThan(0);
     expect(stats.totalProjects).toBe(rawProjects.length - clientCount);
   });
 
-  it("実務案件は外部にリンクを持たない", () => {
+  it("client work has no external links", () => {
     for (const project of rawProjects.filter((p) => p.kind === "client")) {
       expect(project.liveUrl, `${project.id} に liveUrl がある`).toBeUndefined();
       expect(project.githubVisibility).toBe("private");
     }
   });
 
-  it("実務案件は npm バージョン監視の対象外である", () => {
+  it("client work is not tracked for npm versions", () => {
     for (const project of rawProjects.filter((p) => p.kind === "client")) {
       expect(project.staticTech, `${project.id} に staticTech がない`).toBeTruthy();
       expect(project.trackedPackages).toEqual([]);

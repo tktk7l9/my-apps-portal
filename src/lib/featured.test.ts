@@ -5,7 +5,7 @@ import { eyecatchSrc } from "@/lib/eyecatch";
 import { makeProject } from "@/lib/test-fixtures";
 
 describe("selectFeatured", () => {
-  it("featuredRank を持つものだけを昇順で返す", () => {
+  it("returns only projects with a featuredRank, in ascending order", () => {
     const result = selectFeatured([
       makeProject({ id: "c", featuredRank: 3 }),
       makeProject({ id: "plain" }),
@@ -15,13 +15,13 @@ describe("selectFeatured", () => {
     expect(result.map((p) => p.id)).toEqual(["a", "b", "c"]);
   });
 
-  it("ピックアップが無ければ空配列を返す", () => {
+  it("returns an empty array when nothing is featured", () => {
     expect(selectFeatured([makeProject()])).toEqual([]);
   });
 });
 
 describe("selectRest", () => {
-  it("ピックアップと実務案件を除いたものを元の順序で返す", () => {
+  it("returns the rest in the original order, excluding featured and client work", () => {
     const result = selectRest([
       makeProject({ id: "featured", featuredRank: 1 }),
       makeProject({ id: "client", kind: "client" }),
@@ -35,62 +35,62 @@ describe("selectRest", () => {
 describe("featured picks in the real data", () => {
   const featured = selectFeatured(rawProjects);
 
-  it("ピックアップはちょうど 4 件である", () => {
+  it("has exactly 4 featured projects", () => {
     expect(featured).toHaveLength(4);
   });
 
-  it("featuredRank は 1 から始まる連番で重複しない", () => {
+  it("featuredRank is a unique sequence starting at 1", () => {
     // Check that ranks are consecutive rather than the length, so this test keeps working when the count changes
     expect(featured.map((p) => p.featuredRank)).toEqual(
       Array.from({ length: featured.length }, (_, i) => i + 1)
     );
   });
 
-  it("ピックアップにはすべて highlight が設定されている", () => {
+  it("every featured project has a highlight", () => {
     for (const project of featured) {
       expect(project.highlight, `${project.id} に highlight がない`).toBeTruthy();
     }
   });
 
-  it("highlight は 80 文字以内でカードに収まる", () => {
+  it("highlight fits the card within 80 characters", () => {
     for (const project of featured) {
       expect(
         project.highlight!.length,
-        `${project.id} の highlight が長すぎる`
+        `${project.id} has a highlight that is too long`
       ).toBeLessThanOrEqual(80);
     }
   });
 
-  it("highlight は featuredRank がある作品にだけ付ける", () => {
+  it("only projects with a featuredRank have a highlight", () => {
     for (const project of rawProjects) {
       if (project.highlight !== undefined) {
         expect(
           project.featuredRank,
-          `${project.id} に highlight があるが featuredRank が無い`
+          `${project.id} has a highlight but no featuredRank`
         ).toBeDefined();
       }
     }
   });
 });
 
-describe("実データの selectRest", () => {
+describe("selectRest on the real data", () => {
   const rest = selectRest(rawProjects);
 
-  it("実務案件が少なくとも1件存在する（このテストが自明にパスしないための前提）", () => {
+  it("has at least one client project (so this suite does not pass trivially)", () => {
     const clientCount = rawProjects.filter((p) => p.kind === "client").length;
     expect(clientCount).toBeGreaterThan(0);
   });
 
-  it("実務案件は結果に含まれない", () => {
+  it("excludes client work", () => {
     expect(rest.every((p) => p.kind !== "client")).toBe(true);
     expect(rest.map((p) => p.id)).not.toContain("client-realestate-admin");
   });
 
-  it("featuredRank を持つものは結果に含まれない", () => {
+  it("excludes projects with a featuredRank", () => {
     expect(rest.every((p) => p.featuredRank === undefined)).toBe(true);
   });
 
-  it("件数は 全体 - ピックアップ - 実務案件 の数と一致する", () => {
+  it("count equals total minus featured minus client work", () => {
     const featuredCount = selectFeatured(rawProjects).length;
     const clientCount = rawProjects.filter((p) => p.kind === "client").length;
     expect(rest.length).toBe(rawProjects.length - featuredCount - clientCount);

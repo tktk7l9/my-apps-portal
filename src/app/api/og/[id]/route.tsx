@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { rawProjects } from "@/lib/projects";
+import { generatedEyecatchIds, projectIdFromEyecatchParam } from "@/lib/eyecatch";
 
 // Generates eyecatch images for apps without a web page (native/CLI).
 // Built from the project data, so the image follows updates to highlight or tech.
@@ -12,11 +13,19 @@ const TEXT = "#f1f5f9";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// Rendered at build time; scripts/export-static.mjs copies the PNGs into public/ so they are
+// served as static assets (ImageResponse is too CPU-heavy for the Workers free plan).
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  return generatedEyecatchIds(rawProjects).map((id) => ({ id: `${id}.png` }));
+}
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  const id = projectIdFromEyecatchParam((await params).id);
   const project = rawProjects.find((candidate) => candidate.id === id);
   if (!project) return new Response(null, { status: 404 });
 

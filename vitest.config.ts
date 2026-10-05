@@ -25,6 +25,8 @@ export default defineConfig({
         "src/lib/ogp.ts",
         "src/lib/settled.ts",
         "src/lib/security-score.ts",
+        "src/lib/security-headers.ts",
+        "src/lib/fetched-at.ts",
       ],
       thresholds: { statements: 100, branches: 100, functions: 100, lines: 100 },
     },

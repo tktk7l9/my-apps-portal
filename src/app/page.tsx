@@ -1,11 +1,11 @@
 import { PortfolioHeader } from "@/components/PortfolioHeader";
 import { StatsSummary } from "@/components/StatsSummary";
 import { ProjectTable } from "@/components/ProjectTable";
-import { RefreshButton } from "@/components/RefreshButton";
 import { FeaturedWorks } from "@/components/FeaturedWorks";
 import { ClientWork } from "@/components/ClientWork";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
+import { formatJst } from "@/lib/fetched-at";
 import { enrichProjectsWithVersions } from "@/lib/repo-versions";
 import { getVersionStatuses } from "@/lib/version-status";
 import { getLastCommitDates } from "@/lib/github";
@@ -43,6 +43,7 @@ export default function Home() {
 
 async function ProjectDataLoader() {
   const projects = await enrichProjectsWithVersions(rawProjects);
+  const fetchedAt = new Date();
 
   // Apps that declare staticTech are excluded from npm tracking (see collectVersionCheckEntries)
   const allEntries = collectVersionCheckEntries(projects);
@@ -83,9 +84,11 @@ async function ProjectDataLoader() {
             他の作品
           </h2>
           <span className="text-sm text-muted tabular-nums">{rest.length} 件</span>
-          <div className="ml-auto">
-            <RefreshButton />
-          </div>
+          {/* The page is built ahead of time and rebuilt on a schedule, so show when the
+              versions and commit dates were fetched instead of a refresh button (SHIG 55) */}
+          <span className="ml-auto text-xs text-muted tabular-nums">
+            取得 <time dateTime={fetchedAt.toISOString()}>{formatJst(fetchedAt)}</time>
+          </span>
         </div>
         <ProjectTable
           projects={rest}

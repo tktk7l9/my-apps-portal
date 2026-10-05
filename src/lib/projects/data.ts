@@ -87,7 +87,7 @@ export const rawProjects: RawProject[] = [
       performance: 88, accessibility: 100, bestPractices: 100, seo: 100,
       measuredAt: "2026-09-30",
     },
-    secretScan: { leaks: 0, commits: 357, measuredAt: "2026-10-05" },
+    secretScan: { leaks: 0, commits: 362, measuredAt: "2026-10-05" },
     securityHeaders: {
       grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05",
       notes:
@@ -421,8 +421,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 1583, measuredAt: "2026-10-05",
-      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 997 に加え、実 D1 に対する server テスト 301・UI テスト 202（UI 層は statements 92.9%）・scripts テスト 83",
+      tests: 1581, measuredAt: "2026-10-05",
+      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 997 に加え、実 D1 に対する server テスト 299・UI テスト 202（UI 層は statements 92.9%）・scripts テスト 83",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -620,7 +620,7 @@ export const rawProjects: RawProject[] = [
       totalDependencies: 87, tool: "npm", measuredAt: "2026-10-05",
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
-    secretScan: { leaks: 0, commits: 103, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
+    secretScan: { leaks: 0, commits: 105, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
       grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05",
       notes:
@@ -706,7 +706,7 @@ export const rawProjects: RawProject[] = [
     id: "housing-performance-simulator",
     name: "住宅性能シミュレーター",
     description: "断熱・気密性能と設備選択を初期費用と30年ランニングコストの両面から比較。",
-    trackedPackages: ["next", "react", "three"],
+    trackedPackages: ["next", "react"],
     category: "Simulator",
     platform: "web",
     services: ["Cloudflare Workers"],
@@ -718,7 +718,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "https://housing-performance-simulator.saitotakuya0719.workers.dev/opengraph-image",
     favicon: "/favicons/housing-performance-simulator.svg",
     technicalOverview:
-      "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand、フォームは React Hook Form + Zod。Next.js を Cloudflare Workers に配信し、外部 API は持たない。",
+      "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand で持つ。Next.js を Cloudflare Workers に配信し、外部 API は持たない。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "lib計算 / Recharts / @react-pdf / lz-string共有", kind: "client" }], connector: "静的配信 (HTTPS)" },
@@ -734,10 +734,10 @@ export const rawProjects: RawProject[] = [
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
-      totalDependencies: 175, tool: "npm", measuredAt: "2026-10-05",
+      totalDependencies: 169, tool: "npm", measuredAt: "2026-10-05",
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
-    secretScan: { leaks: 0, commits: 112, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
+    secretScan: { leaks: 0, commits: 114, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
   },
   {
@@ -806,7 +806,11 @@ export const rawProjects: RawProject[] = [
       totalDependencies: 2, tool: "npm", measuredAt: "2026-10-05",
     },
     secretScan: { leaks: 0, commits: 60, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "B+", score: 80, passed: 11, total: 12, measuredAt: "2026-09-30" },
+    securityHeaders: {
+      grade: "A+", score: 115, passed: 12, total: 12, measuredAt: "2026-10-05",
+      notes:
+        "Mozilla Observatory v2 で 12/12。script-src から 'unsafe-inline' を外して B+ から A+ へ",
+    },
   },
   {
     id: "resume",
@@ -839,7 +843,7 @@ export const rawProjects: RawProject[] = [
       totalDependencies: 22, tool: "pnpm", measuredAt: "2026-10-05",
       notes: "pnpm audit --prod 0件",
     },
-    secretScan: { leaks: 0, commits: 129, measuredAt: "2026-10-05" },
+    secretScan: { leaks: 0, commits: 130, measuredAt: "2026-10-05" },
     securityHeaders: { grade: "B+", score: 80, passed: 11, total: 12, measuredAt: "2026-10-05" },
   },
   {
@@ -917,7 +921,7 @@ export const rawProjects: RawProject[] = [
       totalDependencies: 335, tool: "npm", measuredAt: "2026-10-05",
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る。CI は例外リスト＋期限つきの audit-gate と gitleaks を強制",
     },
-    secretScan: { leaks: 0, commits: 166, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
+    secretScan: { leaks: 0, commits: 170, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
   },
   {

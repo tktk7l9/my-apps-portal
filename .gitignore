@@ -50,3 +50,7 @@ next-env.d.ts
 /public/opengraph-image
 /public/api/
 /public/_headers
+/public/blog.html
+/public/blog/
+/public/sitemap.xml
+/public/robots.txt

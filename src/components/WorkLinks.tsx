@@ -7,7 +7,9 @@ import { ExternalIcon, GitHubIcon } from "@/components/icons";
  * open the detail modal while these links go straight to the work.
  * Targets are at least 44px tall on touch widths (SHIG 78, 93).
  */
-export function WorkLinks({ project }: { project: Project }) {
+export type WorkLinksProject = Pick<Project, "name" | "liveUrl" | "githubUrl" | "githubVisibility">;
+
+export function WorkLinks({ project }: { project: WorkLinksProject }) {
   const showGitHub = project.githubVisibility === "public";
   if (!project.liveUrl && !showGitHub) return null;
 

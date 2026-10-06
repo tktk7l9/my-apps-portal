@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const stats = computePortfolioStats(rawProjects);
 
 const title = "齋藤拓也 — ポートフォリオ";
 const description = `フルスタックエンジニア（業務委託）齋藤拓也の個人開発ポートフォリオ。React・Next.js を軸に、API・データベース・デプロイまで ${stats.totalProjects} 作品を一人で手がけました。`;
-const url = "https://my-apps-portal.saitotakuya0719.workers.dev";
+const url = SITE_URL;
 
 export const metadata: Metadata = {
   title,
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     title,
     description,
     url,
-    siteName: "齋藤拓也 ポートフォリオ",
+    siteName: SITE_NAME,
     locale: "ja_JP",
     type: "website",
   },

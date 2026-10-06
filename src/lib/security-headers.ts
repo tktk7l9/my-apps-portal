@@ -2,12 +2,25 @@
 // (public/_headers, written by scripts/export-static.mjs). "/" and the eyecatch images
 // are served as static assets without running the Worker, so both paths need them.
 
+import { createHash } from "node:crypto";
+
 export type Header = { key: string; value: string };
 
-export function buildCsp(isDev: boolean): string {
+/** Origin of the Cloudflare Web Analytics beacon, which src/components/Analytics.tsx injects at runtime. */
+export const BEACON_ORIGIN = "https://static.cloudflareinsights.com";
+
+/**
+ * Without `scriptHashes` the policy keeps 'unsafe-inline' in script-src: the Worker answers
+ * the few routes that are not static assets (404, RSC fallbacks, /api/*), and their inline
+ * scripts are only known after `next build`, which is after next.config.ts is read.
+ * With `scriptHashes` (static HTML pages, see scripts/export-static.mjs) only the listed
+ * inline scripts may run.
+ */
+export function buildCsp(isDev: boolean, scriptHashes?: string[]): string {
+  const inline = scriptHashes ? scriptHashes.map((hash) => `'${hash}'`).join(" ") : "'unsafe-inline'";
   return [
     "default-src 'self'",
-    `script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com${isDev ? " 'unsafe-eval'" : ""}`,
+    [`script-src 'self'`, inline, BEACON_ORIGIN, isDev ? "'unsafe-eval'" : ""].filter(Boolean).join(" "),
     "connect-src 'self' https://cloudflareinsights.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data: https://*.saitotakuya0719.workers.dev",
@@ -42,10 +55,34 @@ export const staticAssetCacheRule = {
   headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
 } as const;
 
-/** Body of a Workers static assets `_headers` file: one block of headers per path pattern. */
-export function headersFile(rules: { path: string; headers: Header[] }[]): string {
+export type HeaderRule = { path: string; detach?: string[]; headers: Header[] };
+
+/**
+ * Body of a Workers static assets `_headers` file: one block of headers per path pattern.
+ * `detach` removes a header that a broader rule (such as "/*") set, written as "! Name".
+ */
+export function headersFile(rules: HeaderRule[]): string {
   return rules
-    .map(({ path, headers }) => [path, ...headers.map(({ key, value }) => `  ${key}: ${value}`)].join("\n"))
+    .map(({ path, detach = [], headers }) =>
+      [path, ...detach.map((key) => `  ! ${key}`), ...headers.map(({ key, value }) => `  ${key}: ${value}`)].join("\n")
+    )
     .join("\n")
     .concat("\n");
+}
+
+/**
+ * CSP hash sources ("sha256-…") for every inline script a prerendered HTML page executes
+ * (Next's RSC payload pushes). Data blocks such as JSON-LD are not executed, so CSP does not
+ * apply to them and they are skipped. The hash covers the exact text between the tags, which
+ * is what the browser hashes because static assets are served byte for byte.
+ */
+export function inlineScriptHashes(html: string): string[] {
+  const hashes = new Set<string>();
+  for (const [, attrs, body] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    if (/\bsrc\s*=/i.test(attrs)) continue;
+    const type = /\btype\s*=\s*["']?([^"'\s>]+)/i.exec(attrs)?.[1].toLowerCase();
+    if (type && type !== "module" && !type.includes("javascript")) continue;
+    hashes.add(`sha256-${createHash("sha256").update(body, "utf8").digest("base64")}`);
+  }
+  return [...hashes];
 }

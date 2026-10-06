@@ -26,6 +26,7 @@ export default defineConfig({
         "src/lib/settled.ts",
         "src/lib/security-score.ts",
         "src/lib/security-headers.ts",
+        "src/lib/analytics.ts",
         "src/lib/fetched-at.ts",
         "src/lib/site.ts",
         "src/lib/blog/frontmatter.ts",

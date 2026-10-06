@@ -140,6 +140,10 @@ body {
   padding: 0;
   font-size: 0.82rem;
 }
+/* display: block makes the table its own scroll box, so a table that is still too wide after
+ * its cells wrap scrolls sideways inside the column instead of widening the page.
+ * The faint glow marks an edge with more of the table behind it. Page-coloured covers that
+ * scroll with the content hide it once that edge is reached. */
 .prose table {
   display: block;
   width: 100%;
@@ -147,6 +151,11 @@ body {
   border-collapse: collapse;
   font-size: 0.875rem;
   line-height: 1.5;
+  background:
+    linear-gradient(to right, #080c14 40%, rgb(8 12 20 / 0)) left / 2rem 100% no-repeat local,
+    linear-gradient(to left, #080c14 40%, rgb(8 12 20 / 0)) right / 2rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgb(148 163 184 / 0.35), rgb(148 163 184 / 0)) left / 0.75rem 100% no-repeat,
+    radial-gradient(farthest-side at 100% 50%, rgb(148 163 184 / 0.35), rgb(148 163 184 / 0)) right / 0.75rem 100% no-repeat;
 }
 .prose th,
 .prose td {
@@ -154,12 +163,25 @@ body {
   padding: 0.45rem 0.7rem;
   text-align: start;
   vertical-align: top;
+  /* Cells wrap at word boundaries only: the overflow-wrap: anywhere inherited from .prose would
+   * let the table squeeze a column below its longest word ("Observ / atory"). auto-phrase
+   * (Chromium) wraps Japanese between phrases rather than between any two characters. */
+  overflow-wrap: normal;
+  word-break: auto-phrase;
+}
+/* A code token in a cell stays on one line ('unsafe-inline' would otherwise split at its hyphen) */
+.prose th code,
+.prose td code {
   white-space: nowrap;
 }
 .prose th {
   color: #fff;
   background: rgb(255 255 255 / 0.04);
   font-weight: 600;
+  /* Header labels stay whole ("テスト", not "テ / ス / ト"); keep-all is the fallback where
+   * auto-phrase is not supported */
+  word-break: keep-all;
+  word-break: auto-phrase;
 }
 .prose hr {
   border: 0;

@@ -5,7 +5,7 @@ import { RelatedApps } from "@/components/blog/RelatedApps";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { listSlugs, loadPosts, readPost } from "@/lib/blog/load";
 import { formatDateJa } from "@/lib/blog/post";
-import { extractHeadings, renderMarkdown } from "@/lib/blog/render";
+import { renderMarkdown } from "@/lib/blog/render";
 import { blogListHref } from "@/lib/blog/tag-param";
 import { rawProjects } from "@/lib/projects";
 import { absoluteUrl, BLOG_TITLE, SITE_NAME } from "@/lib/site";
@@ -50,8 +50,7 @@ export default async function BlogArticle({ params }: { params: Promise<Params> 
   const newer = index > 0 ? posts[index - 1] : null;
   const older = index < posts.length - 1 ? posts[index + 1] : null;
 
-  const html = await renderMarkdown(post.body);
-  const headings = extractHeadings(html);
+  const { html, headings } = await renderMarkdown(post.body);
   const projects = post.apps
     .map((id) => rawProjects.find((p) => p.id === id))
     .filter((p): p is NonNullable<typeof p> => p !== undefined);

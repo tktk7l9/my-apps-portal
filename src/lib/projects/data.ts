@@ -61,7 +61,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,128ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,128ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -151,7 +151,7 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
       notes:
-        "Mozilla Observatory v2 満点。Lighthouseはdesktop 100/100/100/100・mobile 98/100/100/100（2026-09-30・median-of-3・TBT 0ms）",
+        "Mozilla Observatory v2 満点。Lighthouseはmobile 98/100/100/100（2026-10-07・median-of-3・TBT 0ms）・desktop 100/100/100/100（2026-09-30）",
     },
   },
   {
@@ -364,7 +364,7 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+", score: 115, passed: 11, total: 12, measuredAt: "2026-10-05",
       notes:
-        "Mozilla Observatory v2 A+（115・11/12）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 88/100/100/100（2026-09-30・median-of-3・LCP 3.6s・CLS 0・TBT 0ms）/ desktop 99/100/100/100（LCP 0.8s）。JSなしの特集ページとイベント個別ページは mobile 100（LCP 1.6s）。mobileのLCPは2026-07-30（Vercel時 2.3s）から伸びており、要因の切り分けは未実施",
+        "Mozilla Observatory v2 A+（115・11/12）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 93/100/100/100（2026-10-07・median-of-3・LCP 2.9s・CLS 0・TBT 0ms）/ desktop 99/100/100/100（2026-09-30・LCP 0.8s）。JSなしの特集ページとイベント個別ページは mobile 100（2026-09-27・LCP 1.6s）。mobileのLCP（2026-09-30 は 3.6s）は、2026-10-06 に初期表示をカード用の軽量 JSON から描き、最初の画面のカードをフェードさせないようにして縮めた",
     },
   },
   {
@@ -509,7 +509,7 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
       notes:
-        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100で安定。モバイルperfは50→96(カメラ5,720件をバンドルから外して静的JSONにし、ピンをまとめてクラスタに渡した。LCP 7.8→2.7秒、TBT 2,940→51ms)。2026-09-30 の再計測は mobile 91/100/96/100（median-of-3）・desktop 100/100/100/100。a11y は 96→100 に改善。best-practices 96はOSMラスタタイルに@2xが無いことによる構造的上限",
+        "Mozilla Observatory v2 満点。CSPのscript-srcは'self'を維持(YouTubeの外部スクリプトを読まない設計)。デスクトップLighthouseは100/100/100/100で安定。モバイルperfは2026-08-28に50→96(カメラ5,720件をバンドルから外して静的JSONにし、ピンをまとめてクラスタに渡した。LCP 7.8→2.7秒、TBT 2,940→51ms)。再計測は mobile 92/100/96/100（2026-10-07・median-of-5）・desktop 100/100/100/100（2026-09-30）。a11y は 96→100 に改善。best-practices 96はOSMラスタタイルに@2xが無いことによる構造的上限",
     },
   },
   {
@@ -532,7 +532,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🌗",
     featuredRank: 3,
     highlight:
-      "太陽と月の位置を天文計算で求め、室内に差し込む日射を3D可視化する PWA。Lighthouse 4項目満点。",
+      "太陽と月の位置を天文計算で求め、室内に差し込む日射を3D可視化する PWA。",
     technicalOverview:
       "天体計算は依存ゼロの自前実装（Meeus準拠: 太陽ch.25 ~0.01°/月ch.47 truncated+視差 ~0.05°/月相ch.48、朔望・夏至冬至は離角/黄経クロッシングを二分法で求解）で、JPL Horizons・USNO・国立天文台こよみとfixture突合済み。日射取得シミュレーションはIneichen–Perez晴天モデル+Hay–Davies傾斜面散乱（pvlib-python生成fixtureと0.1%突合）、遮蔽は建物・屋根・軒・隣家を三角形メッシュ化しMöller–Trumboreでレイトレース（表示用Three.jsメッシュと計算用ジオメトリは同一ソース）。\n\n室内可視化は窓4隅を太陽方向へ床面投影しSutherland–Hodgmanで建物footprintにクリップする幾何計算(建物全体を1部屋として扱う簡略化)。Three.jsドームとLeaflet地図はタブ初回表示時の動的import（初期17.4kB gzip）。\n\nARはRz(α)Rx(β)Ry(γ)回転行列で任意姿勢の視線方位/ピッチ/ロールを算出し、Android磁北には国土地理院 磁気図2020.0近似式で真北補正（日本域）。厳格CSP+Permissions-Policy(camera/geolocation/センサー=self)のままPWAオフライン動作（地図タイルのみ要ネット）。",
     architecture: {
@@ -573,7 +573,7 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
       notes:
-        "Mozilla Observatory v2 満点。デスクトップLighthouseも100/100/100/100",
+        "Mozilla Observatory v2 満点。デスクトップLighthouseは99/100/100/100（2026-10-07・median-of-3）",
     },
   },
   {

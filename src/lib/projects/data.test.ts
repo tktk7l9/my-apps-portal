@@ -1,5 +1,31 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { eyecatchSrc } from "@/lib/eyecatch";
 import { packageMeta, rawProjects, serviceUrls } from "@/lib/projects";
+
+describe("eyecatch sources", () => {
+  // A Worker cannot fetch another workers.dev host of the same account (Cloudflare error 1042),
+  // so /api/ogp answers 502 in production for those apps even though it works in local dev.
+  // Their eyecatch must be a static copy under public/og or a generated /api/og card.
+  it("no workers.dev app resolves its eyecatch through the /api/ogp proxy", () => {
+    for (const project of rawProjects) {
+      if (!project.liveUrl || !new URL(project.liveUrl).host.endsWith(".workers.dev")) continue;
+      const src = eyecatchSrc(project);
+      expect(src, `${project.id} has no eyecatch`).not.toBeNull();
+      expect(src!.startsWith("/api/ogp"), `${project.id} resolves through /api/ogp: ${src}`).toBe(false);
+      expect(src!.startsWith("/"), `${project.id} loads its eyecatch cross-origin: ${src}`).toBe(true);
+    }
+  });
+
+  it("every static eyecatch under /og exists in public/og", () => {
+    for (const project of rawProjects) {
+      if (!project.ogImage?.startsWith("/og/")) continue;
+      const file = join(process.cwd(), "public", project.ogImage);
+      expect(existsSync(file), `${project.id}: ${project.ogImage} is missing`).toBe(true);
+    }
+  });
+});
 
 describe("catalog and lookup table consistency", () => {
   it("every trackedPackage is registered in packageMeta", () => {

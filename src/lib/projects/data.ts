@@ -84,8 +84,8 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     lighthouseScores: {
-      performance: 88, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      performance: 92, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-06",
     },
     secretScan: { leaks: 0, commits: 362, measuredAt: "2026-10-05" },
     securityHeaders: {
@@ -347,8 +347,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 88, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      performance: 93, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-06",
     },
     testCoverage: {
       statements: 99.47, branches: 93.21, functions: 99.64, lines: 100,

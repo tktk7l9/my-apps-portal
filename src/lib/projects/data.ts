@@ -972,8 +972,8 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "📍",
     lighthouseScores: {
-      performance: 87, accessibility: 100, bestPractices: 96, seo: 100,
-      measuredAt: "2026-09-30",
+      performance: 91, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-06",
     },
     testCoverage: {
       statements: 98.85, branches: 96.71, functions: 99.01, lines: 99.61,

@@ -80,18 +80,33 @@ for (const name of articles) {
   }
 }
 
-// Every path gets the strict policy, which allows no inline script at all. Each HTML page
-// detaches it ("! Content-Security-Policy") and sets a policy that allows exactly the inline
-// scripts it ships (Next's RSC payload), by hash. Static assets never run the Worker, so a
-// per-request nonce is not an option; the hashes are fixed at build time like the HTML.
-const strict = securityHeaders(false).map((header) =>
-  header.key === "Content-Security-Policy" ? { ...header, value: buildCsp(false, []) } : header
-);
+// Exactly one rule sets the CSP for any path. A "/*" policy plus a page rule that detaches it
+// ("! Content-Security-Policy") works in wrangler dev but not on the Workers edge for "/",
+// which then answered with both policies (both enforced, so the inline scripts were blocked).
+// HTML pages allow exactly the inline scripts they ship (Next's RSC payload), by hash: static
+// assets never run the Worker, so a per-request nonce is not an option. Other static files get
+// the policy that allows no inline script at all.
+const csp = (value) => ({ key: "Content-Security-Policy", value });
+const shared = securityHeaders(false).filter(({ key }) => key !== "Content-Security-Policy");
 const pageRules = pages.map(({ path, file }) => ({
   path,
-  detach: ["Content-Security-Policy"],
-  headers: [{ key: "Content-Security-Policy", value: buildCsp(false, inlineScriptHashes(readFileSync(file, "utf8"))) }],
+  headers: [csp(buildCsp(false, inlineScriptHashes(readFileSync(file, "utf8"))))],
 }));
+// Every non-HTML static path: the generated files above and the committed public/ folders.
+const strictPaths = [
+  "/_next/static/*",
+  "/favicons/*",
+  "/og/*",
+  "/api/og/*",
+  "/icon.svg",
+  "/opengraph-image",
+  "/blog/:slug/opengraph-image",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/blog/feed.xml",
+  "/blog/index.json",
+];
+const strictRules = strictPaths.map((path) => ({ path, headers: [csp(buildCsp(false, []))] }));
 const contentTypes = [
   { path: "/opengraph-image", type: "image/png" },
   ...(ogImages.length > 0 ? [{ path: "/blog/:slug/opengraph-image", type: "image/png" }] : []),
@@ -99,9 +114,10 @@ const contentTypes = [
   { path: "/sitemap.xml", type: "application/xml; charset=utf-8" },
 ];
 const rules = [
-  { path: "/*", headers: strict },
+  { path: "/*", headers: shared },
   staticAssetCacheRule,
   ...pageRules,
+  ...strictRules,
   ...contentTypes.map(({ path, type }) => ({ path, headers: [{ key: "Content-Type", value: type }] })),
 ];
 // Workers static assets accept at most 100 rules and 2,000 characters per line.

@@ -960,19 +960,19 @@ export const rawProjects: RawProject[] = [
     ogImage: "/api/og/acro-finder.png",
     favicon: "/favicons/acro-finder.svg",
     technicalOverview:
-      "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。CSP は next.config.ts の静的ヘッダー方式(lib/csp.ts が正本)で、Cloudflare Workers(@opennextjs/cloudflare)に配信。問い合わせは Resend の Server Action。",
+      "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。ページはビルド時に書き出して Cloudflare Workers(@opennextjs/cloudflare)の静的アセットとして配信し、CSP は lib/csp.ts を正本にページごとのインラインスクリプトの sha256 を script-src に列挙する。問い合わせは Resend の Server Action(/owners は Worker が返す)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "Leaflet / markercluster / 現在地距離計算", kind: "client" }], connector: "データ・タイル取得 (HTTPS)" },
         { nodes: [
-          { label: "Next.js · Cloudflare Workers", sublabel: "next.configの静的CSP / 施設データ配信", kind: "server" },
+          { label: "Next.js · Cloudflare Workers", sublabel: "静的アセット配信 / ページごとのsha256 CSP", kind: "server" },
           { label: "OpenStreetMap", sublabel: "地図タイル", kind: "external" },
         ] },
       ],
     },
     emoji: "📍",
     lighthouseScores: {
-      performance: 91, accessibility: 100, bestPractices: 100, seo: 100,
+      performance: 89, accessibility: 100, bestPractices: 100, seo: 100,
       measuredAt: "2026-10-06",
     },
     testCoverage: {
@@ -987,9 +987,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 100, measuredAt: "2026-10-05" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-06",
       notes:
-        "Mozilla Observatory v2（2026-10-05 に Workers の本番URLで再計測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-10-06 に Workers の本番URLで再計測・B 75 から改善）。全12項目合格で減点なし。ページはビルド時に書き出して Workers の静的アセット（Worker を通さない）で配信し、script-src は 'unsafe-inline' の代わりにページごとのインラインスクリプトの sha256 を列挙する（トップ・一覧・都道府県別は _headers のページ別ルール、施設ページ116件は _headers の上限に収まらないため各 HTML の <meta http-equiv> で付与）。ビーコンはハイドレーション後に追加するので HTML に SRI の無い外部スクリプトは無い（beacon.min.js は Cloudflare が同じ URL のまま差し替えるので integrity は固定しない）。残る緩和は style-src の 'unsafe-inline'（Leaflet のタイル配置用・Observatory は減点しない）と、Worker が返す応答（問い合わせの Server Action を受ける /owners と 404）の script-src が 'unsafe-inline' のままな点",
     },
   },
   {

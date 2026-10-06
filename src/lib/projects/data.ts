@@ -44,13 +44,13 @@ export const rawProjects: RawProject[] = [
     id: "service-anatomy",
     name: "Service Anatomy",
     description:
-      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事46本+2サービスを突き合わせる比較解剖12本。技術213件・タグ147件・カテゴリ7件の横断ページを含め861ページを全てビルド時に生成する。",
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事91本+2サービスを突き合わせる比較解剖26本。技術721件・タグ214件・カテゴリ7件の横断ページを含め2,128ページを全てビルド時に生成する。",
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-16",
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
@@ -61,7 +61,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で861ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダー方式。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,128ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダー方式。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -98,13 +98,13 @@ export const rawProjects: RawProject[] = [
     id: "lumen-bloom",
     name: "Lumen Bloom",
     description:
-      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。\n\n部屋の隅の花瓶には週替わりでその季節の花や枝物（ひまわり・バラ・チューリップ・コスモス・アネモネ・ガーベラ・マーガレット・芍薬・ダリア・マム・カーネーション・ラナンキュラス・紫陽花・水仙・ユリ・ラベンダー・かすみ草・リンドウ・カラー・梅・桜・ミモザ・紅葉・南天・ドウダンツツジの全25種を月3〜4候補で循環、花に合わせて透明/ロゼ/コバルト/スモークガラス・白磁/青磁/黒陶/テラコッタの陶器・真鍮の花瓶も変化、南半球は季節6ヶ月シフト）が生けられ、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。\n\n天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・今週の花・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・アレンジを固定して共有可能。",
+      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。\n\n部屋の隅の花瓶には週替わりでその季節の花や枝物（ひまわり・チューリップ・コスモス・キバナコスモス・アネモネ・ガーベラ・マーガレット・ノコンギク・ポピー・桔梗・芍薬・牡丹・ダリア・マム・カーネーション・バラ・トルコキキョウ・ラナンキュラス・紫陽花・アナベル・水仙・ラッパ水仙・ムスカリ・ユリ・スカシユリ・ラベンダー・かすみ草・リンドウ・カラー・アヤメ・花菖蒲・彼岸花・ススキ・梅・蝋梅・桃・桜・ミモザ・椿・山茶花・金木犀・紫式部・紅葉・南天・ドウダンツツジ・ユーカリの全46種を月ごとに6候補ずつ循環、花に合わせて透明/ロゼ/コバルト/スモークガラス・白磁/青磁/黒陶/テラコッタの陶器・真鍮の花瓶も変化、南半球は季節6ヶ月シフト）が生けられ、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。\n\n天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・今週の花・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・アレンジを固定して共有可能。",
     trackedPackages: ["vite", "typescript", "three"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-07-14",
-    updatedAt: "2026-07-15",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/lumen-bloom",
     githubVisibility: "public",
     ogImage: "/og/lumen-bloom.png",
@@ -298,13 +298,13 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1829〜現在の国内外の歴史ニュース27,137件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,666件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,137件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画の特集7本185件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史37件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
+      "1829〜現在の国内外の歴史ニュース27,453件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,802件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,453件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画の特集7本185件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史37件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare R2", "Cloudflare Web Analytics"],
     createdAt: "2026-07-10",
-    updatedAt: "2026-09-27",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/chronoscroll",
     githubVisibility: "public",
     liveUrl: "https://chronoscroll.saitotakuya0719.workers.dev",
@@ -312,7 +312,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,137件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク54シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,137本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残り93ファイルは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,453件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション391件（トップ423件を人手レビュー: demote215/分類修正113/要約リライト、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク54シナリオ付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,453本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残り93ファイルは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
     architecture: {
       layers: [
         {
@@ -329,12 +329,12 @@ export const rawProjects: RawProject[] = [
           nodes: [
             {
               label: "SvelteKit static · Cloudflare Workers",
-              sublabel: "厳格CSP / 27,137件を28チャンク配信 / /e/* は Worker が R2 から返す",
+              sublabel: "厳格CSP / 27,453件を28チャンク配信 / /e/* は Worker が R2 から返す",
               kind: "edge",
             },
             {
               label: "R2 (chronoscroll-pages)",
-              sublabel: "イベント個別ページ 27,137本の prerender 済み HTML（ビルド時に差分同期）",
+              sublabel: "イベント個別ページ 27,453本の prerender 済み HTML（ビルド時に差分同期）",
               kind: "storage",
             },
             {
@@ -382,6 +382,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/sumai-log",
     githubVisibility: "public",
     liveUrl: "https://sumai-log.saitotakuya0719.workers.dev",
+    // The site sits behind Cloudflare Access, so its og:image cannot be fetched (neither by the
+    // /api/ogp proxy, which also fails on workers.dev hosts with error 1042, nor once by hand).
+    // The card is generated from the project data like the other apps without a public page
+    ogImage: "/api/og/sumai-log.png",
     favicon: "/favicons/sumai-log.svg",
     emoji: "\u{1F3E0}",
     technicalOverview:
@@ -434,15 +438,15 @@ export const rawProjects: RawProject[] = [
     name: "Somewhere Now",
     featuredRank: 1,
     highlight:
-      "世界118の国と地域・5,720地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
+      "世界118の国と地域・5,711地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
     description:
-      "世界118の国と地域・5,720地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
+      "世界118の国と地域・5,711地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
     trackedPackages: ["vite", "typescript", "leaflet", "maplibre-gl"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare KV", "YouTube Data API", "Open-Meteo"],
     createdAt: "2026-08-18",
-    updatedAt: "2026-08-28",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/somewhere-now",
     githubVisibility: "public",
     liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
@@ -452,7 +456,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/somewhere-now.svg",
     emoji: "\u{1F30D}",
     technicalOverview:
-      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。/api/cams が落ちても地図は出る。\n\nWorkers は1呼び出しあたりのサブリクエストが50で頭打ちになるので、5,720台を50件ずつ割った115回はそのままでは通らない(実際に本番のCronが毎回 Too many subrequests で落ち、状態を書けないまま台帳だけ焼いていた)。1回40回に制限し、確認がいちばん古いカメラから順に詰める。実行のたびに対象がひとりでに入れ替わるので、どこまで見たかを覚えなくても30分で全件を一巡できる。見送ったカメラは offline とは誤判定しない。\n\n5,720台が2,450チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、5,720件を10分ごとに全確認すると16,560 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\nカメラ定義はバンドルに同梱せず静的なJSONとして配る。同梱するとメインバンドルが2.6MBになり、Leafletが地図を作るのはそのJSを実行し終わってからなのでタイル(LCPの対象)が数秒遅れる。切り出してメインJSは231KB(gzip 69KB)になり、地図はマスタを待たずに出る。ピンはmarkerclusterのaddLayersで一括投入する(1台ずつ足すとそのたびにクラスタを組み直して数百msの固まりになる)。あわせて4つのsetterが連続で呼ばれても描き直しを1回にまとめている。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
+      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。/api/cams が落ちても地図は出る。\n\nWorkers は1呼び出しあたりのサブリクエストが50で頭打ちになるので、5,711台を50件ずつ割った115回はそのままでは通らない(実際に本番のCronが毎回 Too many subrequests で落ち、状態を書けないまま台帳だけ焼いていた)。1回40回に制限し、確認がいちばん古いカメラから順に詰める。実行のたびに対象がひとりでに入れ替わるので、どこまで見たかを覚えなくても30分で全件を一巡できる。見送ったカメラは offline とは誤判定しない。\n\n5,711台が2,446チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、5,711件を10分ごとに全確認すると16,560 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\nカメラ定義はバンドルに同梱せず静的なJSONとして配る。同梱するとメインバンドルが2.6MBになり、Leafletが地図を作るのはそのJSを実行し終わってからなのでタイル(LCPの対象)が数秒遅れる。切り出してメインJSは231KB(gzip 69KB)になり、地図はマスタを待たずに出る。ピンはmarkerclusterのaddLayersで一括投入する(1台ずつ足すとそのたびにクラスタを組み直して数百msの固まりになる)。あわせて4つのsetterが連続で呼ばれても描き直しを1回にまとめている。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
     architecture: {
       layers: [
         {
@@ -640,7 +644,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/lifeplan-simulator",
     githubVisibility: "public",
     liveUrl: "https://lifeplan-simulator.saitotakuya0719.workers.dev",
-    ogImage: "https://lifeplan-simulator.saitotakuya0719.workers.dev/opengraph-image",
+    // Static WebP copy of the app's /opengraph-image (fetched once on 2026-10-06). A Worker cannot
+    // fetch another workers.dev host of the same account (Cloudflare error 1042), so /api/ogp is
+    // unusable for these, and linking the app's own image cross-origin costs its Worker CPU per view
+    ogImage: "/og/lifeplan-simulator.webp",
     favicon: "/favicons/lifeplan-simulator.svg",
     technicalOverview:
       "資産推移のシミュレーションは lib/simulation の純関数でクライアント側で完結し、状態は Zustand、入力フォームは React Hook Form + Zod で検証する。AI 評価機能のみ Next.js の Route Handler 経由で Claude を呼び出し、レスポンスを Zod でバリデーションする。グラフは Recharts、背景演出は Three.js。",
@@ -715,7 +722,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/housing-performance-simulator",
     githubVisibility: "public",
     liveUrl: "https://housing-performance-simulator.saitotakuya0719.workers.dev",
-    ogImage: "https://housing-performance-simulator.saitotakuya0719.workers.dev/opengraph-image",
+    // Static WebP copy of the app's /opengraph-image (fetched once on 2026-10-06). A Worker cannot
+    // fetch another workers.dev host of the same account (Cloudflare error 1042), so /api/ogp is
+    // unusable for these, and linking the app's own image cross-origin costs its Worker CPU per view
+    ogImage: "/og/housing-performance-simulator.webp",
     favicon: "/favicons/housing-performance-simulator.svg",
     technicalOverview:
       "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand で持つ。Next.js を Cloudflare Workers に配信し、外部 API は持たない。",
@@ -753,7 +763,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/ai-news-feed-app",
     githubVisibility: "public",
     liveUrl: "https://ai-news-feed-app.saitotakuya0719.workers.dev",
-    ogImage: "https://ai-news-feed-app.saitotakuya0719.workers.dev/opengraph-image",
+    // Static WebP copy of the app's /opengraph-image (fetched once on 2026-10-06). A Worker cannot
+    // fetch another workers.dev host of the same account (Cloudflare error 1042), so /api/ogp is
+    // unusable for these, and linking the app's own image cross-origin costs its Worker CPU per view
+    ogImage: "/og/ai-news-feed-app.webp",
     favicon: "/favicons/ai-news-feed-app.svg",
     technicalOverview:
       "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信する。古い記録を消すクリーンアップ用 Cron も備える。",
@@ -825,7 +838,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/resume",
     githubVisibility: "public",
     liveUrl: "https://resume.saitotakuya0719.workers.dev",
-    ogImage: "https://resume.saitotakuya0719.workers.dev/opengraph-image",
+    // Static WebP copy of the app's /opengraph-image (fetched once on 2026-10-06). A Worker cannot
+    // fetch another workers.dev host of the same account (Cloudflare error 1042), so /api/ogp is
+    // unusable for these, and linking the app's own image cross-origin costs its Worker CPU per view
+    ogImage: "/og/resume.webp",
     favicon: "/favicons/resume.svg",
     technicalOverview:
       "Next.js App Router で構築した静的中心の職務経歴書サイト(ja/en)。shadcn/ui + Tailwind CSS で UI を組み、問い合わせフォームは Server Action から Resend 経由でメール送信する。Cloudflare Workers に配信。",
@@ -859,7 +875,10 @@ export const rawProjects: RawProject[] = [
     githubUrl: "https://github.com/tktk7l9/elparaiso",
     githubVisibility: "public",
     liveUrl: "https://elparaiso.saitotakuya0719.workers.dev",
-    ogImage: "https://elparaiso.saitotakuya0719.workers.dev/opengraph-image",
+    // Static WebP copy of the app's /opengraph-image (fetched once on 2026-10-06). A Worker cannot
+    // fetch another workers.dev host of the same account (Cloudflare error 1042), so /api/ogp is
+    // unusable for these, and linking the app's own image cross-origin costs its Worker CPU per view
+    ogImage: "/og/elparaiso.webp",
     favicon: "/favicons/elparaiso.svg",
     technicalOverview:
       "Next.js App Router によるコミュニティブランドサイト。ギャラリーや商品情報は Supabase(Postgres・Storage)から取得し、認証は @supabase/auth-ui を利用する。Cloudflare Workers に配信。",
@@ -883,24 +902,24 @@ export const rawProjects: RawProject[] = [
   {
     id: "my-apps-portal",
     name: "My Apps Portal",
-    description: "個人アプリの一覧・管理ポータル。依存パッケージのバージョン監視・脆弱性チェック・最終コミット日取得を自動化。",
+    description: "個人アプリの一覧・管理ポータル。依存パッケージのバージョン監視・脆弱性チェック・最終コミット日取得を自動化。各アプリの設計・技術選定・更新内容を書く開発ブログ（/blog・RSS配信）を併設。",
     trackedPackages: ["next", "react", "tailwindcss", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-05-14",
-    updatedAt: "2026-05-14",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/my-apps-portal",
     githubVisibility: "public",
     liveUrl: "https://my-apps-portal.saitotakuya0719.workers.dev",
     ogImage: "/opengraph-image",
     favicon: "/favicons/my-apps-portal.svg",
     technicalOverview:
-      "ビルド時に Next.js の Server Components が npm registry・OSV・GitHub API を取得して各アプリのバージョン / 脆弱性 / 最終コミットを集約し、トップページを静的ファイルとして配信する(Workers Builds の Deploy Hook で3時間ごとに再ビルド)。OGP 画像は掲載アプリの URL だけを許可する /api/ogp プロキシ経由(24時間キャッシュ)。アプリ定義は projects.ts に集約。",
+      "ビルド時に Next.js の Server Components が npm registry・OSV・GitHub API を取得して各アプリのバージョン / 脆弱性 / 最終コミットを集約し、トップページを静的ファイルとして配信する(Workers Builds の Deploy Hook で3時間ごとに再ビルド)。アイキャッチは public/og の静的コピーかビルド時生成のカード（Worker は同一アカウントの workers.dev を取得できないため、/api/ogp プロキシは外部ホストのアプリ専用）。ブログは content/blog の Markdown をビルド時に HTML 化して静的配信。アプリ定義は src/lib/projects/data.ts に集約。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "フィルタ・ソート / 詳細モーダル", kind: "client" }], connector: "ページ取得 (HTTPS)" },
-        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "ビルド時に集約 → 静的配信 / api/ogp(24hキャッシュ)", kind: "server" }], connector: "集約取得" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "ビルド時に集約 → 静的配信 / ブログ(Markdown→HTML) / OG画像は静的コピー", kind: "server" }], connector: "集約取得" },
         { nodes: [
           { label: "npm registry", kind: "external" },
           { label: "OSV API", kind: "external" },
@@ -913,8 +932,8 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 91, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 141, measuredAt: "2026-10-05",
-      notes: "CI のカバレッジゲートは src/lib の純ロジック14ファイル(stats / version-status / featured / ogp / settled / security-score など)を100%閾値で強制。UIコンポーネント・app層は対象外",
+      tests: 273, measuredAt: "2026-10-06",
+      notes: "CI のカバレッジゲートは src/lib の純ロジック24ファイル(stats / version-status / featured / ogp / settled / security-score / blog の frontmatter・render・feed など)を100%閾値で強制。ブログ記事は content.test.ts が全記事の frontmatter・日付・アプリ id・内部リンク・出典節を検証。UIコンポーネント・app層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -927,13 +946,13 @@ export const rawProjects: RawProject[] = [
   {
     id: "acro-finder",
     name: "ACRO/FINDER",
-    description: "トリッキング・パルクールなどアクロバットを練習できる施設を地図とリストで検索。営業時間・器具・レッスン・現在地からの距離を確認できる。",
+    description: "トリッキング・パルクールなどアクロバットを練習できる施設を地図とリストで検索。営業時間・器具・レッスン・現在地からの距離を確認できる。全国28都道府県の施設117件と大会・ジャム等のイベント22件を収録し、都道府県別ページを含む150ページをsitemapで配信。",
     trackedPackages: ["next", "react", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/acro-finder",
     githubVisibility: "public",
     liveUrl: "https://acro-finder.saitotakuya0719.workers.dev",
@@ -976,13 +995,13 @@ export const rawProjects: RawProject[] = [
   {
     id: "snippet-sprint",
     name: "Snippet Sprint",
-    description: "実コードのスニペットを1問ずつ打って学ぶプログラミング・タイピングゲーム。記号・camelCase・実コードの流れを WebGL のネオンステージで練習し、WPM・正確率・弱点分析を確認。",
+    description: "実コードのスニペットを1問ずつ打って学ぶプログラミング・タイピングゲーム。TS/JS・Python・Go・Rust・Java・C++・C・C#・Swift・Kotlin・Ruby・PHP・SQL・Bash・HTML・CSS の17言語・計286問（基本構文・有名アルゴリズム・記号ドリル）を収録。記号・camelCase・実コードの流れを WebGL のネオンステージで練習し、WPM・正確率・弱点分析を確認。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Game",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-23",
-    updatedAt: "2026-06-23",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/snippet-sprint",
     githubVisibility: "public",
     ogImage: "/og/snippet-sprint.png",
@@ -1021,13 +1040,13 @@ export const rawProjects: RawProject[] = [
   {
     id: "css-atelier",
     name: "CSS Atelier",
-    description: "MDN を片手に、解説→CSS記述→自動採点で学ぶインタラクティブ CSS 学習アプリ。Flexbox / Grid から :has()・container queries まで。製図スタジオ風 UI と、ボックスモデル/Flex/Grid を立体表示する 3D 概念ビジュアライザ（Three.js）付き。15トラック37レッスン。メディア/コンテナクエリは二状態（複数ビューポート）で採点。",
+    description: "MDN を片手に、解説→CSS記述→自動採点で学ぶインタラクティブ CSS 学習アプリ。Flexbox / Grid から :has()・container queries まで。製図スタジオ風 UI と、ボックスモデル/Flex/Grid を立体表示する 3D 概念ビジュアライザ（Three.js）付き。19トラック47レッスン。メディア/コンテナクエリは二状態（複数ビューポート）で採点。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-23",
-    updatedAt: "2026-06-23",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/css-atelier",
     githubVisibility: "public",
     ogImage: "/og/css-atelier.png",
@@ -1045,7 +1064,7 @@ export const rawProjects: RawProject[] = [
     testCoverage: {
       statements: 99.35, branches: 97.24, functions: 99.33, lines: 99.63,
       tests: 323, measuredAt: "2026-10-05",
-      notes: "engine(content/validate/tokenize/viz-map/progress)を100%閾値ゲート。ui/sandbox/viz層も96%前後の閾値で計測(数値は全体)。全37レッスンの正答を実ブラウザ(CDP)でPASS確認",
+      notes: "engine(content/validate/tokenize/viz-map/progress)を100%閾値ゲート。ui/sandbox/viz層も96%前後の閾値で計測(数値は全体)。全47レッスンの正答を実ブラウザ(CDP)でPASS確認",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -1112,13 +1131,13 @@ export const rawProjects: RawProject[] = [
     id: "ai-primer",
     name: "AI Primer",
     description:
-      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。ChatGPT・Claude・Gemini・Grokの比較からコーディングAI・画像/動画/音楽生成・活用と倫理まで8トラック40レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ・AI年表・用語集も収録。",
+      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。ChatGPT・Claude・Gemini・Grokの比較からAIエージェントとツール連携・コーディングAI・画像/動画/音楽生成・活用と倫理まで9トラック46レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ・AI年表・用語集も収録。",
     trackedPackages: ["next", "react", "unified"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-15",
-    updatedAt: "2026-07-15",
+    updatedAt: "2026-10-06",
     githubUrl: "https://github.com/tktk7l9/ai-primer",
     githubVisibility: "public",
     liveUrl: "https://ai-primer.saitotakuya0719.workers.dev",
@@ -1136,9 +1155,9 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🧭",
     testCoverage: {
-      statements: 99.45, branches: 98.25, functions: 100, lines: 100,
-      tests: 544, measuredAt: "2026-10-05",
-      notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが40レッスン+モデル15件+年表25件+用語21語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)",
+      statements: 99.46, branches: 98.25, functions: 100, lines: 100,
+      tests: 588, measuredAt: "2026-10-06",
+      notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが46レッスン+モデル16件+年表35件+用語27語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

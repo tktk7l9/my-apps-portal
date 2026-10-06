@@ -960,13 +960,13 @@ export const rawProjects: RawProject[] = [
     ogImage: "/api/og/acro-finder.png",
     favicon: "/favicons/acro-finder.svg",
     technicalOverview:
-      "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは OpenStreetMap から取得、現在地からの距離計算はクライアント。ページはビルド時に書き出して Cloudflare Workers(@opennextjs/cloudflare)の静的アセットとして配信し、CSP は lib/csp.ts を正本にページごとのインラインスクリプトの sha256 を script-src に列挙する。問い合わせは Resend の Server Action(/owners は Worker が返す)。",
+      "Next.js App Router。施設データはリポジトリ内に保持して SSR / 静的配信し、地図は Leaflet + markercluster で描画する。地図タイルは国土地理院の淡色地図（地理院タイル）から取得、現在地からの距離計算はクライアント。ページはビルド時に書き出して Cloudflare Workers(@opennextjs/cloudflare)の静的アセットとして配信し、CSP は lib/csp.ts を正本にページごとのインラインスクリプトの sha256 を script-src に列挙する。問い合わせは Resend の Server Action(/owners は Worker が返す)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "Leaflet / markercluster / 現在地距離計算", kind: "client" }], connector: "データ・タイル取得 (HTTPS)" },
         { nodes: [
           { label: "Next.js · Cloudflare Workers", sublabel: "静的アセット配信 / ページごとのsha256 CSP", kind: "server" },
-          { label: "OpenStreetMap", sublabel: "地図タイル", kind: "external" },
+          { label: "国土地理院", sublabel: "地図タイル（淡色地図）", kind: "external" },
         ] },
       ],
     },
@@ -976,8 +976,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-06",
     },
     testCoverage: {
-      statements: 98.85, branches: 96.71, functions: 99.01, lines: 99.61,
-      tests: 403, measuredAt: "2026-10-05",
+      statements: 98.94, branches: 97.08, functions: 99.09, lines: 99.64,
+      tests: 442, measuredAt: "2026-10-06",
       notes: "計測対象は lib層 + コンポーネント + app(地図ライブラリ依存の InteractiveMap を除く)。全体に閾値ゲート(lines 97 / statements 96 / functions 96 / branches 94)を設定",
     },
     securityScores: {

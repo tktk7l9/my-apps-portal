@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadPosts } from "@/lib/blog/load";
-import { extractHeadings, renderMarkdown, textLength } from "@/lib/blog/render";
+import { renderMarkdown, textLength } from "@/lib/blog/render";
 import { rawProjects } from "@/lib/projects";
 
 /**
@@ -52,12 +52,11 @@ describe("blog content", () => {
     });
 
     it("renders to a readable article with sections and a 参考 list", async () => {
-      const html = await renderMarkdown(post.body);
+      const { html, headings } = await renderMarkdown(post.body);
       const length = textLength(html);
       expect(length, `body is ${length} characters`).toBeGreaterThanOrEqual(MIN_CHARS);
       expect(length, `body is ${length} characters`).toBeLessThanOrEqual(MAX_CHARS);
 
-      const headings = extractHeadings(html);
       const h2 = headings.filter((h) => h.level === 2);
       expect(h2.length, "needs at least two h2 sections").toBeGreaterThanOrEqual(2);
       expect(h2[h2.length - 1].text).toBe("参考");

@@ -61,11 +61,11 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,128ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダー方式。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,128ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=LH perf 72→99の実測知見)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
-        { nodes: [{ label: "Cloudflare Workers", sublabel: "Next.js SSG(OpenNext) / next.configの静的CSP / 記事mdはビルド時読込", kind: "edge" }], connector: "remark/rehype+directive変換" },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "Next.js SSG(OpenNext) / HTMLごとにCSP nonce / 記事mdはビルド時読込", kind: "edge" }], connector: "remark/rehype+directive変換" },
         { nodes: [{ label: "GitHub Actions", sublabel: "CI(gitleaks/audit/typecheck/coverage100%/build/Lighthouseガード)", kind: "server" }] },
       ],
     },
@@ -89,9 +89,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 362, measuredAt: "2026-10-05" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-06",
       notes:
-        "Mozilla Observatory v2（2026-10-05 に独自ドメイン serviceanatomy.com で実測。Always Use HTTPS 有効化で http→https の減点は解消）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-10-06 に serviceanatomy.com で実測・B+ 80 から改善）。Next 16 の proxy は Node 専用で OpenNext が Node middleware に非対応のため、CSP の nonce は Worker の入口（worker.ts）で付ける。HTML の応答ごとに script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インライン script に HTMLRewriter で同じ nonce を付与（'strict-dynamic' なし）。ビーコンはハイドレーション後に追加するので HTML に SRI の無い外部スクリプトは無い。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
   {

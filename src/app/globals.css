@@ -60,3 +60,113 @@ body {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+/* Blog article body (sanitised HTML from Markdown, see src/lib/blog/render.ts).
+ * Written by hand instead of @tailwindcss/typography to keep the bundle small and the
+ * palette identical to the portal: body text slate-300, headings white, links indigo. */
+.prose {
+  color: #cad5e2; /* slate-300 */
+  font-size: 0.95rem;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2,
+.prose h3 {
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.4;
+  scroll-margin-top: 1rem;
+}
+.prose h2 {
+  font-size: 1.3rem;
+  margin-top: 2.4em;
+  padding-top: 1.2em;
+  border-top: 1px solid rgb(255 255 255 / 0.06);
+}
+.prose h3 {
+  font-size: 1.08rem;
+  margin-top: 1.8em;
+}
+.prose a {
+  color: #a3b3ff; /* indigo-300 */
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.prose a:hover {
+  color: #fff;
+}
+.prose strong {
+  color: #fff;
+  font-weight: 600;
+}
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.5em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li + li {
+  margin-top: 0.35em;
+}
+.prose blockquote {
+  border-inline-start: 3px solid rgb(129 140 248 / 0.5);
+  padding-inline-start: 1em;
+  color: #90a1b9;
+}
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: rgb(255 255 255 / 0.07);
+  border-radius: 0.25rem;
+  padding: 0.1em 0.35em;
+}
+.prose pre {
+  background: #0d1117;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.82rem;
+}
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.prose th,
+.prose td {
+  border: 1px solid rgb(255 255 255 / 0.1);
+  padding: 0.45rem 0.7rem;
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.prose th {
+  color: #fff;
+  background: rgb(255 255 255 / 0.04);
+  font-weight: 600;
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}

@@ -13,6 +13,13 @@
 - **手動更新ボタン** — キャッシュを即座にクリアして最新情報を再取得
 - **詳細モーダル** — アプリごとに OGP 画像・技術スタック・リンクをまとめて確認
 
+## ブログ
+
+`/blog` に、各アプリの設計・技術選定・更新内容を書いた記事を置いている。記事は `content/blog/<slug>.md`
+（frontmatter: title / date / summary / tags / apps / sources）で、ビルド時に Markdown → sanitize 済み HTML に変換し、
+一覧・記事・OG 画像・`/blog/feed.xml`（RSS 2.0）・`/blog/index.json`（エージェント向け索引）・sitemap をすべて静的に生成する。
+`apps` に書いた id は `data.ts` に実在することをテストで検証し、記事内のアプリカードは `/?work=<id>` でポータルの詳細を開く。
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org) 16 (App Router)

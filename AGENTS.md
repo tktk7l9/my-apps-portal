@@ -17,7 +17,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Static home page and eyecatches
 
-- `/`, `/icon.svg`, `/opengraph-image` and `/api/og/<id>.png` are prerendered by `next build` and copied into
+- `/`, `/icon.svg`, `/opengraph-image`, `/api/og/<id>.png`, `/sitemap.xml`, `/robots.txt` and the whole blog
+  (`/blog`, `/blog/<slug>`, its OG images, `feed.xml`, `index.json`) are prerendered by `next build` and copied into
   `public/` by `scripts/export-static.mjs` (the `build` script), so OpenNext ships them as Workers static assets.
   Static assets are served without running the Worker; rendering per request exceeded the free plan's CPU
   limit (error 1102). Do not make these routes dynamic.
@@ -25,3 +26,18 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   the script writes them to `public/_headers` for static assets.
 - Data on `/` is as fresh as the last build. `.github/workflows/rebuild.yml` calls the Workers Builds deploy hook
   every 3 hours (repository secret `DEPLOY_HOOK_URL`).
+
+## Blog
+
+- Articles are Markdown files in `content/blog/<slug>.md` with frontmatter `title`, `date`, optional `updated`,
+  `summary`, `tags`, `apps` (ids from `src/lib/projects/data.ts`) and `sources`. The parser is the YAML subset in
+  `src/lib/blog/frontmatter.ts`; `src/lib/blog/content.test.ts` validates every article (schema, dates, app ids,
+  internal links, length, a closing `## 参考` section) and runs in the coverage gate.
+- Rendering is build-time only (`remark-gfm` → `rehype-sanitize`); `content/` does not exist on the Worker, so
+  nothing may read it at request time. Pages use `generateStaticParams` + `dynamicParams = false`; route handlers
+  are `force-static`.
+- `open-next.config.ts` sets `incrementalCache: staticAssetsIncrementalCache` so the Worker can still serve
+  prerendered pages that are not in `public/`; without it, statically generated dynamic segments answer 404.
+- Blog pages link with plain `<a>` (not `next/link`): static assets answer by path, so an RSC prefetch would get HTML.
+- Only facts from public repositories, READMEs, commit messages or `data.ts` go into articles. No personal, family,
+  financial, health, employment or client-identifying information; the client project stays anonymised as in `data.ts`.

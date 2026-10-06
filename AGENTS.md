@@ -24,6 +24,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   limit (error 1102). Do not make these routes dynamic.
 - Security headers live in `src/lib/security-headers.ts`: next.config.ts applies them to Worker responses and
   the script writes them to `public/_headers` for static assets.
+- Static HTML pages get a per-page CSP in `_headers` whose script-src lists the sha256 of each inline script
+  (Next's RSC payload) instead of `'unsafe-inline'`; the script recomputes them on every build. Never edit a
+  copied HTML file after hashing, and keep `_headers` under 100 rules (the script throws). Worker responses
+  (404, `/api/*`) still allow `'unsafe-inline'`, because next.config.ts is read before the build exists.
+- The Cloudflare Web Analytics beacon is appended at runtime by `src/components/Analytics.tsx`, not written
+  as a `<script src>`: it cannot carry SRI, and Observatory deducts for external scripts without it.
 - Data on `/` is as fresh as the last build. `.github/workflows/rebuild.yml` calls the Workers Builds deploy hook
   every 3 hours (repository secret `DEPLOY_HOOK_URL`).
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { rawProjects } from "@/lib/projects";
 import { computePortfolioStats } from "@/lib/stats";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { Analytics } from "@/components/Analytics";
 import "./globals.css";
 
 const stats = computePortfolioStats(rawProjects);
@@ -43,17 +44,7 @@ export default function RootLayout({
     <html lang="ja" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         {children}
-        {/* Cloudflare Web Analytics (the token is an identifier meant to be public, not a secret).
-            gitleaks flags a 32-digit hex as generic-api-key, so gitleaks:allow on the
-            flagged line suppresses it. A .gitleaks.toml would also work, but it replaces
-            the whole default ruleset, which leaves room to hide real secrets too. */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts --
-            type="module" scripts are deferred by spec, so this does not block the parser */}
-        <script
-          type="module"
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon={'{"token": "cd156fbf0fd24da0a12e58fdb4e63828"}' /* gitleaks:allow */}
-        />
+        <Analytics />
       </body>
     </html>
   );

@@ -10,10 +10,16 @@
 //
 // Workers assets use the default html_handling (auto-trailing-slash): "blog.html" answers
 // /blog and "blog/<slug>.html" answers /blog/<slug>, matching Next's trailing-slash-less URLs.
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 // Node 24 strips types when importing a .ts module, so the header list stays in one place.
-import { headersFile, securityHeaders, staticAssetCacheRule } from "../src/lib/security-headers.ts";
+import {
+  buildCsp,
+  headersFile,
+  inlineScriptHashes,
+  securityHeaders,
+  staticAssetCacheRule,
+} from "../src/lib/security-headers.ts";
 
 const root = join(import.meta.dirname, "..");
 const app = join(root, ".next/server/app");
@@ -41,7 +47,14 @@ function copy(from, to) {
   cpSync(src, join(pub, to));
 }
 
-copy("index.html", "index.html");
+// HTML pages and the URL path they answer, for their per-page CSP.
+const pages = [];
+function copyPage(from, to, path) {
+  copy(from, to);
+  pages.push({ path, file: join(pub, to) });
+}
+
+copyPage("index.html", "index.html", "/");
 copy("icon.svg.body", "icon.svg");
 copy("opengraph-image.body", "opengraph-image");
 copy("sitemap.xml.body", "sitemap.xml");
@@ -51,15 +64,15 @@ if (eyecatches.length === 0) throw new Error("export-static: no prerendered /api
 for (const name of eyecatches) copy(`api/og/${name}`, `api/og/${name.replace(/\.body$/, "")}`);
 
 // Blog: list page, every article, its OG image, the feed and the JSON index.
-copy("blog.html", "blog.html");
+copyPage("blog.html", "blog.html", "/blog");
 copy("blog/feed.xml.body", "blog/feed.xml");
 copy("blog/index.json.body", "blog/index.json");
 const articles = readdirSync(join(app, "blog")).filter((name) => name.endsWith(".html"));
 if (articles.length === 0) throw new Error("export-static: no prerendered /blog articles");
 const ogImages = [];
 for (const name of articles) {
-  copy(`blog/${name}`, `blog/${name}`);
   const slug = name.replace(/\.html$/, "");
+  copyPage(`blog/${name}`, `blog/${name}`, `/blog/${slug}`);
   const og = `blog/${slug}/opengraph-image.body`;
   if (existsSync(join(app, og))) {
     copy(og, `blog/${slug}/opengraph-image`);
@@ -67,21 +80,37 @@ for (const name of articles) {
   }
 }
 
-const headers = securityHeaders(false);
+// Every path gets the strict policy, which allows no inline script at all. Each HTML page
+// detaches it ("! Content-Security-Policy") and sets a policy that allows exactly the inline
+// scripts it ships (Next's RSC payload), by hash. Static assets never run the Worker, so a
+// per-request nonce is not an option; the hashes are fixed at build time like the HTML.
+const strict = securityHeaders(false).map((header) =>
+  header.key === "Content-Security-Policy" ? { ...header, value: buildCsp(false, []) } : header
+);
+const pageRules = pages.map(({ path, file }) => ({
+  path,
+  detach: ["Content-Security-Policy"],
+  headers: [{ key: "Content-Security-Policy", value: buildCsp(false, inlineScriptHashes(readFileSync(file, "utf8"))) }],
+}));
 const contentTypes = [
   { path: "/opengraph-image", type: "image/png" },
-  ...ogImages.map((path) => ({ path, type: "image/png" })),
+  ...(ogImages.length > 0 ? [{ path: "/blog/:slug/opengraph-image", type: "image/png" }] : []),
   { path: "/blog/feed.xml", type: "application/rss+xml; charset=utf-8" },
   { path: "/sitemap.xml", type: "application/xml; charset=utf-8" },
 ];
-writeFileSync(
-  join(pub, "_headers"),
-  headersFile([
-    { path: "/*", headers },
-    staticAssetCacheRule,
-    ...contentTypes.map(({ path, type }) => ({ path, headers: [{ key: "Content-Type", value: type }] })),
-  ])
-);
+const rules = [
+  { path: "/*", headers: strict },
+  staticAssetCacheRule,
+  ...pageRules,
+  ...contentTypes.map(({ path, type }) => ({ path, headers: [{ key: "Content-Type", value: type }] })),
+];
+// Workers static assets accept at most 100 rules and 2,000 characters per line.
+// https://developers.cloudflare.com/workers/static-assets/headers/
+const body = headersFile(rules);
+if (rules.length > 100) throw new Error(`export-static: ${rules.length} _headers rules exceed the limit of 100`);
+const longLine = body.split("\n").find((line) => line.length > 2000);
+if (longLine) throw new Error(`export-static: _headers line over 2,000 characters: ${longLine.slice(0, 80)}…`);
+writeFileSync(join(pub, "_headers"), body);
 console.log(
   `export-static: index.html, icon.svg, opengraph-image, sitemap.xml, robots.txt, ${eyecatches.length} eyecatches, ` +
     `blog (${articles.length} articles, ${ogImages.length} OG images, feed.xml, index.json), _headers`

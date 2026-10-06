@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { eyecatchSrc } from "@/lib/eyecatch";
-import { packageMeta, rawProjects, serviceUrls } from "@/lib/projects";
+import { packageMeta, rawProjects, serviceUrls, type RawProject } from "@/lib/projects";
 
 describe("eyecatch sources", () => {
   // A Worker cannot fetch another workers.dev host of the same account (Cloudflare error 1042),
@@ -65,6 +65,20 @@ function isIsoDate(value: string): boolean {
   return new Date(`${value}T00:00:00Z`).toISOString().startsWith(value);
 }
 
+/** Every free-text field of a project (shown on the card, in the detail modal or in the blog). */
+function proseOf(project: RawProject): string[] {
+  return [
+    project.description,
+    project.highlight,
+    project.technicalOverview,
+    project.testCoverage?.notes,
+    project.securityScores?.notes,
+    project.secretScan?.notes,
+    project.securityHeaders?.notes,
+    project.nativeQuality?.notes,
+  ].filter((text): text is string => text !== undefined);
+}
+
 describe("measured values are internally consistent", () => {
   it("Lighthouse scores are integers in 0..100 with a valid, non-future date", () => {
     const today = todayInTokyo();
@@ -77,6 +91,25 @@ describe("measured values are internally consistent", () => {
       }
       expect(isIsoDate(lh.measuredAt), `${project.id} measuredAt=${lh.measuredAt}`).toBe(true);
       expect(lh.measuredAt <= today, `${project.id} measuredAt is in the future`).toBe(true);
+    }
+  });
+
+  // Re-measuring updates lighthouseScores, but sentences quoting the old numbers used to stay behind.
+  it("prose quoting the mobile Lighthouse scores repeats lighthouseScores and its date", () => {
+    for (const project of rawProjects) {
+      for (const text of proseOf(project)) {
+        for (const [quote, ...quoted] of text.matchAll(/mobile (\d+)\/(\d+)\/(\d+)\/(\d+)（(\d{4}-\d{2}-\d{2})/g)) {
+          const lh = project.lighthouseScores;
+          const recorded = lh && [lh.performance, lh.accessibility, lh.bestPractices, lh.seo, lh.measuredAt].map(String);
+          expect(quoted, `${project.id}: "${quote}"`).toEqual(recorded);
+        }
+      }
+    }
+  });
+
+  it("featured highlights leave Lighthouse to the measured score shown beside them", () => {
+    for (const project of rawProjects) {
+      if (project.highlight) expect(project.highlight, project.id).not.toMatch(/Lighthouse|LH/);
     }
   });
 

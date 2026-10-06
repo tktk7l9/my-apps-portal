@@ -13,7 +13,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 // Node 24 strips types when importing a .ts module, so the header list stays in one place.
-import { headersFile, securityHeaders } from "../src/lib/security-headers.ts";
+import { headersFile, securityHeaders, staticAssetCacheRule } from "../src/lib/security-headers.ts";
 
 const root = join(import.meta.dirname, "..");
 const app = join(root, ".next/server/app");
@@ -78,6 +78,7 @@ writeFileSync(
   join(pub, "_headers"),
   headersFile([
     { path: "/*", headers },
+    staticAssetCacheRule,
     ...contentTypes.map(({ path, type }) => ({ path, headers: [{ key: "Content-Type", value: type }] })),
   ])
 );

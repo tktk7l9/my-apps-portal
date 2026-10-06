@@ -1,0 +1,4 @@
+# Cloudflare Web Analytics beacon token in src/app/layout.tsx. It is a public site
+# identifier embedded in every page, not a secret (the current line carries gitleaks:allow;
+# this fingerprint covers the commit from before that comment existed).
+cb71231d70df5c8f11e8c4cb06a7212987f491ea:src/app/layout.tsx:generic-api-key:51

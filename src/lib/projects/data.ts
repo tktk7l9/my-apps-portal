@@ -135,7 +135,7 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      measuredAt: "2026-10-07",
     },
     testCoverage: {
       statements: 100, branches: 99.3, functions: 100, lines: 100,
@@ -348,7 +348,7 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 93, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-06",
+      measuredAt: "2026-10-07",
     },
     testCoverage: {
       statements: 99.47, branches: 93.21, functions: 99.64, lines: 100,
@@ -489,11 +489,11 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 91,
+      performance: 92,
       accessibility: 100,
       bestPractices: 96,
       seo: 100,
-      measuredAt: "2026-09-30",
+      measuredAt: "2026-10-07",
     },
     testCoverage: {
       statements: 99.41, branches: 97.74, functions: 99.76, lines: 99.74,
@@ -556,8 +556,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 96, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      performance: 95, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-07",
     },
     testCoverage: {
       statements: 98.76, branches: 95.08, functions: 98.89, lines: 99.09,
@@ -697,7 +697,7 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🟦",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 99, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-07" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 2, tool: "npm", measuredAt: "2026-10-05",
@@ -813,7 +813,7 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🤸",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-07" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 2, tool: "npm", measuredAt: "2026-10-05",
@@ -929,7 +929,7 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🗂️",
-    lighthouseScores: { performance: 91, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 92, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-07" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
       tests: 273, measuredAt: "2026-10-06",
@@ -1018,7 +1018,7 @@ export const rawProjects: RawProject[] = [
     emoji: "⌨️",
     lighthouseScores: {
       performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      measuredAt: "2026-10-07",
     },
     testCoverage: {
       statements: 99.38, branches: 97.48, functions: 100, lines: 99.85,
@@ -1073,7 +1073,7 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 99, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      measuredAt: "2026-10-07",
     },
     secretScan: { leaks: 0, commits: 61, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
@@ -1118,7 +1118,7 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 97, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      measuredAt: "2026-10-07",
     },
     secretScan: { leaks: 0, commits: 56, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {

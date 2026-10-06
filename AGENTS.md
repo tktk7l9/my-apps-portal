@@ -26,7 +26,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   the script writes them to `public/_headers` for static assets.
 - Static HTML pages get a per-page CSP in `_headers` whose script-src lists the sha256 of each inline script
   (Next's RSC payload) instead of `'unsafe-inline'`; the script recomputes them on every build. Never edit a
-  copied HTML file after hashing, and keep `_headers` under 100 rules (the script throws). Worker responses
+  copied HTML file after hashing, and keep `_headers` under 100 rules (the script throws). Exactly one rule may
+  set the CSP for a path: "/*" carries none, because detaching it in a page rule failed on the edge for "/"
+  (two policies, both enforced). A new non-HTML folder in public/ needs an entry in `strictPaths`. Worker responses
   (404, `/api/*`) still allow `'unsafe-inline'`, because next.config.ts is read before the build exists.
 - The Cloudflare Web Analytics beacon is appended at runtime by `src/components/Analytics.tsx`, not written
   as a `<script src>`: it cannot carry SRI, and Observatory deducts for external scripts without it.

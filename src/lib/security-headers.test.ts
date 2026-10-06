@@ -91,10 +91,4 @@ describe("headersFile", () => {
       ])
     ).toBe("/*\n  A: 1\n  B: 2\n/x\n  C: 3\n");
   });
-
-  it("writes detached headers as '! Name' before the headers it sets", () => {
-    expect(
-      headersFile([{ path: "/", detach: ["Content-Security-Policy"], headers: [{ key: "Content-Security-Policy", value: "x" }] }])
-    ).toBe("/\n  ! Content-Security-Policy\n  Content-Security-Policy: x\n");
-  });
 });

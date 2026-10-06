@@ -55,17 +55,10 @@ export const staticAssetCacheRule = {
   headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
 } as const;
 
-export type HeaderRule = { path: string; detach?: string[]; headers: Header[] };
-
-/**
- * Body of a Workers static assets `_headers` file: one block of headers per path pattern.
- * `detach` removes a header that a broader rule (such as "/*") set, written as "! Name".
- */
-export function headersFile(rules: HeaderRule[]): string {
+/** Body of a Workers static assets `_headers` file: one block of headers per path pattern. */
+export function headersFile(rules: { path: string; headers: Header[] }[]): string {
   return rules
-    .map(({ path, detach = [], headers }) =>
-      [path, ...detach.map((key) => `  ! ${key}`), ...headers.map(({ key, value }) => `  ${key}: ${value}`)].join("\n")
-    )
+    .map(({ path, headers }) => [path, ...headers.map(({ key, value }) => `  ${key}: ${value}`)].join("\n"))
     .join("\n")
     .concat("\n");
 }

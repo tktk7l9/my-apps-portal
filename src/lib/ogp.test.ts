@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { extractOgImage, isAllowedImageType, isAllowedPageUrl } from "@/lib/ogp";
+import {
+  extractOgImage,
+  isAllowedImageType,
+  isAllowedImageUrl,
+  isAllowedPageUrl,
+  readBounded,
+} from "@/lib/ogp";
 
 describe("isAllowedPageUrl", () => {
   const allowed = ["https://skydial.vercel.app", "https://example.workers.dev/app"];
@@ -60,5 +66,46 @@ describe("isAllowedImageType", () => {
     expect(isAllowedImageType("image/svg+xml")).toBe(false);
     expect(isAllowedImageType("text/html")).toBe(false);
     expect(isAllowedImageType(null)).toBe(false);
+  });
+});
+
+describe("isAllowedImageUrl", () => {
+  const page = "https://skydial.vercel.app/ja";
+
+  it("accepts an https image on the page's host", () => {
+    expect(isAllowedImageUrl("https://skydial.vercel.app/ogp.png", page)).toBe(true);
+  });
+
+  it("rejects other hosts, http, look-alike hosts and unparsable URLs", () => {
+    expect(isAllowedImageUrl("https://cdn.test/a.png", page)).toBe(false);
+    expect(isAllowedImageUrl("http://skydial.vercel.app/ogp.png", page)).toBe(false);
+    expect(isAllowedImageUrl("https://skydial.vercel.app.evil.test/ogp.png", page)).toBe(false);
+    expect(isAllowedImageUrl("https://skydial.vercel.app:8443/ogp.png", page)).toBe(false);
+    expect(isAllowedImageUrl("http://[bad", page)).toBe(false);
+  });
+});
+
+describe("readBounded", () => {
+  const stream = (...chunks: number[]) =>
+    new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const size of chunks) controller.enqueue(new Uint8Array(size).fill(1));
+        controller.close();
+      },
+    });
+
+  it("concatenates a body within the limit", async () => {
+    const out = await readBounded(stream(3, 2), 5);
+    expect(out).not.toBeNull();
+    expect(out!.byteLength).toBe(5);
+    expect(Array.from(out!)).toEqual([1, 1, 1, 1, 1]);
+  });
+
+  it("returns null once the body exceeds the limit", async () => {
+    expect(await readBounded(stream(3, 3), 5)).toBeNull();
+  });
+
+  it("treats a missing body as empty", async () => {
+    expect((await readBounded(null, 5))!.byteLength).toBe(0);
   });
 });

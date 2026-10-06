@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCsp, headersFile, securityHeaders } from "@/lib/security-headers";
+import { buildCsp, headersFile, securityHeaders, staticAssetCacheRule } from "@/lib/security-headers";
 
 describe("buildCsp", () => {
   it("adds 'unsafe-eval' only in development", () => {
@@ -18,6 +18,16 @@ describe("securityHeaders", () => {
       "Referrer-Policy",
       "Permissions-Policy",
       "Strict-Transport-Security",
+      "Cross-Origin-Opener-Policy",
+    ]);
+  });
+});
+
+describe("staticAssetCacheRule", () => {
+  it("marks the content-hashed /_next/static files immutable for a year", () => {
+    expect(staticAssetCacheRule.path).toBe("/_next/static/*");
+    expect(staticAssetCacheRule.headers).toEqual([
+      { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
     ]);
   });
 });

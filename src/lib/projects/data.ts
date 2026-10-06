@@ -941,7 +941,7 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る。CI は例外リスト＋期限つきの audit-gate と gitleaks を強制",
     },
     secretScan: { leaks: 0, commits: 170, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
+    securityHeaders: { grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-06" },
   },
   {
     id: "acro-finder",
@@ -1040,7 +1040,7 @@ export const rawProjects: RawProject[] = [
   {
     id: "css-atelier",
     name: "CSS Atelier",
-    description: "MDN を片手に、解説→CSS記述→自動採点で学ぶインタラクティブ CSS 学習アプリ。Flexbox / Grid から :has()・container queries まで。製図スタジオ風 UI と、ボックスモデル/Flex/Grid を立体表示する 3D 概念ビジュアライザ（Three.js）付き。19トラック47レッスン。メディア/コンテナクエリは二状態（複数ビューポート）で採点。",
+    description: "MDN を片手に、解説→CSS記述→自動採点で学ぶインタラクティブ CSS 学習アプリ。Flexbox / Grid から :has()・container queries まで。製図スタジオ風 UI と、ボックスモデル/Flex/Grid を立体表示する 3D 概念ビジュアライザ（Three.js）付き。23トラック56レッスン。メディア/コンテナクエリは二状態（複数ビューポート）で採点。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Tool",
     platform: "web",

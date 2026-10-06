@@ -946,7 +946,7 @@ export const rawProjects: RawProject[] = [
   {
     id: "acro-finder",
     name: "ACRO/FINDER",
-    description: "トリッキング・パルクールなどアクロバットを練習できる施設を地図とリストで検索。営業時間・器具・レッスン・現在地からの距離を確認できる。全国28都道府県の施設117件と大会・ジャム等のイベント22件を収録し、都道府県別ページを含む150ページをsitemapで配信。",
+    description: "トリッキング・パルクールなどアクロバットを練習できる施設を地図とリストで検索。営業時間・器具・レッスン・現在地からの距離を確認できる。全国28都道府県の施設116件と大会・ジャム等のイベント22件を収録し、都道府県別ページを含む149ページをsitemapで配信。",
     trackedPackages: ["next", "react", "typescript"],
     category: "Tool",
     platform: "web",
@@ -972,7 +972,7 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "📍",
     lighthouseScores: {
-      performance: 89, accessibility: 100, bestPractices: 100, seo: 100,
+      performance: 94, accessibility: 100, bestPractices: 100, seo: 100,
       measuredAt: "2026-10-06",
     },
     testCoverage: {

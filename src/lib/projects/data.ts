@@ -1,9 +1,10 @@
 import type { Category, RawProject } from "./types";
 
 // Content counts quoted in description / technicalOverview / notes (articles, lessons, facilities,
-// events, ...) were checked against each repository's origin/main on 2026-10-10. testCoverage
-// figures with that measuredAt come from the latest green CI run on that head (lifeplan-simulator,
-// housing-performance-simulator and my-apps-portal were run locally the same day).
+// events, ...) were checked against each repository's origin/main on 2026-10-11 for the apps that
+// changed that day and on 2026-10-10 for the rest. testCoverage figures come from the latest green CI
+// run on the head checked that day; lifeplan-simulator (its CI runs no coverage) and my-apps-portal
+// were run locally.
 export const rawProjects: RawProject[] = [
   {
     id: "client-realestate-admin",
@@ -48,13 +49,13 @@ export const rawProjects: RawProject[] = [
     id: "service-anatomy",
     name: "Service Anatomy",
     description:
-      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事100本+2サービスを突き合わせる比較解剖29本。技術780件・タグ219件・カテゴリ7件の横断ページを含め2,280ページ（sitemapのURL数）を全てビルド時に生成する。",
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事109本+2サービスを突き合わせる比較解剖32本。技術846件・タグ226件・カテゴリ7件の横断ページを含め2,452ページ（sitemapのURL数）を全てビルド時に生成する。",
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-16",
-    updatedAt: "2026-10-07",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
@@ -65,7 +66,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,280ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,452ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -79,7 +80,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 2160, measuredAt: "2026-10-10",
+      tests: 2363, measuredAt: "2026-10-11",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -88,14 +89,14 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     lighthouseScores: {
-      performance: 92, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-06",
+      performance: 94, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-11",
     },
     secretScan: { leaks: 0, commits: 362, measuredAt: "2026-10-05" },
     securityHeaders: {
-      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-06",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2（2026-10-06 に serviceanatomy.com で実測・B+ 80 から改善）。Next 16 の proxy は Node 専用で OpenNext が Node middleware に非対応のため、CSP の nonce は Worker の入口（worker.ts）で付ける。HTML の応答ごとに script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インライン script に HTMLRewriter で同じ nonce を付与（'strict-dynamic' なし）。ビーコンはハイドレーション後に追加するので HTML に SRI の無い外部スクリプトは無い。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-10-11 に serviceanatomy.com で再計測。2026-10-06 に B+ 80 から改善）。Next 16 の proxy は Node 専用で OpenNext が Node middleware に非対応のため、CSP の nonce は Worker の入口（worker.ts）で付ける。HTML の応答ごとに script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript（src・href・xlink:href がなく、type が JavaScript か module のもの）にだけ HTMLRewriter で同じ nonce を付与（'strict-dynamic' なし。JSON-LD などのデータブロックには付けない）。ビーコンはハイドレーション後に追加するので HTML に SRI の無い外部スクリプトは無い。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
     },
   },
   {
@@ -302,13 +303,13 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1829〜現在の国内外の歴史ニュース27,453件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,802件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,453件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画／日本の災害と防災／オリンピック・パラリンピック／医学と感染症／女性の権利／公害と環境／音楽／航空／憲法と選挙／核兵器と軍縮／金融危機／冷戦／科学の大発見／通信と放送／野球とサッカー／自動車と道路／探検と冒険／文学と出版／建築と都市／人権と公民権／ゲームの特集27本812件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史77件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
+      "1829〜現在の国内外の歴史ニュース27,451件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,802件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,451件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画／日本の災害と防災／オリンピック・パラリンピック／医学と感染症／女性の権利／公害と環境／音楽／航空／憲法と選挙／核兵器と軍縮／金融危機／冷戦／科学の大発見／通信と放送／野球とサッカー／自動車と道路／探検と冒険／文学と出版／建築と都市／人権と公民権／ゲーム／美術と美術館／気象と天気予報史／写真とカメラ／船と海運／教育と学校／万博と博覧会／将棋・囲碁・チェス／競馬／暦と時刻／第一次世界大戦／中東の戦争と和平／原子力発電／格闘技／第二次世界大戦／明治維新／沖縄／火山噴火の特集44本1,372件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史77件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare R2", "Cloudflare Web Analytics"],
     createdAt: "2026-07-10",
-    updatedAt: "2026-10-07",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/chronoscroll",
     githubVisibility: "public",
     liveUrl: "https://chronoscroll.saitotakuya0719.workers.dev",
@@ -316,7 +317,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,453件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション352件（トップ423件を人手レビュー: 要約リライト・SVG割当・関連リンク手動指定、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク83シナリオ（280〜1280pxの横あふれ検証を含む）付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,453本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残りは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,451件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション886件（トップ423件を人手レビュー: 要約リライト・SVG割当・関連リンク手動指定・非イベント行の除外、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。要約に残ったパーサの残骸（日付の断片・{{Cite の切れ端・参照書きなど）は pipeline/lib/residue.ts が種類ごとに数え、コミット済みデータの件数が上限（RESIDUE_CEILING）を超えると CI が落ちる。年ページの行のうちイベントでないものは content/curated/suppress.yaml に理由つきで書き、全出力から取り除く。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク100シナリオ（280〜1280pxの横あふれ検証を含む）付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,451本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残りは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
     architecture: {
       layers: [
         {
@@ -333,12 +334,12 @@ export const rawProjects: RawProject[] = [
           nodes: [
             {
               label: "SvelteKit static · Cloudflare Workers",
-              sublabel: "厳格CSP / 27,453件を28チャンク配信 / /e/* は Worker が R2 から返す",
+              sublabel: "厳格CSP / 27,451件を28チャンク配信 / /e/* は Worker が R2 から返す",
               kind: "edge",
             },
             {
               label: "R2 (chronoscroll-pages)",
-              sublabel: "イベント個別ページ 27,453本の prerender 済み HTML（ビルド時に差分同期）",
+              sublabel: "イベント個別ページ 27,451本の prerender 済み HTML（ビルド時に差分同期）",
               kind: "storage",
             },
             {
@@ -355,9 +356,9 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-07",
     },
     testCoverage: {
-      statements: 99.4, branches: 93.17, functions: 99.65, lines: 100,
-      tests: 508, measuredAt: "2026-10-10",
-      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク83シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
+      statements: 99.42, branches: 93.42, functions: 99.66, lines: 100,
+      tests: 575, measuredAt: "2026-10-11",
+      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド/要約の残骸検出 + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク100シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -366,9 +367,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 109, measuredAt: "2026-10-05" },
     securityHeaders: {
-      grade: "A+", score: 115, passed: 11, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 125, passed: 11, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2 A+（115・11/12）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 93/100/100/100（2026-10-07・median-of-3・LCP 2.9s・CLS 0・TBT 0ms）/ desktop 99/100/100/100（2026-09-30・LCP 0.8s）。JSなしの特集ページとイベント個別ページは mobile 100（2026-09-27・LCP 1.6s）。mobileのLCP（2026-09-30 は 3.6s）は、2026-10-06 に初期表示をカード用の軽量 JSON から描き、最初の画面のカードをフェードさせないようにして縮めた",
+        "Mozilla Observatory v2 A+（125・11/12、2026-10-11）。失点はCloudflare Web AnalyticsのビーコンのSRI −5（バージョン無しURLをCloudflareが差し替える運用のため意図的に付けない）。Lighthouseはmobile 93/100/100/100（2026-10-07・median-of-3・LCP 2.9s・CLS 0・TBT 0ms）/ desktop 99/100/100/100（2026-09-30・LCP 0.8s）。JSなしの特集ページとイベント個別ページは mobile 100（2026-09-27・LCP 1.6s）。mobileのLCP（2026-09-30 は 3.6s）は、2026-10-06 に初期表示をカード用の軽量 JSON から描き、最初の画面のカードをフェードさせないようにして縮めた",
     },
   },
   {
@@ -590,14 +591,14 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Supabase"],
     createdAt: "2026-07-01",
-    updatedAt: "2026-07-01",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/utility-tracker",
     githubVisibility: "public",
     liveUrl: "https://utility-tracker.saitotakuya0719.workers.dev",
     ogImage: "/api/og/utility-tracker.png",
     emoji: "💡",
     technicalOverview:
-      "Next.js App Router（クライアント描画のデータ端末、noindex）。集計の心臓部は src/lib の純関数（Vitest 100%）で、隔月請求の水道はカレンダー月へ日割り按分して月次系列に正規化する。CSV は文字コード選択(UTF-8/Shift_JIS)＋列マッピングで正規化し、unique(種別,期間)で冪等取込。保存は Supabase(Postgres)、認証はメール+パスワードの単一ユーザーで RLS を適用。グラフは recharts。",
+      "Next.js App Router（クライアント描画のデータ端末、noindex）。集計の心臓部は src/lib の純関数（Vitest 100%）で、隔月請求の水道はカレンダー月へ日割り按分して月次系列に正規化する。CSV は文字コード選択(UTF-8/Shift_JIS)＋列マッピングで正規化し、unique(種別,期間)で冪等取込。保存は Supabase(Postgres)、認証はメール+パスワードの単一ユーザーで RLS を適用。グラフは recharts。\n\nHTML は Worker の入口（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける。ページはログイン前の殻で訪問者ごとに変わる処理を持たないので、事前生成した HTML を staticAssetsIncrementalCache から描画し直さずに返す。",
     architecture: {
       layers: [
         {
@@ -608,7 +609,7 @@ export const rawProjects: RawProject[] = [
         },
         {
           nodes: [
-            { label: "Next.js · Cloudflare Workers", sublabel: "静的配信 / CSP(connect-src supabase)", kind: "edge" },
+            { label: "Next.js · Cloudflare Workers", sublabel: "事前生成ページをキャッシュから返す / HTMLごとにCSP nonce(connect-src supabase)", kind: "edge" },
             { label: "Supabase", sublabel: "Postgres(readings) / Auth / RLS", kind: "storage" },
           ],
         },
@@ -616,11 +617,11 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 99, accessibility: 100, bestPractices: 100, seo: 63,
-      measuredAt: "2026-09-30",
+      measuredAt: "2026-10-11",
     },
     testCoverage: {
-      statements: 98.14, branches: 94.26, functions: 96.61, lines: 98.75,
-      tests: 334, measuredAt: "2026-10-10",
+      statements: 98.22, branches: 94.55, functions: 96.73, lines: 98.8,
+      tests: 403, measuredAt: "2026-10-11",
       notes: "lib層(aggregate/csv/domain/export/utils)を100%閾値ゲート。UI層(components/app)も閾値付きで計測(数値は全体)。supabase.ts(ネットワーク)とpdfText.tsは対象外",
     },
     securityScores: {
@@ -630,9 +631,9 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 105, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2 で 10/12（2026-10-05）。失点は CSP -20 と Cloudflare Web Analytics ビーコンの SRI -5。CSP は recharts / Next のインライン用に script-src 'unsafe-inline' を許容しており CSP 項目で減点（A+ 化には nonce 化が必要）",
+        "Mozilla Observatory v2 で 12/12（2026-10-11・B 75 から改善）。HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。Cloudflare Web Analytics のビーコンは HTML に書かずハイドレーション後に追加するので、SRI の減点もない。残る緩和は style-src の 'unsafe-inline'（Observatory は減点しない）",
     },
   },
   {
@@ -644,7 +645,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Anthropic Claude"],
     createdAt: "2026-04-20",
-    updatedAt: "2026-04-24",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/lifeplan-simulator",
     githubVisibility: "public",
     liveUrl: "https://lifeplan-simulator.saitotakuya0719.workers.dev",
@@ -654,7 +655,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/lifeplan-simulator.webp",
     favicon: "/favicons/lifeplan-simulator.svg",
     technicalOverview:
-      "資産推移のシミュレーションは lib/simulation の純関数でクライアント側で完結し、状態は Zustand、入力フォームは React Hook Form + Zod で検証する。AI 評価機能のみ Next.js の Route Handler 経由で Claude を呼び出し、レスポンスを Zod でバリデーションする。グラフは Recharts、背景演出は Three.js。",
+      "資産推移のシミュレーションは lib/simulation の純関数でクライアント側で完結し、状態は Zustand、入力フォームは React Hook Form + Zod で検証する。AI 評価機能のみ Next.js の Route Handler 経由で Claude を呼び出し、レスポンスを Zod でバリデーションする。グラフは Recharts、背景演出は Three.js。\n\nHTML は Worker の入口（worker.ts）で毎リクエストの CSP nonce を付け、事前生成したページは staticAssetsIncrementalCache から描画し直さずに返す。/simulator は zod の検証スキーマと 2 ステップ目以降を分割して表示後のアイドル時に先読みし、初回の JS を gzip 約 325 KB から約 218 KB にした（ローカルのビルド）。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "Zustand / RHF+Zod / Recharts / Three.js", kind: "client" }], connector: "AI評価のみ (HTTPS)" },
@@ -663,11 +664,11 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🏔️",
-    lighthouseScores: { performance: 95, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 96, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
-      statements: 95.49, branches: 82.53, functions: 95.07, lines: 96.77,
-      tests: 478, measuredAt: "2026-10-10",
-      notes: "lib層 99.86% / 全体 95.49%（statements）。Slider/Three.js/SaveDialog/ImportDialog の interaction 網羅",
+      statements: 95.7, branches: 82.98, functions: 94.98, lines: 96.9,
+      tests: 567, measuredAt: "2026-10-11",
+      notes: "lib層 99.87% / 全体 95.7%（statements。CI はカバレッジを出さないのでローカルで計測）。Slider/Three.js/SaveDialog/ImportDialog の interaction と、/simulator の遅延読み込み（検証スキーマ・後続ステップ）を網羅",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -675,7 +676,11 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     secretScan: { leaks: 0, commits: 149, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
+    securityHeaders: {
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
+      notes:
+        "Mozilla Observatory v2 で 12/12（2026-10-11・B 75 から改善）。HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。解析ビーコンは HTML に書かずハイドレーション後に追加する",
+    },
   },
   {
     id: "hyper-tetris",
@@ -722,7 +727,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-04-28",
-    updatedAt: "2026-04-28",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/housing-performance-simulator",
     githubVisibility: "public",
     liveUrl: "https://housing-performance-simulator.saitotakuya0719.workers.dev",
@@ -732,7 +737,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/housing-performance-simulator.webp",
     favicon: "/favicons/housing-performance-simulator.svg",
     technicalOverview:
-      "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand で持つ。Next.js を Cloudflare Workers に配信し、外部 API は持たない。",
+      "断熱・気密性能と設備のコスト計算は lib の純関数でクライアント側で完結する。結果は Recharts で可視化し、@react-pdf/renderer で PDF 出力、lz-string で入力条件を URL に圧縮共有する。状態は Zustand で持つ。Next.js を Cloudflare Workers に配信し、外部 API は持たない。\n\nHTML は Worker の入口（worker.ts）で毎リクエストの CSP nonce を付け、事前生成したページは staticAssetsIncrementalCache から描画し直さずに返す。/simulator は最初の建物条件ステップだけを先に配り、グラフ（recharts）を含む残り 6 ステップを分割して表示後に先読みし、初回の JS を gzip 約 331 KB から約 203 KB にした（ローカルのビルド）。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "lib計算 / Recharts / @react-pdf / lz-string共有", kind: "client" }], connector: "静的配信 (HTTPS)" },
@@ -740,11 +745,11 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🏠",
-    lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
-      statements: 98.76, branches: 92.67, functions: 99.75, lines: 99.47,
-      tests: 445, measuredAt: "2026-10-10",
-      notes: "lib層 99.33% / 全体 98.76%（statements）。Select/Dialog/Input/各 step interaction まで網羅",
+      statements: 98.87, branches: 93.27, functions: 99.34, lines: 99.51,
+      tests: 533, measuredAt: "2026-10-11",
+      notes: "lib 配下は lib/housing が 99.19%、ほかは 100% / 全体 98.87%（statements）。Select/Dialog/Input/各 step interaction と、/simulator の遅延読み込み・事前生成 HTML まで網羅",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -752,18 +757,22 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     secretScan: { leaks: 0, commits: 114, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
+    securityHeaders: {
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
+      notes:
+        "Mozilla Observatory v2 で 12/12（2026-10-11・B 75 から改善）。HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。解析ビーコンは HTML に書かずハイドレーション後に追加する",
+    },
   },
   {
     id: "ai-news-feed-app",
     name: "AIニュース・ダイジェスト",
-    description: "毎朝6時（JST）更新するAI関連トピックの日本語ダイジェストWebアプリ。カテゴリ別閲覧・アーカイブ対応。サイドバーには出典と確認日つきの主要AIモデル一覧（12件）、記事が無い状態にはAI雑学（139本）を表示する。",
+    description: "毎朝6時（JST）更新するAI関連トピックの日本語ダイジェストWebアプリ。カテゴリ別閲覧・アーカイブ対応。サイドバーには出典と確認日つきの主要AIモデル一覧（16件）、記事が無い状態にはAI雑学（199本）を表示する。",
     trackedPackages: ["next", "react", "@supabase/supabase-js", "@google/generative-ai"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Supabase", "Google Gemini"],
     createdAt: "2026-04-26",
-    updatedAt: "2026-10-10",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/ai-news-feed-app",
     githubVisibility: "public",
     liveUrl: "https://ai-news-feed-app.saitotakuya0719.workers.dev",
@@ -773,7 +782,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/ai-news-feed-app.webp",
     favicon: "/favicons/ai-news-feed-app.svg",
     technicalOverview:
-      "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信する。古い記録を消すクリーンアップ用 Cron も備える。",
+      "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信する。古い記録を消すクリーンアップ用 Cron も備える。\n\nHTML は Worker のエントリ（Cron 用のラッパーを兼ねる worker.js）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける。フィード由来の文字列は必ずテキストとして描画し、生の HTML を差し込む書き方はテストで禁止している。",
     architecture: {
       layers: [
         { nodes: [{ label: "Cloudflare Cron Triggers", sublabel: "毎朝6時 JST / cleanup", kind: "server" }], connector: "① RSS取得 → Gemini要約" },
@@ -784,32 +793,36 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "📰",
-    lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 95, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 33, tool: "npm", measuredAt: "2026-10-05",
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     secretScan: { leaks: 0, commits: 130, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
+    securityHeaders: {
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
+      notes:
+        "Mozilla Observatory v2 で 12/12（2026-10-11・B 75 から改善）。HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。ビーコンは表示後に追加し、COOP（same-origin）を付けた",
+    },
   },
   {
     id: "tricking-3d",
     name: "Tricking 3D Analyzer",
-    description: "トリッキング / パルクールの技をThree.jsで3D表示し、回転軸・重心軌跡を可視化する分析ツール。",
+    description: "トリッキング / パルクールの59技をThree.jsで3D表示し、回転軸・重心軌跡を可視化する分析ツール。移動する技はカメラが体を追い、スマホでは注釈を番号の丸印にまとめる。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-05-06",
-    updatedAt: "2026-10-06",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/tricking-3d",
     githubVisibility: "public",
     ogImage: "/og/tricking-3d.png",
     liveUrl: "https://tricking-3d.saitotakuya0719.workers.dev",
     favicon: "/favicons/tricking-3d.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js 構成。技のモーションを 3D 表示し、回転軸と重心の軌跡を可視化する。計算・描画はクライアントで完結し、Vite でビルドして Cloudflare Workers に静的配信。バックエンドなし。",
+      "バニラ TypeScript + Three.js 構成。技のモーションを 3D 表示し、回転軸と重心の軌跡を可視化する。計算・描画はクライアントで完結し、Vite でビルドして Cloudflare Workers に静的配信。バックエンドなし。\n\n技の動きは plausibility.test.ts が数値で検査する（全技で床を貫かない・踏切足と着地足・股関節の可動域・接触のキーポイントと実際の接地の時刻、技ごとに着地足の滑り・回転量・手をつく順番）。移動する技は、腰の軌跡をガウス平滑化した分だけカメラと回転の中心を平行移動して追う。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (WebGL)", sublabel: "Three.js / 回転軸・重心軌跡の可視化", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
@@ -817,16 +830,21 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🤸",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-07" },
+    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
+    testCoverage: {
+      statements: 99.76, branches: 98.92, functions: 100, lines: 99.86,
+      tests: 447, measuredAt: "2026-10-11",
+      notes: "src/ui・src/state・src/lib・main.ts と技のデータ（catalog/authoring/rig）を閾値つきで計測（Three.js の描画層は WebGL が要るため対象外）。plausibility.test.ts が全技の動き（床を貫かない・踏切足と着地足・股関節の可動域・接触のキーポイントと実際の接地の時刻）と、技ごとの契約（着地足の滑り・回転量・手をつく順番）を数値で検査",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 2, tool: "npm", measuredAt: "2026-10-05",
     },
     secretScan: { leaks: 0, commits: 60, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
-      grade: "A+", score: 115, passed: 12, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2 で 12/12。script-src から 'unsafe-inline' を外して B+ から A+ へ",
+        "Mozilla Observatory v2 で 12/12（A+ 125・2026-10-11）。script-src から 'unsafe-inline' を外して B+ から A+ へ。COOP（same-origin）の加点を含む",
     },
   },
   {
@@ -838,7 +856,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2025-03-18",
-    updatedAt: "2025-03-19",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/resume",
     githubVisibility: "public",
     liveUrl: "https://resume.saitotakuya0719.workers.dev",
@@ -848,7 +866,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/resume.webp",
     favicon: "/favicons/resume.svg",
     technicalOverview:
-      "Next.js App Router で構築した静的中心の職務経歴書サイト(ja/en)。shadcn/ui + Tailwind CSS で UI を組み、問い合わせフォームは Server Action から Resend 経由でメール送信する。Cloudflare Workers に配信。",
+      "Next.js App Router で構築した静的中心の職務経歴書サイト(ja/en)。shadcn/ui + Tailwind CSS で UI を組み、問い合わせフォームは Server Action から Resend 経由でメール送信する。Cloudflare Workers に配信。\n\n事前生成したページは staticAssetsIncrementalCache から描画し直さずに返し、Next のサーバーに届くのは問い合わせの Server Action（POST）だけ。HTML は Worker の入口（worker.ts）が毎リクエストの CSP nonce を付け、インラインの JavaScript にだけ同じ nonce を付ける。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ (React 19)", sublabel: "ja/en 切替 / shadcn/ui", kind: "client" }], connector: "問い合わせ送信 (Server Action)" },
@@ -857,25 +875,34 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "📄",
-    lighthouseScores: { performance: 96, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
+    testCoverage: {
+      statements: 98.61, branches: 95.33, functions: 100, lines: 99.22,
+      tests: 198, measuredAt: "2026-10-11",
+      notes: "UI層（components・App Router のページ）と i18n・lib を計測し、components と app には実測の2ポイント下の閾値（OG 画像は対象外）。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイル（JSON-LD のみ）に限り、worker-entry.test.ts と open-next-config.test.ts が Worker の入口とキャッシュの設定を固定",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 22, tool: "pnpm", measuredAt: "2026-10-05",
       notes: "pnpm audit --prod 0件",
     },
     secretScan: { leaks: 0, commits: 130, measuredAt: "2026-10-05" },
-    securityHeaders: { grade: "B+", score: 80, passed: 11, total: 12, measuredAt: "2026-10-05" },
+    securityHeaders: {
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
+      notes:
+        "Mozilla Observatory v2 で 12/12（2026-10-11・B+ 80 から改善）。HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。外部スクリプトは読まないので SRI は対象外。Lighthouse はルートのリダイレクト先の /ja で計測",
+    },
   },
   {
     id: "elparaiso",
     name: "EL PARAISO",
     description: "2021年発足のコミュニティブランドWebサイト。染め・プリント・グラフィックデザインで日々の感情や情景をプロダクトに反映。",
-    trackedPackages: ["next", "react", "tailwindcss", "@supabase/supabase-js"],
+    trackedPackages: ["next", "react", "tailwindcss"],
     category: "Other",
     platform: "web",
-    services: ["Cloudflare Workers", "Supabase"],
+    services: ["Cloudflare Workers"],
     createdAt: "2021-03-26",
-    updatedAt: "2026-05-14",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/elparaiso",
     githubVisibility: "public",
     liveUrl: "https://elparaiso.saitotakuya0719.workers.dev",
@@ -885,34 +912,42 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/elparaiso.webp",
     favicon: "/favicons/elparaiso.svg",
     technicalOverview:
-      "Next.js App Router によるコミュニティブランドサイト。ギャラリーや商品情報は Supabase(Postgres・Storage)から取得し、認証は @supabase/auth-ui を利用する。Cloudflare Workers に配信。",
+      "Next.js App Router によるコミュニティブランドサイト（8ページ）。全ページをビルド時に生成し、Cloudflare Workers が staticAssetsIncrementalCache から描画し直さずに返す。HTML は Worker の入口（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける。使われていなかった管理画面と Supabase への依存は 2026-10-06 に外した。",
     architecture: {
       layers: [
-        { nodes: [{ label: "ブラウザ (React 19)", sublabel: "ギャラリー / 認証UI", kind: "client" }], connector: "ページ取得 (HTTPS)" },
-        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "App Router", kind: "server" }], connector: "データ取得 / 認証" },
-        { nodes: [{ label: "Supabase", sublabel: "Postgres / Auth / Storage(画像)", kind: "storage" }] },
+        { nodes: [{ label: "ブラウザ (React 19)", sublabel: "プロジェクト・音楽のページ / Spotify 埋め込み", kind: "client" }], connector: "ページ取得 (HTTPS)" },
+        { nodes: [{ label: "Next.js · Cloudflare Workers", sublabel: "事前生成ページをキャッシュから返す / HTMLごとにCSP nonce", kind: "server" }] },
       ],
     },
     emoji: "🌴",
-    lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-09-30" },
+    lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
+    testCoverage: {
+      statements: 98.83, branches: 97.59, functions: 100, lines: 100,
+      tests: 126, measuredAt: "2026-10-11",
+      notes: "src 配下を OG 画像を除いてすべて計測し、閾値は lines 98 / statements 96 / functions 98 / branches 93。csp-nonce.test.ts・worker-entry.test.ts・raw-html.test.ts が nonce の付け方・Worker の入口・生 HTML の出口を固定",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 37, tool: "npm", measuredAt: "2026-10-05",
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     secretScan: { leaks: 0, commits: 140, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05" },
+    securityHeaders: {
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
+      notes:
+        "Mozilla Observatory v2 で 12/12（2026-10-11・B 75 から改善）。全ページを prerender したまま、HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。ビーコンはハイドレーション後に追加し、COOP（same-origin）を付けた。残る緩和は style-src の 'unsafe-inline'（Observatory は減点しない）",
+    },
   },
   {
     id: "my-apps-portal",
     name: "My Apps Portal",
-    description: "個人アプリの一覧・管理ポータル。依存パッケージのバージョン監視・脆弱性チェック・最終コミット日取得を自動化。各アプリの設計・技術選定・更新内容を書く開発ブログ（記事23本・/blog・RSS配信）を併設。",
+    description: "個人アプリの一覧・管理ポータル。依存パッケージのバージョン監視・脆弱性チェック・最終コミット日取得を自動化。各アプリの設計・技術選定・更新内容を書く開発ブログ（記事27本・/blog・RSS配信）を併設。",
     trackedPackages: ["next", "react", "tailwindcss", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-05-14",
-    updatedAt: "2026-10-10",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/my-apps-portal",
     githubVisibility: "public",
     liveUrl: "https://my-apps-portal.saitotakuya0719.workers.dev",
@@ -936,7 +971,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 92, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-07" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 364, measuredAt: "2026-10-10",
+      tests: 392, measuredAt: "2026-10-11",
       notes: "CI のカバレッジゲートは src/lib の純ロジック24ファイル(stats / version-status / featured / ogp / settled / security-score / blog の frontmatter・render・feed など)を100%閾値で強制。ブログ記事は content.test.ts が全記事の frontmatter・日付・アプリ id・内部リンク・出典節を検証。UIコンポーネント・app層は対象外",
     },
     securityScores: {
@@ -945,18 +980,18 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る。CI は例外リスト＋期限つきの audit-gate と gitleaks を強制",
     },
     secretScan: { leaks: 0, commits: 170, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
-    securityHeaders: { grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-06" },
+    securityHeaders: { grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11" },
   },
   {
     id: "acro-finder",
     name: "ACRO/FINDER",
-    description: "トリッキング・パルクールなどアクロバットを練習できる施設を地図とリストで検索。営業時間・器具・レッスン・現在地からの距離を確認できる。全国46都道府県の施設165件と大会・ジャム等のイベント25件を収録し、都道府県別ページを含む216ページをsitemapで配信。",
+    description: "トリッキング・パルクールなどアクロバットを練習できる施設を地図とリストで検索。営業時間・器具・レッスン・現在地からの距離を確認できる。全国46都道府県の施設231件と大会・ジャム等のイベント28件を収録し、都道府県別ページを含む282ページをsitemapで配信。",
     trackedPackages: ["next", "react", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-05-20",
-    updatedAt: "2026-10-10",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/acro-finder",
     githubVisibility: "public",
     liveUrl: "https://acro-finder.saitotakuya0719.workers.dev",
@@ -976,12 +1011,12 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "📍",
     lighthouseScores: {
-      performance: 94, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-06",
+      performance: 93, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-11",
     },
     testCoverage: {
       statements: 98.94, branches: 97.08, functions: 99.09, lines: 99.64,
-      tests: 443, measuredAt: "2026-10-10",
+      tests: 443, measuredAt: "2026-10-11",
       notes: "計測対象は lib層 + コンポーネント + app(地図ライブラリ依存の InteractiveMap を除く)。全体に閾値ゲート(lines 97 / statements 96 / functions 96 / branches 94)を設定",
     },
     securityScores: {
@@ -991,21 +1026,21 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 100, measuredAt: "2026-10-05" },
     securityHeaders: {
-      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-06",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2（2026-10-06 に Workers の本番URLで再計測・B 75 から改善）。全12項目合格で減点なし。ページはビルド時に書き出して Workers の静的アセット（Worker を通さない）で配信し、script-src は 'unsafe-inline' の代わりにページごとのインラインスクリプトの sha256 を列挙する（トップ・一覧・都道府県別は _headers のページ別ルール、施設ページ116件は _headers の上限に収まらないため各 HTML の <meta http-equiv> で付与）。ビーコンはハイドレーション後に追加するので HTML に SRI の無い外部スクリプトは無い（beacon.min.js は Cloudflare が同じ URL のまま差し替えるので integrity は固定しない）。残る緩和は style-src の 'unsafe-inline'（Leaflet のタイル配置用・Observatory は減点しない）と、Worker が返す応答（問い合わせの Server Action を受ける /owners と 404）の script-src が 'unsafe-inline' のままな点",
+        "Mozilla Observatory v2（2026-10-11 に本番URLで再計測。2026-10-06 に B 75 から改善）。全12項目合格で減点なし。ページはビルド時に書き出して Workers の静的アセット（Worker を通さない）で配信し、script-src は 'unsafe-inline' の代わりにページごとのインラインスクリプトの sha256 を列挙する（トップ・一覧・都道府県別は _headers のページ別ルール、施設ページ231件は _headers の上限に収まらないため各 HTML の <meta http-equiv> で付与）。ビーコンはハイドレーション後に追加するので HTML に SRI の無い外部スクリプトは無い（beacon.min.js は Cloudflare が同じ URL のまま差し替えるので integrity は固定しない）。残る緩和は style-src の 'unsafe-inline'（Leaflet のタイル配置用・Observatory は減点しない）と、Worker が返す応答（問い合わせの Server Action を受ける /owners と 404）の script-src が 'unsafe-inline' のままな点",
     },
   },
   {
     id: "snippet-sprint",
     name: "Snippet Sprint",
-    description: "実コードのスニペットを1問ずつ打って学ぶプログラミング・タイピングゲーム。TS/JS・Python・Go・Rust・Java・C++・C・Zig・C#・Swift・Kotlin・Dart・Scala・Ruby・PHP・SQL・R・Julia・Bash・Perl・Lua・Elixir・Haskell・Erlang・OCaml・F#・HTML・CSS の29言語・計491問（基本構文・有名アルゴリズム・記号ドリル）を収録。記号・camelCase・実コードの流れを WebGL のネオンステージで練習し、WPM・正確率・弱点分析を確認。",
+    description: "実コードのスニペットを1問ずつ打って学ぶプログラミング・タイピングゲーム。TS/JS・Python・Go・Rust・Java・C++・C・Zig・Fortran・C#・Swift・Kotlin・Dart・Scala・Ruby・PHP・SQL・R・Julia・Bash・PowerShell・Perl・Lua・Groovy・Elixir・Haskell・Erlang・OCaml・F#・HTML・CSS の32言語・計621問（基本構文・有名アルゴリズム・記号ドリル）を収録。記号・camelCase・実コードの流れを WebGL のネオンステージで練習し、WPM・正確率・弱点分析を確認。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Game",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-23",
-    updatedAt: "2026-10-07",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/snippet-sprint",
     githubVisibility: "public",
     ogImage: "/og/snippet-sprint.png",
@@ -1022,11 +1057,11 @@ export const rawProjects: RawProject[] = [
     emoji: "⌨️",
     lighthouseScores: {
       performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-07",
+      measuredAt: "2026-10-11",
     },
     testCoverage: {
-      statements: 99.39, branches: 97.58, functions: 100, lines: 99.85,
-      tests: 229, measuredAt: "2026-10-10",
+      statements: 99.5, branches: 97.7, functions: 100, lines: 99.88,
+      tests: 245, measuredAt: "2026-10-11",
       notes: "engine(純ロジック)を100%閾値ゲート。ui/input/modes/audio層も96〜98%の閾値で計測(数値は全体)。描画(render)層は対象外",
     },
     securityScores: {
@@ -1036,21 +1071,21 @@ export const rawProjects: RawProject[] = [
     },
     secretScan: { leaks: 0, commits: 62, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 130, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2 全12通過。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ HSTS/XFO 等",
+        "Mozilla Observatory v2 全12通過（A+ 130・2026-10-11）。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ COOP/HSTS/XFO 等",
     },
   },
   {
     id: "css-atelier",
     name: "CSS Atelier",
-    description: "MDN を片手に、解説→CSS記述→自動採点で学ぶインタラクティブ CSS 学習アプリ。Flexbox / Grid から :has()・container queries まで。製図スタジオ風 UI と、ボックスモデル/Flex/Grid を立体表示する 3D 概念ビジュアライザ（Three.js）付き。39トラック104レッスン。メディア/コンテナクエリは二状態（複数ビューポート）で採点。",
+    description: "MDN を片手に、解説→CSS記述→自動採点で学ぶインタラクティブ CSS 学習アプリ。Flexbox / Grid から :has()・container queries まで。製図スタジオ風 UI と、ボックスモデル/Flex/Grid を立体表示する 3D 概念ビジュアライザ（Three.js）付き。58トラック161レッスン。メディア/コンテナクエリは二状態（複数ビューポート）で採点。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-23",
-    updatedAt: "2026-10-10",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/css-atelier",
     githubVisibility: "public",
     ogImage: "/og/css-atelier.png",
@@ -1066,9 +1101,9 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🎨",
     testCoverage: {
-      statements: 99.48, branches: 97.54, functions: 99.4, lines: 99.74,
-      tests: 863, measuredAt: "2026-10-10",
-      notes: "engine(content/validate/tokenize/viz-map/progress)を100%閾値ゲート。ui/sandbox/viz層も96%前後の閾値で計測(数値は全体)。全104レッスンの解答を実ブラウザ(headless Chrome・CDP)で巡回してPASS確認(2026-10-07)。実ブラウザで記録した矩形と computed 値を再生する recorded-snapshots.test.ts で、新規レッスンは starter 不合格・解答合格を固定",
+      statements: 99.59, branches: 97.68, functions: 99.58, lines: 99.79,
+      tests: 1534, measuredAt: "2026-10-11",
+      notes: "engine(content/validate/tokenize/viz-map/progress)を100%閾値ゲート。ui/sandbox/viz層も96%前後の閾値で計測(数値は全体)。全161レッスンの解答を実ブラウザ(headless Chrome・CDP)で巡回してPASS確認(2026-10-11)。実ブラウザで記録した矩形と computed 値を再生する recorded-snapshots.test.ts で、新規レッスンは starter 不合格・解答合格を固定",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -1076,33 +1111,33 @@ export const rawProjects: RawProject[] = [
       notes: "依存は three のみ（+ dev: vite/vitest/typescript）。npm audit 0件",
     },
     lighthouseScores: {
-      performance: 99, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-07",
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-11",
     },
     secretScan: { leaks: 0, commits: 61, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 130, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2 全12通過（A+/120）。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ frame-src 'self' + HSTS/XFO 等",
+        "Mozilla Observatory v2 全12通過（A+/130・2026-10-11）。外部CSS+moduleで CSP は unsafe-inline 不使用（script-src/style-src 'self'）+ frame-src 'self' + COOP/HSTS/XFO 等",
     },
   },
   {
     id: "glsl-atelier",
     name: "GLSL Atelier",
-    description: "解説→コード記述→自動採点で学ぶインタラクティブ WebGL / Three.js 学習アプリ。GLSL フラグメントシェーダー（座標・図形・色・時間・パターン・簡易ライティング）と Three.js シーン構築（ジオメトリ/マテリアル/ライト/カメラ）を、ライブ描画しながら学ぶ。宇宙天文台風の Shader Lab UI（星雲＋bloom）。23トラック84レッスン（GLSL 13トラック46・Three.js 10トラック38）。シェーダーは描画ピクセルの読み取り、Three.js はシーングラフの走査で採点。",
+    description: "解説→コード記述→自動採点で学ぶインタラクティブ WebGL / Three.js 学習アプリ。GLSL フラグメントシェーダー（座標・図形・色・時間・パターン・簡易ライティング）と Three.js シーン構築（ジオメトリ/マテリアル/ライト/カメラ）を、ライブ描画しながら学ぶ。宇宙天文台風の Shader Lab UI（星雲＋bloom）。31トラック114レッスン（GLSL 17トラック61・Three.js 14トラック53）。シェーダーは描画ピクセルの読み取り、Three.js はシーングラフの走査で採点。",
     trackedPackages: ["three", "vite", "typescript"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-24",
-    updatedAt: "2026-10-10",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/glsl-atelier",
     githubVisibility: "public",
     ogImage: "/og/glsl-atelier.png",
     liveUrl: "https://glsl-atelier.saitotakuya0719.workers.dev",
     favicon: "/favicons/glsl-atelier.svg",
     technicalOverview:
-      "バニラ TypeScript + Three.js。学習者のコードを実際に実行して採点する。\n\nGLSL シェーダーは GPU 専用言語で任意 JS を実行しないためメインページで直接コンパイル＆描画し gl.readPixels で採点（CSP 厳格・eval 不要）。Three.js（任意 JS）は sandbox=\"allow-scripts\" の不透明オリジン iframe（/sandbox.html だけ緩和 CSP・connect-src 'none'）に隔離し、postMessage でコードを渡してシーングラフを読み戻す。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は背景(bloom)/サンドボックスに分離して遅延読込。Vite でビルドし Cloudflare Workers に静的配信、PWA 対応。",
+      "バニラ TypeScript + Three.js。学習者のコードを実際に実行して採点する。\n\nGLSL シェーダーは GPU 専用言語で任意 JS を実行しないためメインページで直接コンパイル＆描画し gl.readPixels で採点（CSP 厳格・eval 不要）。Three.js（任意 JS）は sandbox=\"allow-scripts\" の不透明オリジン iframe（/sandbox.html だけ緩和 CSP・connect-src 'none'）に隔離し、postMessage でコードを渡してシーングラフを読み戻す。\n\n採点は src/engine の純関数（Snapshot を入力）で Vitest 100%。Three.js は背景(bloom)/サンドボックスに分離して遅延読込し、レッスン本文もトラックごとの遅延チャンクに分けて初回ロードの JS を gzip 約 10 kB に抑える（2026-10-11 の分割で 50.6 kB から 9.7 kB）。Vite でビルドし Cloudflare Workers に静的配信、PWA 対応。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "エディタ(DOM) / WebGL シェーダー実行(readPixels) / 不透明オリジン sandbox iframe(Three.js) / 宇宙背景(bloom) / Service Worker", kind: "client" }], connector: "静的アセット取得 (HTTPS)" },
@@ -1111,9 +1146,9 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🌌",
     testCoverage: {
-      statements: 99.53, branches: 98.67, functions: 98.53, lines: 99.68,
-      tests: 740, measuredAt: "2026-10-10",
-      notes: "engine(content/validate/color/sample/tokenize/progress)を100%閾値ゲート。ui/sandbox層も97%前後の閾値で計測(数値は全体)。全84レッスンの解答が通り初期コードが通らないことを solvable.test.ts(シェーダーはJS移植で採点格子を評価・Three.jsは実threeで実行)で検証し、実ブラウザ(headless Chrome・CDP)でも4種の画面サイズで84/84 PASS(2026-10-07)。サンドボックス隔離（不透明オリジンで親アクセス遮断）も実証",
+      statements: 99.44, branches: 98.91, functions: 98.16, lines: 99.73,
+      tests: 1140, measuredAt: "2026-10-11",
+      notes: "engine(content/validate/color/sample/tokenize/progress)を100%閾値ゲート。ui/sandbox層も97%前後の閾値で計測(数値は全体)。全114レッスンの解答が通り初期コードが通らないことを solvable.test.ts(シェーダーはJS移植で採点格子を評価・Three.jsは実threeで実行)で検証し、実ブラウザ(headless Chrome・CDP)でも4種の画面サイズで114/114 PASS(2026-10-11)。サンドボックス隔離（不透明オリジンで親アクセス遮断）も実証",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -1121,27 +1156,27 @@ export const rawProjects: RawProject[] = [
       notes: "依存は three のみ（+ dev: vite/vitest/typescript/esbuild）。npm audit 0件",
     },
     lighthouseScores: {
-      performance: 97, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-07",
+      performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-11",
     },
     secretScan: { leaks: 0, commits: 56, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
-      grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 130, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "メインは厳格CSP（unsafe-inline/eval 不使用・script-src 'self'）+ HSTS/XFO/Referrer/Permissions。/sandbox.html のみ不透明オリジン内に緩和CSP(connect-src none)を限定。Observatory はサイトルート評価のため A+ 維持",
+        "Mozilla Observatory v2 全12通過（A+ 130・2026-10-11）。メインは厳格CSP（unsafe-inline/eval 不使用・script-src 'self'）+ COOP/HSTS/XFO/Referrer/Permissions。/sandbox.html のみ不透明オリジン内に緩和CSP(connect-src none)を限定。Observatory はサイトルート評価のため A+ 維持",
     },
   },
   {
     id: "ai-primer",
     name: "AI Primer",
     description:
-      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。基礎用語・歴史・LLMの仕組み・主要AI比較（ChatGPT・Claude・Gemini・Grok）・プロンプト術・AIエージェントとツール連携・コーディングAI・生成メディア・AIをもっと理解する・仕事でAIを使う・AIと社会・活用と倫理の12トラック70レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ（16件）・AI年表（59件）・用語集（77語）も収録。",
+      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。基礎用語・歴史・LLMの仕組み・主要AI比較（ChatGPT・Claude・Gemini・Grok）・プロンプト術・AIエージェントとツール連携・コーディングAI・生成メディア・AIをもっと理解する・仕事でAIを使う・暮らしでAIを使う・AIと創作・AIと科学・AIと社会・活用と倫理の15トラック88レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ（16件）・AI年表（89件）・用語集（116語）も収録。",
     trackedPackages: ["next", "react", "unified"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-15",
-    updatedAt: "2026-10-07",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/ai-primer",
     githubVisibility: "public",
     liveUrl: "https://ai-primer.saitotakuya0719.workers.dev",
@@ -1149,19 +1184,19 @@ export const rawProjects: RawProject[] = [
     ogImage: "/api/og/ai-primer.png",
     favicon: "/favicons/ai-primer.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。CSPは next.config.ts の静的ヘッダー方式(src/lib/csp.ts が正本)。2026-09-12 に per-request nonce から移行した — Next 16 の proxy は Node ランタイム専用で、OpenNext(Cloudflare Workers)が Node middleware 非対応のため nonce を残すと移行できなかった。全ルート SSG で CDN に載る。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
+      "Next.js 16 (App Router) + React 19。全ルート SSG で、事前生成したページは staticAssetsIncrementalCache から Next のサーバーを通さずに返す（2026-10-11 まではリクエストごとに描画し直しており、プリフェッチの一斉リクエストで CPU 上限の 1102 が出ていた）。CSP は src/lib/csp.ts が正本の静的ヘッダーを土台に、Worker の入口（worker.ts）が HTML の応答ごとに script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ HTMLRewriter で同じ nonce を付ける。Next 16 の proxy は Node ランタイム専用で OpenNext が Node middleware に対応しないため、2026-09-12 の Workers 移行で Next 側の nonce は外し、2026-10-11 に Worker の側で付け直した。\n\ni18nは手書き([locale]セグメント+Localized<T>型で翻訳漏れを型エラー化、middleware不使用)。コンテンツは1レッスン=1ファイルの純データ(src/engine/content)、本文はMarkdownをremark/rehype(+remark-gfm)でビルド時HTML変換しクライアントJSを最小化。\n\nクイズは判別共用体(single/multi/boolean/order)+純関数evaluate。進捗はuseSyncExternalStore経由のlocalStorage。鮮度は各項目のlastVerifiedを可視化し、月次GitHub Actionsが出典リンク死活+90日超過をIssue化(本文更新は人手)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "クイズ(useSyncExternalStore)/進捗ローカルストレージ/言語切替", kind: "client" }], connector: "HTTPS" },
-        { nodes: [{ label: "Cloudflare Workers", sublabel: "Next.js SSG(OpenNext) / next.configの静的CSP / CDN", kind: "edge" }], connector: "Markdownビルド時変換" },
+        { nodes: [{ label: "Cloudflare Workers", sublabel: "Next.js SSG(OpenNext) / キャッシュから返す / HTMLごとにCSP nonce", kind: "edge" }], connector: "Markdownビルド時変換" },
         { nodes: [{ label: "GitHub Actions", sublabel: "CI(typecheck/coverage/build) / 月次鮮度チェック→Issue化", kind: "server" }] },
       ],
     },
     emoji: "🧭",
     testCoverage: {
-      statements: 99.48, branches: 98.25, functions: 100, lines: 100,
-      tests: 827, measuredAt: "2026-10-10",
-      notes: "engine(content/quiz/progress/freshness/markdown)+i18n層を100%閾値ゲート。content.test.tsが70レッスン+モデル16件+年表59件+用語77語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)",
+      statements: 99.55, branches: 98.48, functions: 100, lines: 100,
+      tests: 1048, measuredAt: "2026-10-11",
+      notes: "engine(content/quiz/progress/freshness/markdown)+i18n+lib層（CSP と nonce の処理）を100%閾値ゲート。content.test.tsが88レッスン+モデル16件+年表89件+用語116語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイルに限り、敵対的な入力で生 HTML が出ないことを検証",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -1169,14 +1204,14 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     lighthouseScores: {
-      performance: 95, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-09-30",
+      performance: 96, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-11",
     },
     secretScan: { leaks: 0, commits: 125, measuredAt: "2026-10-05" },
     securityHeaders: {
-      grade: "B", score: 75, passed: 10, total: 12, measuredAt: "2026-10-05",
+      grade: "A+", score: 125, passed: 12, total: 12, measuredAt: "2026-10-11",
       notes:
-        "Mozilla Observatory v2（2026-10-05 に Workers の本番URLで再計測）。失点は CSP -20 と SRI -5 の2項目のみ。CSP は nonce 方式を捨てた代償（Next 16 の proxy が Node 専用で OpenNext が Node middleware 非対応のため、nonce を残すと Workers へ移行できなかった）。SRI はビーコン導入で外部スクリプトが1本入ったため。beacon.min.js はバージョンの付かない URL を Cloudflare が差し替える運用なので integrity は固定しない",
+        "Mozilla Observatory v2（2026-10-11 に本番URLで再計測・B 75 から改善）。全12項目合格で減点なし。HTML の応答ごとに Worker（worker.ts）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける（'strict-dynamic' なし）。外部の script と JSON-LD には付けない。ビーコンは HTML に書かずハイドレーション後に追加するので SRI の減点もない（beacon.min.js は Cloudflare が同じ URL のまま差し替えるので integrity は固定しない）。残る緩和は style-src の 'unsafe-inline'（Observatory は減点しない）。Lighthouse はルートのリダイレクト先の /ja で計測",
     },
   },
 ];

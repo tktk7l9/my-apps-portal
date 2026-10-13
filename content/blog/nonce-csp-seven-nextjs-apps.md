@@ -1,6 +1,6 @@
 ---
 title: Next.js 7 本の CSP を Worker の nonce にして、Observatory を A+ にした
-date: 2026-10-11
+date: 2026-10-13
 summary: Next.js 7 本の CSP を、Worker が HTML ごとに nonce を付ける方式に揃えて Observatory を A+ 125 にした。'strict-dynamic' を付けない理由と、nonce の信頼境界、塞いだ SVG の script href の穴。
 tags: [csp, security, observatory, cloudflare-workers, nextjs]
 apps: [ai-primer, elparaiso, lifeplan-simulator, housing-performance-simulator, utility-tracker, resume, ai-news-feed-app, service-anatomy]

@@ -1,6 +1,6 @@
 ---
 title: 技の動きをテストで疑う — tricking-3d の妥当性テストとカメラ追従
-date: 2026-10-11
+date: 2026-10-13
 summary: トリッキングの技を 3D で見る tricking-3d を 27 技から 59 技にした。股関節の可動域・着地足の滑り・手をつく順番を数値のテストにし、移動する技はカメラが腰の軌跡を平滑化して追う。スマホでは注釈を番号の丸印にまとめた。
 tags: [tricking-3d, threejs, testing, animation]
 apps: [tricking-3d]

@@ -1,6 +1,6 @@
 ---
 title: 事前生成したページを毎回描き直していた — OpenNext の incrementalCache と 1102
-date: 2026-10-11
+date: 2026-10-13
 summary: OpenNext で載せた Next.js 6 本が incrementalCache を設定しておらず、事前生成したページをリクエストごとに描画し直していた。ai-primer ではプリフェッチの一斉リクエストで CPU 上限（1102）に当たった。直し方と、キャッシュで出た 404 の言語の罠。
 tags: [cloudflare-workers, opennext, nextjs, performance]
 apps: [ai-primer, elparaiso, resume, utility-tracker, lifeplan-simulator, housing-performance-simulator]

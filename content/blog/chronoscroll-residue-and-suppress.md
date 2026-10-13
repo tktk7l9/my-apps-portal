@@ -1,6 +1,6 @@
 ---
 title: 年表の要約に残ったパーサの残骸を数えて直す — chronoscroll の検出器と suppress.yaml
-date: 2026-10-11
+date: 2026-10-13
 summary: chronoscroll の要約に残っていた日付の断片や {{Cite の切れ端を検出器で数え、469 件を年ページの元の行と突き合わせて直した。種類ごとの件数に上限を置いて戻りを防ぎ、イベントでない行は新しい suppress.yaml で取り除いた。
 tags: [chronoscroll, data-quality, fact-checking]
 apps: [chronoscroll]
@@ -50,5 +50,5 @@ sources:
 ## 参考
 
 - [chronoscroll PR #62](https://github.com/tktk7l9/chronoscroll/pull/62)（検出器と仮リンクの 45 件）・[#63](https://github.com/tktk7l9/chronoscroll/pull/63)（469 件の修正と上限）・[#65](https://github.com/tktk7l9/chronoscroll/pull/65)（suppress.yaml）・[#69](https://github.com/tktk7l9/chronoscroll/pull/69)（括弧つきの日付）
-- [chronoscroll の README](https://github.com/tktk7l9/chronoscroll#readme)（27,451 件・特集 44 本 1,372 件）
+- [chronoscroll の README](https://github.com/tktk7l9/chronoscroll#readme)（2026-10-13 時点で 27,451 件・特集 48 本 1,488 件）
 - [年表](https://chronoscroll.saitotakuya0719.workers.dev)

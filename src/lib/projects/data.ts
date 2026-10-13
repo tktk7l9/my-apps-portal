@@ -1,10 +1,10 @@
 import type { Category, RawProject } from "./types";
 
 // Content counts quoted in description / technicalOverview / notes (articles, lessons, facilities,
-// events, ...) were checked against each repository's origin/main on 2026-10-11 for the apps that
-// changed that day and on 2026-10-10 for the rest. testCoverage figures come from the latest green CI
-// run on the head checked that day; lifeplan-simulator (its CI runs no coverage) and my-apps-portal
-// were run locally.
+// events, ...) were checked against each repository's origin/main and live site on 2026-10-13 for the
+// apps that changed on 2026-10-11 and on 2026-10-10 for the rest. testCoverage figures come from the
+// latest green CI run on the head checked that day; lifeplan-simulator (its CI runs no coverage) and
+// my-apps-portal were run locally.
 export const rawProjects: RawProject[] = [
   {
     id: "client-realestate-admin",
@@ -80,7 +80,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 2363, measuredAt: "2026-10-11",
+      tests: 2372, measuredAt: "2026-10-13",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -103,13 +103,13 @@ export const rawProjects: RawProject[] = [
     id: "lumen-bloom",
     name: "Lumen Bloom",
     description:
-      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。\n\n部屋の隅の花瓶には週替わりでその季節の花や枝物（ひまわり・チューリップ・コスモス・キバナコスモス・アネモネ・ガーベラ・マーガレット・ノコンギク・ポピー・桔梗・芍薬・牡丹・ダリア・マム・カーネーション・バラ・トルコキキョウ・ラナンキュラス・紫陽花・アナベル・水仙・ラッパ水仙・ムスカリ・ユリ・スカシユリ・ラベンダー・かすみ草・リンドウ・カラー・アヤメ・花菖蒲・彼岸花・ススキ・梅・蝋梅・桃・桜・ミモザ・椿・山茶花・金木犀・紫式部・紅葉・南天・ドウダンツツジ・ユーカリの全46種を月ごとに6候補ずつ循環、花に合わせて透明/ロゼ/コバルト/スモークガラス・白磁/青磁/黒陶/テラコッタの陶器・真鍮の花瓶も変化、南半球は季節6ヶ月シフト）が生けられ、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。\n\n天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・今週の花・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・アレンジを固定して共有可能。",
+      "現在地の太陽・月の位置と天気をリアルタイムに映す、常時起動できる3Dウォールペーパー。\n\n部屋の隅の花瓶には週替わりでその季節の花や枝物（ひまわり・チューリップ・コスモス・キバナコスモス・アネモネ・ガーベラ・マーガレット・ノコンギク・ポピー・桔梗・芍薬・牡丹・ダリア・マム・小菊・カーネーション・バラ・トルコキキョウ・ラナンキュラス・紫陽花・アナベル・水仙・ラッパ水仙・ムスカリ・ヒヤシンス・ユリ・スカシユリ・アマリリス・ラベンダー・かすみ草・オミナエシ・リンドウ・カラー・アヤメ・花菖蒲・彼岸花・ネリネ・ススキ・クリスマスローズ・クレマチス・秋明菊・ツワブキ・菜の花・アリウム・朝顔・グラジオラス・ホオズキ・吾亦紅・梅・白梅・蝋梅・桃・桜・ミモザ・白木蓮・藤・ハナミズキ・椿・山茶花・クチナシ・金木犀・紫式部・紅葉・南天・ドウダンツツジ・ユーカリ・松の全67種を月ごとに8候補ずつ週替わりで入れ替え（同じ花は2週続かない）、花に合わせて透明/ロゼ/コバルト/スモークガラス・白磁/青磁/黒陶/テラコッタの陶器・真鍮の花瓶も変化、南半球は季節6ヶ月シフト）が生けられ、窓格子越しの実太陽光が桟の影ごと床と壁に落ち、夜は月齢に応じた月明かり。\n\n天気（晴れ/曇り/霧/雨/雪/雷雨）は空の色・霧・雨雪パーティクル・稲光・床の積雪・氷点下のガラスの曇りとして反映され、時刻・天気・今週の花・月相のHUDと画面スリープ防止（Wake Lock）で置き時計のようにも使える。URLパラメータで任意の場所・時刻・アレンジを固定して共有可能。",
     trackedPackages: ["vite", "typescript", "three"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-07-14",
-    updatedAt: "2026-10-06",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/lumen-bloom",
     githubVisibility: "public",
     ogImage: "/og/lumen-bloom.png",
@@ -140,11 +140,11 @@ export const rawProjects: RawProject[] = [
     },
     lighthouseScores: {
       performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-07",
+      measuredAt: "2026-10-13",
     },
     testCoverage: {
       statements: 100, branches: 99.31, functions: 100, lines: 100,
-      tests: 308, measuredAt: "2026-10-10",
+      tests: 309, measuredAt: "2026-10-13",
       notes: "純ロジック層(astro太陽/月/月相・フィロタキシス/花びら曲面/花瓶プロファイル/花束レイアウト・天気クライアント/WMOマッピング/staleness・シーン状態導出・URLパラメータ)を100%閾値ゲート。天体計算はMeeus例題+JPL Horizons(~0.01°)+USNO輝面比(±5%)で突合。DOM層(src/ui・orchestrator)もjsdomの振る舞いテストで計測し98%前後の閾値でゲート(数値は全体)。WebGL描画層(src/scene)は対象外",
     },
     securityScores: {
@@ -156,7 +156,7 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+", score: 120, passed: 12, total: 12, measuredAt: "2026-10-05",
       notes:
-        "Mozilla Observatory v2 満点。Lighthouseはmobile 98/100/100/100（2026-10-07・median-of-3・TBT 0ms）・desktop 100/100/100/100（2026-09-30）",
+        "Mozilla Observatory v2 満点。Lighthouseはmobile 98/100/100/100（2026-10-13・median-of-3・TBT 0ms）・desktop 100/100/100/100（2026-10-13）",
     },
   },
   {
@@ -303,7 +303,7 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1829〜現在の国内外の歴史ニュース27,451件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,802件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,451件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画／日本の災害と防災／オリンピック・パラリンピック／医学と感染症／女性の権利／公害と環境／音楽／航空／憲法と選挙／核兵器と軍縮／金融危機／冷戦／科学の大発見／通信と放送／野球とサッカー／自動車と道路／探検と冒険／文学と出版／建築と都市／人権と公民権／ゲーム／美術と美術館／気象と天気予報史／写真とカメラ／船と海運／教育と学校／万博と博覧会／将棋・囲碁・チェス／競馬／暦と時刻／第一次世界大戦／中東の戦争と和平／原子力発電／格闘技／第二次世界大戦／明治維新／沖縄／火山噴火の特集44本1,372件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史77件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
+      "1829〜現在の国内外の歴史ニュース27,451件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,802件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,451件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画／日本の災害と防災／オリンピック・パラリンピック／医学と感染症／女性の権利／公害と環境／音楽／航空／憲法と選挙／核兵器と軍縮／金融危機／冷戦／科学の大発見／通信と放送／野球とサッカー／自動車と道路／探検と冒険／文学と出版／建築と都市／人権と公民権／ゲーム／美術と美術館／気象と天気予報史／写真とカメラ／船と海運／教育と学校／万博と博覧会／将棋・囲碁・チェス／競馬／暦と時刻／第一次世界大戦／中東の戦争と和平／原子力発電／格闘技／第二次世界大戦／明治維新／沖縄／火山噴火／日清・日露戦争／アメリカ大統領／ローマ教皇／新型コロナウイルスの特集48本1,488件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史77件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
@@ -317,7 +317,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,451件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション886件（トップ423件を人手レビュー: 要約リライト・SVG割当・関連リンク手動指定・非イベント行の除外、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。要約に残ったパーサの残骸（日付の断片・{{Cite の切れ端・参照書きなど）は pipeline/lib/residue.ts が種類ごとに数え、コミット済みデータの件数が上限（RESIDUE_CEILING）を超えると CI が落ちる。年ページの行のうちイベントでないものは content/curated/suppress.yaml に理由つきで書き、全出力から取り除く。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク100シナリオ（280〜1280pxの横あふれ検証を含む）付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,451本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残りは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,451件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション886件（トップ423件を人手レビュー: 要約リライト・SVG割当・関連リンク手動指定・非イベント行の除外、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。要約に残ったパーサの残骸（日付の断片・{{Cite の切れ端・参照書きなど）は pipeline/lib/residue.ts が種類ごとに数え、コミット済みデータの件数が上限（RESIDUE_CEILING）を超えると CI が落ちる。年ページの行のうちイベントでないものは content/curated/suppress.yaml に理由つきで書き、全出力から取り除く。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク104シナリオ（280〜1280pxの横あふれ検証を含む）付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,451本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残りは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
     architecture: {
       layers: [
         {
@@ -357,8 +357,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 99.42, branches: 93.42, functions: 99.66, lines: 100,
-      tests: 575, measuredAt: "2026-10-11",
-      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド/要約の残骸検出 + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク100シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
+      tests: 575, measuredAt: "2026-10-13",
+      notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド/要約の残骸検出 + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク104シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -383,7 +383,7 @@ export const rawProjects: RawProject[] = [
     kind: "personal",
     services: ["Cloudflare Workers", "Cloudflare D1", "Cloudflare R2", "Cloudflare Access", "Google Maps", "国土地理院 API"],
     createdAt: "2026-09-15",
-    updatedAt: "2026-09-16",
+    updatedAt: "2026-10-11",
     githubUrl: "https://github.com/tktk7l9/sumai-log",
     githubVisibility: "public",
     liveUrl: "https://sumai-log.saitotakuya0719.workers.dev",
@@ -430,8 +430,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 1642, measuredAt: "2026-10-10",
-      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 1043 に加え、実 D1 に対する server テスト 301・UI テスト 206（UI 層は statements 93.1%）・scripts テスト 92",
+      tests: 1655, measuredAt: "2026-10-13",
+      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 1051 に加え、実 D1 に対する server テスト 304・UI テスト 208（UI 層は statements 93.1%）・scripts テスト 92",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -621,7 +621,7 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 98.22, branches: 94.55, functions: 96.73, lines: 98.8,
-      tests: 403, measuredAt: "2026-10-11",
+      tests: 403, measuredAt: "2026-10-13",
       notes: "lib層(aggregate/csv/domain/export/utils)を100%閾値ゲート。UI層(components/app)も閾値付きで計測(数値は全体)。supabase.ts(ネットワーク)とpdfText.tsは対象外",
     },
     securityScores: {
@@ -667,7 +667,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 96, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
       statements: 95.7, branches: 82.98, functions: 94.98, lines: 96.9,
-      tests: 567, measuredAt: "2026-10-11",
+      tests: 567, measuredAt: "2026-10-13",
       notes: "lib層 99.87% / 全体 95.7%（statements。CI はカバレッジを出さないのでローカルで計測）。Slider/Three.js/SaveDialog/ImportDialog の interaction と、/simulator の遅延読み込み（検証スキーマ・後続ステップ）を網羅",
     },
     securityScores: {
@@ -748,7 +748,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
       statements: 98.87, branches: 93.27, functions: 99.34, lines: 99.51,
-      tests: 533, measuredAt: "2026-10-11",
+      tests: 533, measuredAt: "2026-10-13",
       notes: "lib 配下は lib/housing が 99.19%、ほかは 100% / 全体 98.87%（statements）。Select/Dialog/Input/各 step interaction と、/simulator の遅延読み込み・事前生成 HTML まで網羅",
     },
     securityScores: {
@@ -830,10 +830,10 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🤸",
-    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
+    lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-13" },
     testCoverage: {
       statements: 99.76, branches: 98.92, functions: 100, lines: 99.86,
-      tests: 447, measuredAt: "2026-10-11",
+      tests: 447, measuredAt: "2026-10-13",
       notes: "src/ui・src/state・src/lib・main.ts と技のデータ（catalog/authoring/rig）を閾値つきで計測（Three.js の描画層は WebGL が要るため対象外）。plausibility.test.ts が全技の動き（床を貫かない・踏切足と着地足・股関節の可動域・接触のキーポイントと実際の接地の時刻）と、技ごとの契約（着地足の滑り・回転量・手をつく順番）を数値で検査",
     },
     securityScores: {
@@ -878,7 +878,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
       statements: 98.61, branches: 95.33, functions: 100, lines: 99.22,
-      tests: 198, measuredAt: "2026-10-11",
+      tests: 198, measuredAt: "2026-10-13",
       notes: "UI層（components・App Router のページ）と i18n・lib を計測し、components と app には実測の2ポイント下の閾値（OG 画像は対象外）。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイル（JSON-LD のみ）に限り、worker-entry.test.ts と open-next-config.test.ts が Worker の入口とキャッシュの設定を固定",
     },
     securityScores: {
@@ -923,7 +923,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
       statements: 98.83, branches: 97.59, functions: 100, lines: 100,
-      tests: 126, measuredAt: "2026-10-11",
+      tests: 126, measuredAt: "2026-10-13",
       notes: "src 配下を OG 画像を除いてすべて計測し、閾値は lines 98 / statements 96 / functions 98 / branches 93。csp-nonce.test.ts・worker-entry.test.ts・raw-html.test.ts が nonce の付け方・Worker の入口・生 HTML の出口を固定",
     },
     securityScores: {
@@ -971,7 +971,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 92, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-07" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 392, measuredAt: "2026-10-11",
+      tests: 392, measuredAt: "2026-10-13",
       notes: "CI のカバレッジゲートは src/lib の純ロジック24ファイル(stats / version-status / featured / ogp / settled / security-score / blog の frontmatter・render・feed など)を100%閾値で強制。ブログ記事は content.test.ts が全記事の frontmatter・日付・アプリ id・内部リンク・出典節を検証。UIコンポーネント・app層は対象外",
     },
     securityScores: {
@@ -1016,7 +1016,7 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 98.94, branches: 97.08, functions: 99.09, lines: 99.64,
-      tests: 443, measuredAt: "2026-10-11",
+      tests: 443, measuredAt: "2026-10-13",
       notes: "計測対象は lib層 + コンポーネント + app(地図ライブラリ依存の InteractiveMap を除く)。全体に閾値ゲート(lines 97 / statements 96 / functions 96 / branches 94)を設定",
     },
     securityScores: {
@@ -1061,7 +1061,7 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 99.5, branches: 97.7, functions: 100, lines: 99.88,
-      tests: 245, measuredAt: "2026-10-11",
+      tests: 245, measuredAt: "2026-10-13",
       notes: "engine(純ロジック)を100%閾値ゲート。ui/input/modes/audio層も96〜98%の閾値で計測(数値は全体)。描画(render)層は対象外",
     },
     securityScores: {
@@ -1102,7 +1102,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🎨",
     testCoverage: {
       statements: 99.59, branches: 97.68, functions: 99.58, lines: 99.79,
-      tests: 1534, measuredAt: "2026-10-11",
+      tests: 1534, measuredAt: "2026-10-13",
       notes: "engine(content/validate/tokenize/viz-map/progress)を100%閾値ゲート。ui/sandbox/viz層も96%前後の閾値で計測(数値は全体)。全161レッスンの解答を実ブラウザ(headless Chrome・CDP)で巡回してPASS確認(2026-10-11)。実ブラウザで記録した矩形と computed 値を再生する recorded-snapshots.test.ts で、新規レッスンは starter 不合格・解答合格を固定",
     },
     securityScores: {
@@ -1111,8 +1111,8 @@ export const rawProjects: RawProject[] = [
       notes: "依存は three のみ（+ dev: vite/vitest/typescript）。npm audit 0件",
     },
     lighthouseScores: {
-      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-11",
+      performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-13",
     },
     secretScan: { leaks: 0, commits: 61, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
@@ -1147,7 +1147,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🌌",
     testCoverage: {
       statements: 99.44, branches: 98.91, functions: 98.16, lines: 99.73,
-      tests: 1140, measuredAt: "2026-10-11",
+      tests: 1140, measuredAt: "2026-10-13",
       notes: "engine(content/validate/color/sample/tokenize/progress)を100%閾値ゲート。ui/sandbox層も97%前後の閾値で計測(数値は全体)。全114レッスンの解答が通り初期コードが通らないことを solvable.test.ts(シェーダーはJS移植で採点格子を評価・Three.jsは実threeで実行)で検証し、実ブラウザ(headless Chrome・CDP)でも4種の画面サイズで114/114 PASS(2026-10-11)。サンドボックス隔離（不透明オリジンで親アクセス遮断）も実証",
     },
     securityScores: {
@@ -1156,8 +1156,8 @@ export const rawProjects: RawProject[] = [
       notes: "依存は three のみ（+ dev: vite/vitest/typescript/esbuild）。npm audit 0件",
     },
     lighthouseScores: {
-      performance: 98, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-11",
+      performance: 100, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-13",
     },
     secretScan: { leaks: 0, commits: 56, measuredAt: "2026-10-05", notes: "誤検知1件（公開用の Cloudflare Web Analytics ビーコン token）を除外" },
     securityHeaders: {
@@ -1195,7 +1195,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🧭",
     testCoverage: {
       statements: 99.55, branches: 98.48, functions: 100, lines: 100,
-      tests: 1048, measuredAt: "2026-10-11",
+      tests: 1048, measuredAt: "2026-10-13",
       notes: "engine(content/quiz/progress/freshness/markdown)+i18n+lib層（CSP と nonce の処理）を100%閾値ゲート。content.test.tsが88レッスン+モデル16件+年表89件+用語116語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイルに限り、敵対的な入力で生 HTML が出ないことを検証",
     },
     securityScores: {
@@ -1204,8 +1204,8 @@ export const rawProjects: RawProject[] = [
       notes: "本番依存（npm audit --omit=dev）は0件。開発依存には修正版の無い開発時専用の勧告 GHSA-vfj7-8cjw-p6xm（braces・eslint-config-next 経由で lint 時のみ使用）が残る",
     },
     lighthouseScores: {
-      performance: 96, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-11",
+      performance: 94, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-13",
     },
     secretScan: { leaks: 0, commits: 125, measuredAt: "2026-10-05" },
     securityHeaders: {

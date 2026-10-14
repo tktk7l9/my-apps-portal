@@ -3,8 +3,8 @@ import type { Category, RawProject } from "./types";
 // Content counts quoted in description / technicalOverview / notes (articles, lessons, facilities,
 // events, ...) were checked against each repository's origin/main and live site on 2026-10-13 for the
 // apps that changed from 2026-10-11 to 2026-10-13 and on 2026-10-10 for the rest. testCoverage figures come from the
-// latest green CI run on the head checked that day; lifeplan-simulator (its CI runs no coverage) and
-// my-apps-portal were run locally.
+// latest green CI run on the head checked that day; lifeplan-simulator (its CI runs no coverage),
+// ai-news-feed-app (both of its suites, 2026-10-14) and my-apps-portal were run locally.
 export const rawProjects: RawProject[] = [
   {
     id: "client-realestate-admin",
@@ -352,8 +352,8 @@ export const rawProjects: RawProject[] = [
       ],
     },
     lighthouseScores: {
-      performance: 91, accessibility: 100, bestPractices: 100, seo: 100,
-      measuredAt: "2026-10-13",
+      performance: 94, accessibility: 100, bestPractices: 100, seo: 100,
+      measuredAt: "2026-10-14",
     },
     testCoverage: {
       statements: 99.42, branches: 93.42, functions: 99.66, lines: 100,
@@ -369,7 +369,7 @@ export const rawProjects: RawProject[] = [
     securityHeaders: {
       grade: "A+", score: 130, passed: 12, total: 12, measuredAt: "2026-10-13",
       notes:
-        "Mozilla Observatory v2 A+（130・12/12、2026-10-13）。2026-10-13 にビーコンを HTML の <script src> から同一オリジンの /cf-beacon.js による実行時の読み込みに変え、SRI の −5 がなくなった（beacon.min.js は Cloudflare が同じ URL のまま差し替えるので integrity は固定しない）。Lighthouseはmobile 91/100/100/100（2026-10-13・median-of-5・LCP 3.2s・CLS 0・TBT 0ms）/ desktop 98/100/100/100（2026-10-13）。JSなしの特集ページとイベント個別ページは mobile 100（2026-09-27・LCP 1.6s）。mobileのLCP（2026-09-30 は 3.6s）は、2026-10-06 に初期表示をカード用の軽量 JSON から描き、最初の画面のカードをフェードさせないようにして縮めた",
+        "Mozilla Observatory v2 A+（130・12/12、2026-10-13）。2026-10-13 にビーコンを HTML の <script src> から同一オリジンの /cf-beacon.js による実行時の読み込みに変え、SRI の −5 がなくなった（beacon.min.js は Cloudflare が同じ URL のまま差し替えるので integrity は固定しない）。Lighthouseはmobile 94/100/100/100（2026-10-14・median-of-5・TBT 0ms）/ desktop 96/100/100/100（2026-10-14・median-of-3）。値は Cloudflare がどのデータセンターに振るかで変わり、往復 10〜18 ms の近い経路だった回は mobile 97・99 / desktop 100、往復約 110 ms の遠い経路（同じ時間帯の /cdn-cgi/trace は SEA・PDX）だった回は mobile 93〜94 / desktop 95〜96。2026-10-14 に JS と CSS を 1 本ずつにまとめ（本番は HTTP/3 で、Lighthouse のシミュレーションは HTTP/2 以外を多重化しない）、JS の modulepreload を低優先度に、計測ビーコンを load の後に回した。JSなしの特集ページ（/c/space）は mobile 100、R2 から返すイベント個別ページ（/e/1969-07-20-f868c1bb）は mobile 92（どちらも 2026-10-14・median-of-3）。mobileのLCP（2026-09-30 は 3.6s）は、2026-10-06 に初期表示をカード用の軽量 JSON から描き、最初の画面のカードをフェードさせないようにして縮めた",
     },
   },
   {
@@ -794,6 +794,11 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "📰",
     lighthouseScores: { performance: 95, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
+    testCoverage: {
+      statements: 100, branches: 100, functions: 100, lines: 100,
+      tests: 192, measuredAt: "2026-10-14",
+      notes: "カバレッジの数値は vitest の UI テスト 66 件（components・app の .tsx、OG 画像を除く）のもの。lib（RSS の取得・Gemini の要約・候補の選び方・CSP の nonce・Cron の認証など）は Node の test runner で別に 126 件を実行していて、カバレッジは計測していない。テスト件数は両方の合計",
+    },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
       totalDependencies: 33, tool: "npm", measuredAt: "2026-10-05",

@@ -1,17 +1,19 @@
 ---
 title: 更新ダイジェスト 2026 年 10 月中旬
 date: 2026-10-13
-summary: 2026-10-11〜13 に全リポジトリへ入った変更のまとめ。Next.js 7 本の nonce CSP とページのキャッシュ、chronoscroll の特集 64 本と古い特集の監査、CSS Atelier の当たり判定、Service Anatomy の期限つきの記述、学習アプリと技の追加。
+updated: 2026-10-14
+summary: 2026-10-11〜14 に全リポジトリへ入った変更のまとめ。Next.js 7 本の nonce CSP とページのキャッシュ、chronoscroll の特集 64 本と監査と表示の高速化、CSS Atelier の当たり判定、Service Anatomy の期限つきの記述、学習アプリと技の追加。
 tags: [digest, changelog]
-apps: [chronoscroll, service-anatomy, css-atelier, glsl-atelier, ai-primer, tricking-3d, acro-finder, lumen-bloom, my-apps-portal]
+apps: [chronoscroll, service-anatomy, css-atelier, glsl-atelier, ai-primer, tricking-3d, acro-finder, lumen-bloom, ai-news-feed-app, my-apps-portal]
 sources:
   - https://github.com/tktk7l9?tab=repositories
   - https://github.com/tktk7l9/service-anatomy/pull/128
   - https://github.com/tktk7l9/chronoscroll/pull/72
   - https://github.com/tktk7l9/tricking-3d/pull/45
+  - https://github.com/tktk7l9/chronoscroll/pull/89
 ---
 
-10/11 と 10/13 の変更をまとめます。それより前は[9 月下旬〜10 月上旬のダイジェスト](/blog/digest-2026-10)にあります。PR 番号は各リポジトリのものです。
+10/11〜14 の変更をまとめます。それより前は[9 月下旬〜10 月上旬のダイジェスト](/blog/digest-2026-10)にあります。PR 番号は各リポジトリのものです。
 
 ## 10 月 11 日
 
@@ -30,12 +32,18 @@ sources:
 - **tricking-3d**: 163 技。技ごとの「先に覚える技」と「次に挑戦できる技」の表示（#45）と、接地した手足の滑り・終わりの姿勢・踏切前の回転を検査するテスト（#35・#40・#51）
 - **ほか**: GLSL Atelier が 49 トラック 168 レッスン、AI Primer が 24 トラック 142 レッスン、acro-finder は施設 2 件を外して 229 件（#82）、lumen-bloom はヒヤシンス・クチナシ・小菊を実物の花の構造で描き直した（#31）
 
+## 10 月 14 日
+
+- **chronoscroll**: JS と CSS を 1 本ずつにまとめ、JS の preload を低優先度に、計測ビーコンを読み込みの後に回した（#89）。本番は HTTP/3 で、Lighthouse のシミュレーションは HTTP/2 以外を多重化しないため、リクエストの本数がシミュレーション上の表示の遅れに出ていた。年表 `/` のモバイル Lighthouse（5 回の中央値）は 10/13 の 91 から 94 に。Cloudflare が近いデータセンターに振った回は 97〜99、往復約 110 ms の遠い経路の回は 93〜94 で、経路によって変わる。README の件数をデータと照らすテストも足した（#90）
+- **このポートフォリオ**: AI ニュースダイジェストのテスト数を載せた（vitest の UI テスト 66 件と、Node の test runner で動く lib のテスト 126 件）
+
 ## 数字で見る
 
-ポートフォリオの一覧の集計（2026-10-13）では、テスト件数の合計は 17,722 件、Lighthouse Performance を計測した 19 本の平均は 96.4 で、19 本とも 90 以上です。
+ポートフォリオの一覧の集計（2026-10-14）では、テスト件数の合計は 17,914 件、Lighthouse Performance を計測した 19 本の平均は 96.5 で、19 本とも 90 以上です。
 
 ## 参考
 
 - 各リポジトリの `git log --since=2026-10-11` と、PR 番号で参照したマージ済み PR
 - 10/11: 各記事の参考と、[service-anatomy PR #128](https://github.com/tktk7l9/service-anatomy/pull/128)（RSS の修正）
 - 10/13: 各記事の参考と、[chronoscroll PR #72](https://github.com/tktk7l9/chronoscroll/pull/72)（ビーコン）・[#79](https://github.com/tktk7l9/chronoscroll/pull/79)（特集の追加の最後）、[tricking-3d PR #45](https://github.com/tktk7l9/tricking-3d/pull/45)・[#35](https://github.com/tktk7l9/tricking-3d/pull/35)・[#40](https://github.com/tktk7l9/tricking-3d/pull/40)・[#51](https://github.com/tktk7l9/tricking-3d/pull/51)、[acro-finder PR #82](https://github.com/tktk7l9/acro-finder/pull/82)、[lumen-bloom PR #31](https://github.com/tktk7l9/lumen-bloom/pull/31)
+- 10/14: [chronoscroll PR #89](https://github.com/tktk7l9/chronoscroll/pull/89)（JS と CSS を 1 本に）・[#90](https://github.com/tktk7l9/chronoscroll/pull/90)（README の件数の照合）

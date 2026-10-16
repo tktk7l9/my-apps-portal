@@ -16,9 +16,9 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.10",
+    "@opennextjs/cloudflare": "^1.20.12",
     "hast-util-to-string": "^3.0.1",
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "rehype-sanitize": "^6.0.0",

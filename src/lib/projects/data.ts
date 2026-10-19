@@ -430,8 +430,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 1675, measuredAt: "2026-10-13",
-      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 1053 に加え、実 D1 に対する server テスト 311・UI テスト 219（UI 層は statements 93.2%）・scripts テスト 92",
+      tests: 1791, measuredAt: "2026-10-20",
+      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 1165 に加え、実 D1 に対する server テスト 314・UI テスト 220（UI 層は statements 93.1%）・scripts テスト 92",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -1199,8 +1199,8 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🧭",
     testCoverage: {
-      statements: 99.61, branches: 98.56, functions: 100, lines: 100,
-      tests: 1494, measuredAt: "2026-10-13",
+      statements: 99.65, branches: 98.74, functions: 100, lines: 100,
+      tests: 1537, measuredAt: "2026-10-20",
       notes: "engine(content/quiz/progress/freshness/markdown)+i18n+lib層（CSP と nonce の処理）を100%閾値ゲート。content.test.tsが142レッスン+モデル16件+年表162件+用語199語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイルに限り、敵対的な入力で生 HTML が出ないことを検証",
     },
     securityScores: {

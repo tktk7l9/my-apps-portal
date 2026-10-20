@@ -666,9 +666,9 @@ export const rawProjects: RawProject[] = [
     emoji: "🏔️",
     lighthouseScores: { performance: 96, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
-      statements: 95.7, branches: 82.98, functions: 94.98, lines: 96.9,
-      tests: 567, measuredAt: "2026-10-13",
-      notes: "lib層 99.87% / 全体 95.7%（statements。CI はカバレッジを出さないのでローカルで計測）。Slider/Three.js/SaveDialog/ImportDialog の interaction と、/simulator の遅延読み込み（検証スキーマ・後続ステップ）を網羅",
+      statements: 95.71, branches: 83.04, functions: 95, lines: 96.92,
+      tests: 572, measuredAt: "2026-10-20",
+      notes: "lib層 99.87% / 全体 95.71%（statements。CI はカバレッジを出さないのでローカルで計測）。Slider/Three.js/SaveDialog/ImportDialog の interaction と、/simulator の遅延読み込み（検証スキーマ・後続ステップ）を網羅",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -796,8 +796,8 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 95, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 192, measuredAt: "2026-10-14",
-      notes: "カバレッジの数値は vitest の UI テスト 66 件（components・app の .tsx、OG 画像を除く）のもの。lib（RSS の取得・Gemini の要約・候補の選び方・CSP の nonce・Cron の認証など）は Node の test runner で別に 126 件を実行していて、カバレッジは計測していない。テスト件数は両方の合計",
+      tests: 221, measuredAt: "2026-10-20",
+      notes: "カバレッジの数値は vitest の UI テスト 67 件（components・app の .tsx、OG 画像を除く）のもの。lib（RSS の取得・Gemini の要約・候補の選び方・CSP の nonce・Cron の認証など）は Node の test runner で別に 154 件を実行していて、カバレッジは計測していない。テスト件数は両方の合計",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

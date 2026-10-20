@@ -80,7 +80,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 2606, measuredAt: "2026-10-13",
+      tests: 2612, measuredAt: "2026-10-20",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出・expiresの形式とja/enの日付一致)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -356,8 +356,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-14",
     },
     testCoverage: {
-      statements: 99.42, branches: 93.42, functions: 99.66, lines: 100,
-      tests: 575, measuredAt: "2026-10-13",
+      statements: 99.43, branches: 93.54, functions: 99.68, lines: 100,
+      tests: 587, measuredAt: "2026-10-20",
       notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド/要約の残骸検出 + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク120シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
     },
     securityScores: {
@@ -502,7 +502,7 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 99.38, branches: 97.59, functions: 99.54, lines: 99.69,
-      tests: 722, measuredAt: "2026-10-10",
+      tests: 723, measuredAt: "2026-10-20",
       notes: "純ロジック層(天体計算・ドメイン・YouTube APIクライアント・生存更新アルゴリズム・休憩モードの行き先選定・ピン描画)を100%閾値ゲート。配信タイトルによるカメラ識別は、同一チャンネル内の紛らわしいタイトル群で取り違えないことを検証。昼夜判定は6都市の現地時計と突合、クォータ会計は予算切れの打ち切りと失敗時の計上まで検証。app/api/ui層も閾値付きで計測(数値は全体)。Leaflet/MapLibreの描画層(map.ts/globe.ts)は対象外",
     },
     securityScores: {
@@ -620,8 +620,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-11",
     },
     testCoverage: {
-      statements: 98.22, branches: 94.55, functions: 96.73, lines: 98.8,
-      tests: 403, measuredAt: "2026-10-13",
+      statements: 98.23, branches: 94.6, functions: 96.75, lines: 98.81,
+      tests: 421, measuredAt: "2026-10-20",
       notes: "lib層(aggregate/csv/domain/export/utils)を100%閾値ゲート。UI層(components/app)も閾値付きで計測(数値は全体)。supabase.ts(ネットワーク)とpdfText.tsは対象外",
     },
     securityScores: {
@@ -882,8 +882,8 @@ export const rawProjects: RawProject[] = [
     emoji: "📄",
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
-      statements: 98.61, branches: 95.33, functions: 100, lines: 99.22,
-      tests: 198, measuredAt: "2026-10-13",
+      statements: 98.65, branches: 95.45, functions: 100, lines: 99.25,
+      tests: 212, measuredAt: "2026-10-20",
       notes: "UI層（components・App Router のページ）と i18n・lib を計測し、components と app には実測の2ポイント下の閾値（OG 画像は対象外）。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイル（JSON-LD のみ）に限り、worker-entry.test.ts と open-next-config.test.ts が Worker の入口とキャッシュの設定を固定",
     },
     securityScores: {
@@ -927,8 +927,8 @@ export const rawProjects: RawProject[] = [
     emoji: "🌴",
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-11" },
     testCoverage: {
-      statements: 98.83, branches: 97.59, functions: 100, lines: 100,
-      tests: 126, measuredAt: "2026-10-13",
+      statements: 98.9, branches: 97.8, functions: 100, lines: 100,
+      tests: 143, measuredAt: "2026-10-20",
       notes: "src 配下を OG 画像を除いてすべて計測し、閾値は lines 98 / statements 96 / functions 98 / branches 93。csp-nonce.test.ts・worker-entry.test.ts・raw-html.test.ts が nonce の付け方・Worker の入口・生 HTML の出口を固定",
     },
     securityScores: {
@@ -1199,8 +1199,8 @@ export const rawProjects: RawProject[] = [
     },
     emoji: "🧭",
     testCoverage: {
-      statements: 99.65, branches: 98.74, functions: 100, lines: 100,
-      tests: 1537, measuredAt: "2026-10-20",
+      statements: 99.66, branches: 98.81, functions: 100, lines: 100,
+      tests: 1575, measuredAt: "2026-10-20",
       notes: "engine(content/quiz/progress/freshness/markdown)+i18n+lib層（CSP と nonce の処理）を100%閾値ゲート。content.test.tsが142レッスン+モデル16件+年表162件+用語199語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイルに限り、敵対的な入力で生 HTML が出ないことを検証",
     },
     securityScores: {

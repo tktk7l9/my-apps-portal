@@ -44,6 +44,9 @@ next-env.d.ts
 .open-next/
 .wrangler/
 
+# Wrangler local secrets (never committed; production uses `wrangler secret put`)
+.dev.vars*
+
 # Generated into public/ by scripts/export-static.ts (served as static assets)
 /public/index.html
 /public/icon.svg

@@ -1,5 +1,6 @@
 import { pickMeaningfulCommitDate, type CommitLike } from "@/lib/commit-date";
 import { fulfilledEntries } from "@/lib/settled";
+import { upstreamSignal } from "@/lib/upstream";
 
 /**
  * Returns the date of the last meaningful change per repository.
@@ -22,6 +23,7 @@ export async function getLastCommitDates(
             Accept: "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
           },
+          signal: upstreamSignal(),
           next: { revalidate: 3600 },
         }
       );

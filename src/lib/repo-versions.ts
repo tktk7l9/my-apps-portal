@@ -1,4 +1,5 @@
 import { parseDeclaredVersion } from "@/lib/version-spec";
+import { upstreamSignal } from "@/lib/upstream";
 import {
   packageMeta,
   type Project,
@@ -19,7 +20,7 @@ async function fetchPublicPackageJson(
     try {
       const res = await fetch(
         `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/package.json`,
-        { next: { revalidate: 3600 } }
+        { signal: upstreamSignal(), next: { revalidate: 3600 } }
       );
       if (res.ok) return (await res.json()) as PackageJson;
     } catch {
@@ -44,6 +45,7 @@ async function fetchPrivatePackageJson(
           Authorization: `Bearer ${token}`,
           "X-GitHub-Api-Version": "2022-11-28",
         },
+        signal: upstreamSignal(),
         next: { revalidate: 3600 },
       }
     );

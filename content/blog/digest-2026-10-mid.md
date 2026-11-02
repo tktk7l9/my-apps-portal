@@ -1,7 +1,7 @@
 ---
 title: 更新ダイジェスト 2026 年 10 月中旬
 date: 2026-10-13
-updated: 2026-10-14
+updated: 2026-11-02
 summary: 2026-10-11〜14 に全リポジトリへ入った変更のまとめ。Next.js 7 本の nonce CSP とページのキャッシュ、chronoscroll の特集 64 本と監査と表示の高速化、CSS Atelier の当たり判定、Service Anatomy の期限つきの記述、学習アプリと技の追加。
 tags: [digest, changelog]
 apps: [chronoscroll, service-anatomy, css-atelier, glsl-atelier, ai-primer, tricking-3d, acro-finder, lumen-bloom, ai-news-feed-app, my-apps-portal]
@@ -13,7 +13,7 @@ sources:
   - https://github.com/tktk7l9/chronoscroll/pull/89
 ---
 
-10/11〜14 の変更をまとめます。それより前は[9 月下旬〜10 月上旬のダイジェスト](/blog/digest-2026-10)にあります。PR 番号は各リポジトリのものです。
+10/11〜14 の変更をまとめます。それより前は[9 月下旬〜10 月上旬のダイジェスト](/blog/digest-2026-10)にあります。10/15 以降は[10 月下旬〜11 月 2 日のダイジェスト](/blog/digest-2026-11)にまとめています。PR 番号は各リポジトリのものです。
 
 ## 10 月 11 日
 

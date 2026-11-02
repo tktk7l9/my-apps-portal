@@ -783,7 +783,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/ai-news-feed-app.webp",
     favicon: "/favicons/ai-news-feed-app.svg",
     technicalOverview:
-      "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信する。古い記録を消すクリーンアップ用 Cron も備える。\n\nHTML は Worker のエントリ（Cron 用のラッパーを兼ねる worker.js）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける。フィード由来の文字列は必ずテキストとして描画し、生の HTML を差し込む書き方はテストで禁止している。",
+      "Cloudflare Cron Triggers が毎朝6時(JST)に各社 RSS を取得(rss-parser)し、Gemini で日本語ダイジェストを生成して集約ジョブが Supabase(Postgres)に保存する。閲覧時は Next.js が Supabase から取得して配信する。古い記録を消すクリーンアップ用 Cron も備える。Gemini の混雑は 15秒・45秒・135秒の間隔で再試行し、1 回の呼び出しは 2 分で打ち切る。失敗した日は 13:00 の Cron が作り直し、その日の分があれば何もしない。\n\nHTML は Worker のエントリ（Cron 用のラッパーを兼ねる worker.js）が script-src の 'unsafe-inline' を毎リクエストの nonce に置き換え、インラインの JavaScript にだけ同じ nonce を付ける。フィード由来の文字列は必ずテキストとして描画し、生の HTML を差し込む書き方はテストで禁止している。",
     architecture: {
       layers: [
         { nodes: [{ label: "Cloudflare Cron Triggers", sublabel: "毎朝6時 JST / cleanup", kind: "server" }], connector: "① RSS取得 → Gemini要約" },
@@ -947,7 +947,7 @@ export const rawProjects: RawProject[] = [
   {
     id: "my-apps-portal",
     name: "My Apps Portal",
-    description: "個人アプリの一覧・管理ポータル。依存パッケージのバージョン監視・脆弱性チェック・最終コミット日取得を自動化。各アプリの設計・技術選定・更新内容を書く開発ブログ（記事31本・/blog・RSS配信）を併設。",
+    description: "個人アプリの一覧・管理ポータル。依存パッケージのバージョン監視・脆弱性チェック・最終コミット日取得を自動化。各アプリの設計・技術選定・更新内容を書く開発ブログ（記事38本・/blog・RSS配信）を併設。",
     trackedPackages: ["next", "react", "tailwindcss", "typescript"],
     category: "Tool",
     platform: "web",
@@ -977,8 +977,8 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 92, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 420, measuredAt: "2026-10-13",
-      notes: "CI のカバレッジゲートは src/lib の純ロジック24ファイル(stats / version-status / featured / ogp / settled / security-score / blog の frontmatter・render・feed など)を100%閾値で強制。ブログ記事は content.test.ts が全記事の frontmatter・日付・アプリ id・内部リンク・出典節を検証。UIコンポーネント・app層は対象外",
+      tests: 474, measuredAt: "2026-11-02",
+      notes: "CI のカバレッジゲートは src/lib の純ロジック25ファイル(stats / version-status / featured / ogp / settled / security-score / blog の frontmatter・render・feed など)を100%閾値で強制。ブログ記事は content.test.ts が全記事の frontmatter・日付・アプリ id・内部リンク・出典節を検証。UIコンポーネント・app層は対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,

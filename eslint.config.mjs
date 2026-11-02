@@ -28,7 +28,7 @@ const eslintConfig = defineConfig([
     // Blog pages are prerendered and served as Workers static assets, which answer by path
     // only. A next/link would prefetch the RSC payload (`?_rsc=`) and get the HTML back,
     // so plain <a> full-page navigation is the intended behaviour there.
-    files: ["src/app/blog/**", "src/components/blog/**", "src/components/PortfolioHeader.tsx"],
+    files: ["src/app/blog/**", "src/app/not-found.tsx", "src/components/blog/**", "src/components/PortfolioHeader.tsx"],
     rules: { "@next/next/no-html-link-for-pages": "off" },
   },
 ]);

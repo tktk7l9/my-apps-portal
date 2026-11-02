@@ -57,7 +57,8 @@ function expectedGrade(score: number): string {
 
 // Dates in the catalog are written in the owner's local time (JST), not UTC.
 function todayInTokyo(): string {
-  return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
+  // Plain offset arithmetic: loading ICU time zone data took over 5s on a busy Workers Builds runner.
+  return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
 
 function isIsoDate(value: string): boolean {

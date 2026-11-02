@@ -1,5 +1,6 @@
 import { packageMeta } from "@/lib/projects";
 import { fulfilledEntries } from "@/lib/settled";
+import { upstreamSignal } from "@/lib/upstream";
 
 export type VersionStatus = "latest" | "outdated" | "vulnerable" | "unknown";
 
@@ -20,10 +21,12 @@ async function fetchLatestVersions(pkgs: string[]): Promise<Record<string, strin
     pkgs.map(async (pkg): Promise<[string, string]> => {
       const res = await fetch(
         `https://registry.npmjs.org/${encodeURIComponent(pkg)}/latest`,
-        { next: { revalidate: 3600 } }
+        { signal: upstreamSignal(), next: { revalidate: 3600 } }
       );
       if (!res.ok) throw new Error(`${pkg}: ${res.status}`);
-      const data = await res.json() as { version: string };
+      // The registry answers with the package manifest; anything else leaves the package unknown
+      const data = (await res.json()) as { version?: unknown };
+      if (typeof data.version !== "string" || data.version === "") throw new Error(`${pkg}: no version`);
       return [pkg, data.version];
     })
   );
@@ -46,6 +49,7 @@ async function fetchVulnerableKeys(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      signal: upstreamSignal(),
       next: { revalidate: 3600 },
     });
     if (!res.ok) return new Set();

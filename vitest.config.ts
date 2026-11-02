@@ -29,6 +29,7 @@ export default defineConfig({
         "src/lib/analytics.ts",
         "src/lib/fetched-at.ts",
         "src/lib/site.ts",
+        "src/lib/upstream.ts",
         "src/lib/blog/frontmatter.ts",
         "src/lib/blog/post.ts",
         "src/lib/blog/render.ts",

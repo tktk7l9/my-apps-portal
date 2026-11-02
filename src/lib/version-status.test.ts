@@ -104,6 +104,35 @@ describe("getVersionStatuses", () => {
     expect(latestVersions["Next.js@16.2.12"]).toBeUndefined();
   });
 
+  it("marks unknown when the npm registry answers without a version string", async () => {
+    // A registry outage page or a changed payload must not become a "latest version" of "undefined"
+    const impl = vi.fn(async (...args: FetchArgs) => {
+      const url = String(args[0]);
+      if (url.startsWith("https://registry.npmjs.org/")) {
+        return new Response(JSON.stringify({ version: 42 }), { status: 200 });
+      }
+      return new Response(JSON.stringify({ results: [{}] }), { status: 200 });
+    });
+    vi.stubGlobal("fetch", impl);
+    const { statuses, latestVersions } = await getVersionStatuses([
+      { techName: "Next.js", version: "16.2.12" },
+    ]);
+    expect(statuses["Next.js@16.2.12"]).toBe("unknown");
+    expect(latestVersions).toEqual({});
+  });
+
+  it("gives every upstream request a timeout signal", async () => {
+    const fetchMock = mockFetch({
+      npmVersions: { next: "16.2.12" },
+      osv: { ok: true, vulnFlags: [false] },
+    });
+    await getVersionStatuses([{ techName: "Next.js", version: "16.2.12" }]);
+    expect(fetchMock.mock.calls.length).toBeGreaterThanOrEqual(2);
+    for (const [, init] of fetchMock.mock.calls) {
+      expect(init?.signal).toBeInstanceOf(AbortSignal);
+    }
+  });
+
   it("continues as not vulnerable when OSV returns an error response", async () => {
     mockFetch({ npmVersions: { next: "16.2.12" }, osv: { ok: false } });
     const { statuses } = await getVersionStatuses([

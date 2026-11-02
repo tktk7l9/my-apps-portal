@@ -49,13 +49,13 @@ export const rawProjects: RawProject[] = [
     id: "service-anatomy",
     name: "Service Anatomy",
     description:
-      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事121本+2サービスを突き合わせる比較解剖37本。技術962件・タグ226件・カテゴリ7件の横断ページを含め2,716ページ（sitemapのURL数）を全てビルド時に生成する。",
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事129本+2サービスを突き合わせる比較解剖45本。技術1,035件・タグ241件・カテゴリ7件の横断ページを含め2,926ページ（sitemapのURL数）を全てビルド時に生成する。",
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-16",
-    updatedAt: "2026-10-20",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
@@ -66,7 +66,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,716ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。キャンペーンの終了日のように期限のある記述はfrontmatterのexpiresに登録し、期限を過ぎるとnpm run freshnessとテストのtodoに一覧で出る。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,926ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。キャンペーンの終了日のように期限のある記述はfrontmatterのexpiresに登録し、期限を過ぎるとnpm run freshnessとテストのtodoに一覧で出る。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -80,7 +80,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 2620, measuredAt: "2026-11-02",
+      tests: 2805, measuredAt: "2026-11-02",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出・expiresの形式とja/enの日付一致)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -303,7 +303,7 @@ export const rawProjects: RawProject[] = [
     id: "chronoscroll",
     name: "chronoscroll",
     description:
-      "1829〜現在の国内外の歴史ニュース27,442件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,796件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,442件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画／日本の災害と防災／オリンピック・パラリンピック／医学と感染症／女性の権利／公害と環境／音楽／航空／憲法と選挙／核兵器と軍縮／金融危機／冷戦／科学の大発見／通信と放送／野球とサッカー／自動車と道路／探検と冒険／文学と出版／建築と都市／人権と公民権／ゲーム／美術と美術館／気象と天気予報史／写真とカメラ／船と海運／教育と学校／万博と博覧会／将棋・囲碁・チェス／競馬／暦と時刻／第一次世界大戦／中東の戦争と和平／原子力発電／格闘技／第二次世界大戦／明治維新／沖縄／火山噴火／日清・日露戦争／アメリカ大統領／ローマ教皇／新型コロナウイルス／皇室／満州事変と二・二六事件／占領下の日本／ロシア・ウクライナ戦争／インドと南アジア／テロ事件／ソビエト連邦の興亡／パソコンとスマートフォン／朝鮮半島／中南米とカリブ海／天文学／考古学と化石／ドイツ／インターネット／舞台芸術／中国／アフリカ／東南アジア／ヨーロッパ統合の特集67本2,024件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史66件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
+      "1829〜現在の国内外の歴史ニュース27,442件を、縦の無限スクロール年表で探索できるWebサイト。地図のようにズームすると表示が変わる「セマンティックズーム」で、概観では各時代の重大ニュース（オリジナルSVGピクトグラム114点付き）だけ、拡大すると月・日レベルの細かい出来事まで現れる。クリックで画像・要約・Wikipedia出典リンク・関連するできごとへのリンクを表示（同じ実体を出典に持つイベント同士を自動で結びつけ、10,796件・全体の約39%に付与）。\n\n地域（日本/世界）×8カテゴリのフィルタ、日本語全文検索、和暦併記、ミニマップ、年代ジャンプ、URL共有、ダークモード対応、開閉・出現アニメーション。全27,442件を個別ページとしてprerenderしsitemap配信（ロングテールSEO、関連リンクで内部リンク網も強化）。\n\nさらにアニメ／ブレイクダンス／観葉植物／AI・コンピューティング／宇宙開発／鉄道／映画／日本の災害と防災／オリンピック・パラリンピック／医学と感染症／女性の権利／公害と環境／音楽／航空／憲法と選挙／核兵器と軍縮／金融危機／冷戦／科学の大発見／通信と放送／野球とサッカー／自動車と道路／探検と冒険／文学と出版／建築と都市／人権と公民権／ゲーム／美術と美術館／気象と天気予報史／写真とカメラ／船と海運／教育と学校／万博と博覧会／将棋・囲碁・チェス／競馬／暦と時刻／第一次世界大戦／中東の戦争と和平／原子力発電／格闘技／第二次世界大戦／明治維新／沖縄／火山噴火／日清・日露戦争／アメリカ大統領／ローマ教皇／新型コロナウイルス／皇室／満州事変と二・二六事件／占領下の日本／ロシア・ウクライナ戦争／インドと南アジア／テロ事件／ソビエト連邦の興亡／パソコンとスマートフォン／朝鮮半島／中南米とカリブ海／天文学／考古学と化石／ドイツ／インターネット／舞台芸術／中国／アフリカ／東南アジア／ヨーロッパ統合の特集67本2,024件を、テーマ単位で年代順に通読できる読み物ページとして提供（年表側は?k=<slug>でその特集だけに絞り込める）。年ページに載らないニッチなテーマ史68件はWikipedia出典つきで新規執筆し、素材のある領域は既存イベントの純キュレーションで束ねている。ChatGPT・AlphaGo・DeepSeekショックなど生成AI/テック史も収録し、その系譜を関連リンクで手動接続。",
     trackedPackages: ["svelte", "@sveltejs/kit", "vite", "typescript", "minisearch"],
     category: "Tool",
     platform: "web",
@@ -317,7 +317,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/chronoscroll.svg",
     emoji: "⌛",
     technicalOverview:
-      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,442件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション998件（トップ423件を人手レビュー: 要約リライト・SVG割当・関連リンク手動指定・非イベント行の除外、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。要約に残ったパーサの残骸（日付の断片・{{Cite の切れ端・参照書きなど）は pipeline/lib/residue.ts が種類ごとに数え、コミット済みデータの件数が上限（RESIDUE_CEILING）を超えると CI が落ちる。年ページの行のうちイベントでないものは content/curated/suppress.yaml に理由つきで書き、全出力から取り除く。初期に作った特集32本は2026-10-13に、日付だけでなく文言も主題のWikipedia記事と照らして見直した（968件を確認し、128件を直して26件を外した。理由は各特集のYAMLの冒頭に記録）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク120シナリオ（280〜1280pxの横あふれ検証を含む）付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,442本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残りは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
+      "Svelte 5 (runes) + SvelteKit + adapter-static。\n\nデータはビルド時パイプラインが ja.wikipedia「YYYY年」+「YYYY年の日本」の2シリーズ・計318頁の「できごと」をパースし、max(Wikidata sitelinks, jaページビュー/10)×IDF減衰×地名減衰→十年内パーセンタイル正規化で注目度をスコアリング（ja版の記事分割でsitelinksが過小になる問題をページビュー併用で補正）。2シリーズ間の近似重複は文字bigram Jaccard＋内部リンク実体の重なりガード付きcontainment判定（union-findで推移的クラスタ化）で261件を自動集約——「同日に成立した別々の法律」のような定型文パターンでの誤統合を防ぎつつ表現違いの同一ニュースを1件に。関連イベントは各イベントの出典URLからWikipedia記事の正規タイトルを復元し、同じ実体を出典に持つイベント同士を自動で結びつける（地名的記事は除外し誤結合を防止）ことで実現、curated側でもrelatedIdsによる手動指定で補強可能（AI・テック史41件はChatGPT⇄GPT-3/4/Transformer論文等の系譜を手動接続）。生成27,442件は overview+可変チャンク（十年、過密な十年は5年分割）の静的JSONとしてコミットし可視範囲を遅延ロード。\n\n年表はネイティブスクロール+高さスペーサーの仮想化で、LOD閾値（表示密度一定・フィルタ選択率で補正）+ピクセル密度cap+カード衝突回避レイアウトを純関数で実装。概観〜十年ズームはimportanceThresholdがoverview.jsonのカットオフを上回りチャンクデータが画面に一切寄与しないと判明したため、必要になるまでチャンクのフェッチ自体を止める最適化も実施（初期表示のチャンクフェッチを実測0件に）。検索はMiniSearch(文字bigram)をWeb Workerで遅延構築。\n\n編集層はYAMLキュレーション1,004件（トップ423件を人手レビュー: 要約リライト・SVG割当・関連リンク手動指定・非イベント行の除外、SVG114点はcurrentColorでテーマ・カテゴリ色に自動追従する統一線画スプライト）。要約に残ったパーサの残骸（日付の断片・{{Cite の切れ端・参照書きなど）は pipeline/lib/residue.ts が種類ごとに数え、コミット済みデータの件数が上限（RESIDUE_CEILING）を超えると CI が落ちる。年ページの行のうちイベントでないものは content/curated/suppress.yaml に理由つきで書き、全出力から取り除く。初期に作った特集32本は2026-10-13に、日付だけでなく文言も主題のWikipedia記事と照らして見直した（968件を確認し、128件を直して26件を外した。理由は各特集のYAMLの冒頭に記録）。特集はcontent/collections/<slug>.yamlの1ファイル1本で、entriesを既存のCuratedEntryと同型にしてcurated層と同じ経路に流すのが設計の芯——既存イベントの参照・部分上書きに加えて新規イベント生成・近似重複除去からのid保護・relatedIds手動指定が新規実装なしで効く。配信はbooks.yamlの前例に倣い一覧メタ+id→slug逆引きのcollections.json(6KB)と収録イベント本体つきの個別JSONの2系統で、本体を詰めたことで年表の?k=絞り込みがチャンクを1つも読まずに全件描画できる。特集の絞り込み中はLODを外す必要がある（収録イベントは本編を汚さないようimportanceを40〜60に振ってあり、フィルタ選択率で補正しても閾値86に負けて全件消えるため）。\n\n全イベントをcsr=falseの純静的HTMLとしてprerender（+sitemap.xml、前後ナビ・関連リンクで内部リンク網を強化）。ダイアログ開閉・カード出現・ズームゲージ等はtransform/opacityのみのcompositorアニメーションでprefers-reduced-motion尊重。厳格CSPとSvelteKitの両立は、起動インラインスクリプトのpost-build外部化+ルートアナウンサーstyle属性のsha256ハッシュ許可で実現。特集ページと一覧はcsr=falseのJSなし静的HTML（mobile Lighthouse 99〜100）。\n\nCIは本番同等CSPヘッダー配信での実ブラウザスモーク120シナリオ（280〜1280pxの横あふれ検証を含む）付き。データは月次cronのGitHub ActionsがPRを自動作成して更新。\n\n配信はCloudflare Workers。無料枠の静的アセット上限（20,000ファイル）を超えるため、イベント個別ページ27,442本のprerender済みHTMLだけをR2に置き、Workerが/e/*を先に受けてR2から返すハイブリッド構成（残りは静的アセット）。ビルド後にbuild/eを分離し、S3互換APIでsha256のmanifestと突き合わせて差分だけ同期する（非productionブランチのプレビュービルドでは同期をスキップ、空ビルドでの全削除は安全弁で停止）。",
     architecture: {
       layers: [
         {
@@ -356,7 +356,7 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 99.45, branches: 93.65, functions: 99.69, lines: 100,
+      statements: 99.41, branches: 93.65, functions: 99.53, lines: 99.94,
       tests: 606, measuredAt: "2026-11-02",
       notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド/要約の残骸検出 + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク120シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
     },
@@ -443,9 +443,9 @@ export const rawProjects: RawProject[] = [
     name: "Somewhere Now",
     featuredRank: 1,
     highlight:
-      "世界115の国と地域・5,705地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
+      "世界97の国と地域・3,810地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
     description:
-      "世界115の国と地域・5,705地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
+      "世界97の国と地域・3,810地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
     trackedPackages: ["vite", "typescript", "leaflet", "maplibre-gl"],
     category: "Tool",
     platform: "web",
@@ -461,7 +461,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/somewhere-now.svg",
     emoji: "\u{1F30D}",
     technicalOverview:
-      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。/api/cams が落ちても地図は出る。\n\nWorkers は1呼び出しあたりのサブリクエストが50で頭打ちになるので、5,705台を50件ずつ割った115回はそのままでは通らない(実際に本番のCronが毎回 Too many subrequests で落ち、状態を書けないまま台帳だけ焼いていた)。1回40回に制限し、確認がいちばん古いカメラから順に詰める。実行のたびに対象がひとりでに入れ替わるので、どこまで見たかを覚えなくても30分で全件を一巡できる。見送ったカメラは offline とは誤判定しない。\n\n5,705台が2,442チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、5,705件を10分ごとに全確認すると16,560 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\nカメラ定義はバンドルに同梱せず静的なJSONとして配る。同梱するとメインバンドルが2.6MBになり、Leafletが地図を作るのはそのJSを実行し終わってからなのでタイル(LCPの対象)が数秒遅れる。切り出してメインJSは231KB(gzip 69KB)になり、地図はマスタを待たずに出る。ピンはmarkerclusterのaddLayersで一括投入する(1台ずつ足すとそのたびにクラスタを組み直して数百msの固まりになる)。あわせて4つのsetterが連続で呼ばれても描き直しを1回にまとめている。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
+      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。/api/cams が落ちても地図は出る。\n\nWorkers は1呼び出しあたりのサブリクエストが50で頭打ちになるので、3,810台を50件ずつ割った77回はそのままでは通らない(実際に本番のCronが毎回 Too many subrequests で落ち、状態を書けないまま台帳だけ焼いていた)。1回40回に制限し、確認がいちばん古いカメラから順に詰める。実行のたびに対象がひとりでに入れ替わるので、どこまで見たかを覚えなくても30分で全件を一巡できる。見送ったカメラは offline とは誤判定しない。\n\n3,810台が1,596チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、3,810件を10分ごとに全確認すると11,088 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\nカメラ定義はバンドルに同梱せず静的なJSONとして配る。同梱するとメインバンドルが2.6MBになり、Leafletが地図を作るのはそのJSを実行し終わってからなのでタイル(LCPの対象)が数秒遅れる。切り出してメインJSは231KB(gzip 69KB)になり、地図はマスタを待たずに出る。ピンはmarkerclusterのaddLayersで一括投入する(1台ずつ足すとそのたびにクラスタを組み直して数百msの固まりになる)。あわせて4つのsetterが連続で呼ばれても描き直しを1回にまとめている。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
     architecture: {
       layers: [
         {
@@ -498,8 +498,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 99.33, branches: 97.5, functions: 99.54, lines: 99.64,
-      tests: 728, measuredAt: "2026-11-02",
+      statements: 99.27, branches: 97.36, functions: 99.55, lines: 99.66,
+      tests: 751, measuredAt: "2026-11-02",
       notes: "純ロジック層(天体計算・ドメイン・YouTube APIクライアント・生存更新アルゴリズム・休憩モードの行き先選定・ピン描画)を100%閾値ゲート。配信タイトルによるカメラ識別は、同一チャンネル内の紛らわしいタイトル群で取り違えないことを検証。昼夜判定は6都市の現地時計と突合、クォータ会計は予算切れの打ち切りと失敗時の計上まで検証。app/api/ui層も閾値付きで計測(数値は全体)。Leaflet/MapLibreの描画層(map.ts/globe.ts)は対象外",
     },
     securityScores: {
@@ -1176,7 +1176,7 @@ export const rawProjects: RawProject[] = [
     id: "ai-primer",
     name: "AI Primer",
     description:
-      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。基礎用語・歴史・LLMの仕組み・主要AI比較（ChatGPT・Claude・Gemini・Grok）・プロンプト術・AIエージェントとツール連携・コーディングAI・生成メディア・AIをもっと理解する・仕事でAIを使う・暮らしでAIを使う・AIと創作・AIと科学・自動運転とロボット・AIとセキュリティ・日本語とAI・現場で働くAI・防災とAI・歴史資料とAI・金融とAI・スポーツとAI・生きものとAI・AIと社会・活用と倫理の24トラック147レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ（16件）・AI年表（162件）・用語集（199語）も収録。",
+      "AIの用語・歴史・仕組み・使い方を体系的に学べるバイリンガル(日本語/英語)チュートリアル。基礎用語・歴史・LLMの仕組み・主要AI比較（ChatGPT・Claude・Gemini・Grok）・プロンプト術・AIエージェントとツール連携・コーディングAI・生成メディア・AIをもっと理解する・仕事でAIを使う・暮らしでAIを使う・AIと創作・AIと科学・自動運転とロボット・AIとセキュリティ・日本語とAI・現場で働くAI・防災とAI・歴史資料とAI・金融とAI・スポーツとAI・生きものとAI・AIと社会・活用と倫理の24トラック147レッスン。各レッスンに確認クイズと出典リンク、最終確認日バッジ付き。モデルカタログ（16件）・AI年表（164件）・用語集（203語）も収録。",
     trackedPackages: ["next", "react", "unified"],
     category: "Tool",
     platform: "web",

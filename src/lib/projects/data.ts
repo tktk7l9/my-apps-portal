@@ -1,10 +1,10 @@
 import type { Category, RawProject } from "./types";
 
 // Content counts quoted in description / technicalOverview / notes (articles, lessons, facilities,
-// events, ...) were checked against each repository's origin/main and live site on 2026-10-13 for the
-// apps that changed from 2026-10-11 to 2026-10-13 and on 2026-10-10 for the rest. testCoverage figures come from the
-// latest green CI run on the head checked that day; lifeplan-simulator (its CI runs no coverage),
-// ai-news-feed-app (both of its suites, 2026-10-14) and my-apps-portal were run locally.
+// events, ...) were checked against each repository's origin default branch on 2026-11-02. testCoverage
+// figures come from that head's green CI run on the same day; lifeplan-simulator (its CI runs no coverage)
+// and my-apps-portal were run locally, ai-news-feed-app adds its two suites, and sumai-log adds its four.
+// roba-hud has not changed since its CI of 2026-10-06 and cannot be rebuilt with the current local toolchain.
 export const rawProjects: RawProject[] = [
   {
     id: "client-realestate-admin",
@@ -55,7 +55,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-16",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-10-20",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
@@ -80,7 +80,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 2612, measuredAt: "2026-10-20",
+      tests: 2612, measuredAt: "2026-11-02",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出・expiresの形式とja/enの日付一致)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -109,7 +109,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-07-14",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/lumen-bloom",
     githubVisibility: "public",
     ogImage: "/og/lumen-bloom.png",
@@ -143,8 +143,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 100, branches: 99.35, functions: 100, lines: 100,
-      tests: 378, measuredAt: "2026-10-13",
+      statements: 100, branches: 99.36, functions: 100, lines: 100,
+      tests: 391, measuredAt: "2026-11-02",
       notes: "純ロジック層(astro太陽/月/月相・フィロタキシス/花びら曲面/花瓶プロファイル/花束レイアウト・天気クライアント/WMOマッピング/staleness・シーン状態導出・URLパラメータ)を100%閾値ゲート。天体計算はMeeus例題+JPL Horizons(~0.01°)+USNO輝面比(±5%)で突合。DOM層(src/ui・orchestrator)もjsdomの振る舞いテストで計測し98%前後の閾値でゲート(数値は全体)。WebGL描画層(src/scene)は対象外",
     },
     securityScores: {
@@ -166,10 +166,10 @@ export const rawProjects: RawProject[] = [
       "AI コーディングエージェントの設定を1画面で横断管理する macOS デスクトップアプリ。Claude Code（~/.claude.json・~/.claude/）・OpenAI Codex（~/.codex/config.toml）・Cursor（~/.cursor/）＋プロジェクトスコープ（.mcp.json・.claude/）に分散した MCP サーバー / Skill / Subagent / スラッシュコマンド / プラグイン / 設定 / AGENTS.md・CLAUDE.md を統合インベントリとして表示し、GUI からフル編集（追加・編集・削除・リネーム・トグル）できる。\n\n全書込は 差分プレビュー（env 値マスク）→ sha256 競合検知 → ファイル毎50世代バックアップ → atomic write（パーミッション保持）の同一パイプラインを通り、~/.codex/auth.json や .env* は IPC 層でハード拒否。外部エディタや各 CLI 本体による変更は chokidar 監視で即座に反映される。",
     trackedPackages: [],
     staticTech: [
-      { name: "Electron", docsUrl: "https://www.electronjs.org/docs/latest", version: "43" },
+      { name: "Electron", docsUrl: "https://www.electronjs.org/docs/latest", version: "44" },
       { name: "React", docsUrl: "https://react.dev", version: "19" },
-      { name: "TypeScript", docsUrl: "https://www.typescriptlang.org/docs/", version: "6.0" },
-      { name: "electron-vite", docsUrl: "https://electron-vite.org", version: "5" },
+      { name: "TypeScript", docsUrl: "https://www.typescriptlang.org/docs/", version: "7.0" },
+      { name: "electron-vite", docsUrl: "https://electron-vite.org", version: "6" },
       { name: "CodeMirror", docsUrl: "https://codemirror.net/docs/", version: "6" },
       { name: "macOS", docsUrl: "https://developer.apple.com/documentation/", version: "arm64" },
     ],
@@ -177,7 +177,7 @@ export const rawProjects: RawProject[] = [
     platform: "other",
     services: ["GitHub Actions"],
     createdAt: "2026-07-07",
-    updatedAt: "2026-07-07",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/agent-cockpit",
     githubVisibility: "public",
     favicon: "/favicons/agent-cockpit.svg",
@@ -221,8 +221,8 @@ export const rawProjects: RawProject[] = [
       notes: "Web ページを持たないネイティブ macOS アプリのため Lighthouse / Observatory 非該当。客観的に検証できる項目のみを掲載。",
     },
     testCoverage: {
-      statements: 99.05, branches: 95.75, functions: 99.67, lines: 99.88,
-      tests: 421, measuredAt: "2026-10-10",
+      statements: 99.05, branches: 95.76, functions: 99.67, lines: 99.88,
+      tests: 421, measuredAt: "2026-11-02",
       notes: "vitest + @vitest/coverage-v8。純関数の src/lib（パーサ・外科的エディタ・planMutation・inventory・validate/diff/redact）を 100/100/100/100 の閾値ゲート（CIで強制）。main の書込パイプライン（バックアップ・atomic・競合検知・symlink脱出拒否）は実テンポラリファイルで9テスト。renderer(UI)層もjsdomで計測し行98%の閾値でゲート(数値は main/preload/renderer を含む全体)",
     },
     securityScores: {
@@ -248,7 +248,7 @@ export const rawProjects: RawProject[] = [
     platform: "other",
     services: ["GitHub Actions"],
     createdAt: "2026-07-02",
-    updatedAt: "2026-07-03",
+    updatedAt: "2026-10-05",
     githubUrl: "https://github.com/tktk7l9/roba-hud",
     githubVisibility: "public",
     // macOS app without a web page, so the card is generated from the project data
@@ -289,8 +289,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 99.14, branches: 99.14, functions: 100, lines: 100,
-      tests: 278, measuredAt: "2026-07-03",
-      notes: "swift build + llvm-cov を --selftest 実行で計測（Swift の region coverage を statements/branches に記載）。lib 10ファイル（Parser/Editor/Model/KeycodeTable/InferenceEngine/Geometry/Stats/BatteryModel/BatteryForecast/CheatsheetGenerator）を行100%の閾値ゲート（scripts/coverage-gate.sh・CIで強制）。UI・HID/BLE 購読・git/gh 実行層は副作用層のため対象外",
+      tests: 339, measuredAt: "2026-10-06",
+      notes: "swift build + llvm-cov を --selftest 実行で計測。テスト数は selftest のアサーション数（2026-10-06 の main の CI）で、statements/branches の Swift region coverage は 2026-07-03 の計測値。lib 12ファイル（Parser/Editor/Model/KeycodeTable/InferenceEngine/Geometry/Stats/BatteryModel/BatteryForecast/CheatsheetGenerator/Insights/ProfileMarker）を行100%の閾値ゲート（scripts/coverage-gate.sh・CIで強制）。UI・HID/BLE 購読・git/gh 実行層は副作用層のため対象外",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -309,7 +309,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare R2", "Cloudflare Web Analytics"],
     createdAt: "2026-07-10",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/chronoscroll",
     githubVisibility: "public",
     liveUrl: "https://chronoscroll.saitotakuya0719.workers.dev",
@@ -356,8 +356,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 99.43, branches: 93.54, functions: 99.68, lines: 100,
-      tests: 587, measuredAt: "2026-10-20",
+      statements: 99.45, branches: 93.65, functions: 99.69, lines: 100,
+      tests: 606, measuredAt: "2026-11-02",
       notes: "純ロジック層(src/lib: 時間スケール/LOD/仮想化/レイアウト/フィルタ/URL状態/検索/和暦/特集 + pipeline/lib: wikitextパーサー/スコアリング/分類/キュレーション/近似重複排除/関連イベント算出/特集ビルド/要約の残骸検出 + worker: R2配信Workerのパス解決/ヘッダー/304・404・405 + scripts/lib: _headers生成/R2差分同期の計画・大量削除の安全弁)を100%閾値ゲート。実ブラウザスモーク120シナリオ(ズーム/詳細/フィルタ/検索ジャンプ/URL復元/モバイル/年代ジャンプ/個別ページ/ズームゲージ/特集一覧・個別・年表連動/ディープリンク)をCI+本番URLでPASS。UI層(コンポーネント/状態/検索Worker/ルート)も計測し到達値-2ptの閾値でゲート(数値は全体)",
     },
     securityScores: {
@@ -376,14 +376,14 @@ export const rawProjects: RawProject[] = [
     id: "sumai-log",
     name: "sumai-log（住まいログ）",
     description:
-      "戸建て（親の土地に新築）とマンションを並行して検討する夫婦のための記録アプリ。見学記録（写真つき）、予定カレンダー、候補の業者・物件（施工エリアと建築予定地の照合、公式サイト/SNS リンク）、行った場所の地図（Google マップ・住所→座標）、YouTube メモ（oEmbed で題名/サムネを自動取得）、二人の更新を並べるホームのフィード、家づくり用語集（46 語・図解 14 点）を持つ。採点や比較表は持たず「記録だけ」に徹する設計。Cloudflare Access（Google IdP）で二人だけに公開し、公開リポジトリには実データを一切置かない。",
+      "戸建て（親の土地に新築）とマンションを並行して検討する夫婦のための記録アプリ。見学記録（写真つき）、予定カレンダー、候補の業者・物件（施工エリアと建築予定地の照合、公式サイト/SNS リンク）、行った場所の地図（Google マップ・住所→座標）、YouTube メモ（oEmbed で題名/サムネを自動取得）、二人の更新を並べるホームのフィード、期限ごとにまとめるやることリスト（/todos）、家づくり用語集（46 語・図解 14 点）を持つ。採点や比較表は持たず「記録だけ」に徹する設計。Cloudflare Access（Google IdP）で二人だけに公開し、公開リポジトリには実データを一切置かない。",
     trackedPackages: ["@tanstack/react-start", "react", "typescript", "vite"],
     category: "Tool",
     platform: "web",
     kind: "personal",
     services: ["Cloudflare Workers", "Cloudflare D1", "Cloudflare R2", "Cloudflare Access", "Google Maps", "国土地理院 API"],
     createdAt: "2026-09-15",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/sumai-log",
     githubVisibility: "public",
     liveUrl: "https://sumai-log.saitotakuya0719.workers.dev",
@@ -430,8 +430,8 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 1791, measuredAt: "2026-10-20",
-      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 1165 に加え、実 D1 に対する server テスト 314・UI テスト 220（UI 層は statements 93.1%）・scripts テスト 92",
+      tests: 1835, measuredAt: "2026-11-02",
+      notes: "src/lib（純粋関数）を 100% ゲート（数値は src/lib）。lib テスト 1193 に加え、実 D1 に対する server テスト 320・UI テスト 230（UI 層は statements 93.18%）・scripts テスト 92",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -451,7 +451,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare KV", "YouTube Data API", "Open-Meteo"],
     createdAt: "2026-08-18",
-    updatedAt: "2026-10-06",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/somewhere-now",
     githubVisibility: "public",
     liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
@@ -498,8 +498,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 99.38, branches: 97.59, functions: 99.54, lines: 99.69,
-      tests: 723, measuredAt: "2026-10-20",
+      statements: 99.33, branches: 97.5, functions: 99.54, lines: 99.64,
+      tests: 726, measuredAt: "2026-11-02",
       notes: "純ロジック層(天体計算・ドメイン・YouTube APIクライアント・生存更新アルゴリズム・休憩モードの行き先選定・ピン描画)を100%閾値ゲート。配信タイトルによるカメラ識別は、同一チャンネル内の紛らわしいタイトル群で取り違えないことを検証。昼夜判定は6都市の現地時計と突合、クォータ会計は予算切れの打ち切りと失敗時の計上まで検証。app/api/ui層も閾値付きで計測(数値は全体)。Leaflet/MapLibreの描画層(map.ts/globe.ts)は対象外",
     },
     securityScores: {
@@ -524,7 +524,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-07-07",
-    updatedAt: "2026-07-08",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/skydial",
     githubVisibility: "public",
     // WebP because it is a featured card whose request starts before LCP (108KB PNG -> 31KB)
@@ -563,7 +563,7 @@ export const rawProjects: RawProject[] = [
     },
     testCoverage: {
       statements: 98.85, branches: 95.32, functions: 98.9, lines: 99.18,
-      tests: 469, measuredAt: "2026-10-10",
+      tests: 479, measuredAt: "2026-11-02",
       notes: "純ロジック層(astro/state/i18n/測地/AR姿勢・投影/朔望ソルバー/偏角/TZ推定/日射sunsim一式+室内床パッチ幾何)を100%閾値ゲート。天体計算はJPL Horizons(0.002°一致)・USNO(出没±75s・朔望±10分)・極夜白夜/月の出なし日エッジ込みで突合。日射はpvlib-python生成fixtureと0.1%突合+物理不変量(冬至南面>夏至南面・冬至の床侵入深さ>夏至等)。UI層(app/main/ui/views)も96%前後の閾値で計測(数値は全体)",
     },
     securityScores: {
@@ -588,7 +588,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Supabase"],
     createdAt: "2026-07-01",
-    updatedAt: "2026-10-11",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/utility-tracker",
     githubVisibility: "public",
     liveUrl: "https://utility-tracker.saitotakuya0719.workers.dev",
@@ -617,8 +617,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 98.23, branches: 94.6, functions: 96.75, lines: 98.81,
-      tests: 421, measuredAt: "2026-10-20",
+      statements: 98.23, branches: 94.62, functions: 96.75, lines: 98.81,
+      tests: 422, measuredAt: "2026-11-02",
       notes: "lib層(aggregate/csv/domain/export/utils)を100%閾値ゲート。UI層(components/app)も閾値付きで計測(数値は全体)。supabase.ts(ネットワーク)とpdfText.tsは対象外",
     },
     securityScores: {
@@ -642,7 +642,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-04-20",
-    updatedAt: "2026-10-27",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/lifeplan-simulator",
     githubVisibility: "public",
     liveUrl: "https://lifeplan-simulator.saitotakuya0719.workers.dev",
@@ -662,9 +662,9 @@ export const rawProjects: RawProject[] = [
     emoji: "🏔️",
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
-      statements: 95.71, branches: 83.04, functions: 95, lines: 96.92,
-      tests: 572, measuredAt: "2026-10-20",
-      notes: "lib層 99.87% / 全体 95.71%（statements。CI はカバレッジを出さないのでローカルで計測）。Slider/Three.js/SaveDialog/ImportDialog の interaction と、/simulator の遅延読み込み（検証スキーマ・後続ステップ）を網羅",
+      statements: 96.04, branches: 84.09, functions: 95.03, lines: 97.08,
+      tests: 543, measuredAt: "2026-11-02",
+      notes: "lib層 99.87% / 全体 96.04%（statements。CI はカバレッジを出さないのでローカルで計測）。Slider/Three.js/SaveDialog/ImportDialog の interaction と、/simulator の遅延読み込み（検証スキーマ・後続ステップ）を網羅",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -687,7 +687,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-04-27",
-    updatedAt: "2026-04-27",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/hyper-tetris",
     githubVisibility: "public",
     ogImage: "/og/hyper-tetris.png",
@@ -702,6 +702,11 @@ export const rawProjects: RawProject[] = [
       ],
     },
     emoji: "🟦",
+    testCoverage: {
+      statements: 99.74, branches: 93.4, functions: 100, lines: 100,
+      tests: 189, measuredAt: "2026-11-02",
+      notes: "vitest + jsdom。一時停止の判定（pause.ts）とダイアログのフォーカス管理（dialog-focus.ts）を100%閾値ゲートし、起動・入力・DOM の HUD の UI 層も実測の2ポイント下の閾値で計測（数値は計測対象の全体）。Three.js の描画層は対象外",
+    },
     lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -723,7 +728,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-04-28",
-    updatedAt: "2026-10-11",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/housing-performance-simulator",
     githubVisibility: "public",
     liveUrl: "https://housing-performance-simulator.saitotakuya0719.workers.dev",
@@ -743,9 +748,9 @@ export const rawProjects: RawProject[] = [
     emoji: "🏠",
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
-      statements: 98.87, branches: 93.27, functions: 99.34, lines: 99.51,
-      tests: 533, measuredAt: "2026-10-13",
-      notes: "lib 配下は lib/housing が 99.19%、ほかは 100% / 全体 98.87%（statements）。Select/Dialog/Input/各 step interaction と、/simulator の遅延読み込み・事前生成 HTML まで網羅",
+      statements: 98.88, branches: 93.34, functions: 99.34, lines: 99.52,
+      tests: 550, measuredAt: "2026-11-02",
+      notes: "lib 配下は lib/housing が 99.19%、ほかは 100% / 全体 98.88%（statements）。Select/Dialog/Input/各 step interaction と、/simulator の遅延読み込み・事前生成 HTML まで網羅",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -768,7 +773,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Supabase", "Google Gemini"],
     createdAt: "2026-04-26",
-    updatedAt: "2026-10-11",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/ai-news-feed-app",
     githubVisibility: "public",
     liveUrl: "https://ai-news-feed-app.saitotakuya0719.workers.dev",
@@ -792,8 +797,8 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 95, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 221, measuredAt: "2026-10-20",
-      notes: "カバレッジの数値は vitest の UI テスト 67 件（components・app の .tsx、OG 画像を除く）のもの。lib（RSS の取得・Gemini の要約・候補の選び方・CSP の nonce・Cron の認証など）は Node の test runner で別に 154 件を実行していて、カバレッジは計測していない。テスト件数は両方の合計",
+      tests: 223, measuredAt: "2026-11-02",
+      notes: "カバレッジの数値は vitest の UI テスト 67 件（components・app の .tsx、OG 画像を除く）のもの。lib（RSS の取得・Gemini の要約・候補の選び方・CSP の nonce・Cron の認証など）は Node の test runner で別に 156 件を実行していて、カバレッジは計測していない。テスト件数は両方の合計",
     },
     securityScores: {
       score: 100, critical: 0, high: 0, moderate: 0, low: 0,
@@ -816,7 +821,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-05-06",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/tricking-3d",
     githubVisibility: "public",
     ogImage: "/og/tricking-3d.png",
@@ -834,7 +839,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 100, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
       statements: 99.77, branches: 98.8, functions: 100, lines: 99.87,
-      tests: 1636, measuredAt: "2026-10-13",
+      tests: 1641, measuredAt: "2026-11-02",
       notes: "src/ui・src/state・src/lib・main.ts と技のデータ（catalog/authoring/rig）を閾値つきで計測（Three.js の描画層は WebGL が要るため対象外）。plausibility.test.ts・takeoff.test.ts などが全技の動き（床を貫かない・踏切足と着地足・股関節の可動域・接触のキーポイントと実際の接地の時刻・接地した手足の滑り・終わりの姿勢・踏切前の身体の回転）と、技ごとの契約（回転量・手をつく順番）を数値で検査",
     },
     securityScores: {
@@ -857,7 +862,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2025-03-18",
-    updatedAt: "2026-10-11",
+    updatedAt: "2026-10-27",
     githubUrl: "https://github.com/tktk7l9/resume",
     githubVisibility: "public",
     liveUrl: "https://resume.saitotakuya0719.workers.dev",
@@ -878,8 +883,8 @@ export const rawProjects: RawProject[] = [
     emoji: "📄",
     lighthouseScores: { performance: 97, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
-      statements: 98.65, branches: 95.45, functions: 100, lines: 99.25,
-      tests: 212, measuredAt: "2026-10-20",
+      statements: 98.66, branches: 95.48, functions: 100, lines: 99.25,
+      tests: 215, measuredAt: "2026-11-02",
       notes: "UI層（components・App Router のページ）と i18n・lib を計測し、components と app には実測の2ポイント下の閾値（OG 画像は対象外）。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイル（JSON-LD のみ）に限り、worker-entry.test.ts と open-next-config.test.ts が Worker の入口とキャッシュの設定を固定",
     },
     securityScores: {
@@ -903,7 +908,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2021-03-26",
-    updatedAt: "2026-10-11",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/elparaiso",
     githubVisibility: "public",
     liveUrl: "https://elparaiso.saitotakuya0719.workers.dev",
@@ -924,7 +929,7 @@ export const rawProjects: RawProject[] = [
     lighthouseScores: { performance: 96, accessibility: 100, bestPractices: 100, seo: 100, measuredAt: "2026-10-27" },
     testCoverage: {
       statements: 98.9, branches: 97.8, functions: 100, lines: 100,
-      tests: 143, measuredAt: "2026-10-20",
+      tests: 146, measuredAt: "2026-11-02",
       notes: "src 配下を OG 画像を除いてすべて計測し、閾値は lines 98 / statements 96 / functions 98 / branches 93。csp-nonce.test.ts・worker-entry.test.ts・raw-html.test.ts が nonce の付け方・Worker の入口・生 HTML の出口を固定",
     },
     securityScores: {
@@ -948,7 +953,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-05-14",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/my-apps-portal",
     githubVisibility: "public",
     liveUrl: "https://my-apps-portal.saitotakuya0719.workers.dev",
@@ -992,7 +997,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-05-20",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/acro-finder",
     githubVisibility: "public",
     liveUrl: "https://acro-finder.saitotakuya0719.workers.dev",
@@ -1016,8 +1021,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 98.94, branches: 97.08, functions: 99.09, lines: 99.64,
-      tests: 443, measuredAt: "2026-10-13",
+      statements: 98.94, branches: 97.08, functions: 99.1, lines: 99.64,
+      tests: 448, measuredAt: "2026-11-02",
       notes: "計測対象は lib層 + コンポーネント + app(地図ライブラリ依存の InteractiveMap を除く)。全体に閾値ゲート(lines 97 / statements 96 / functions 96 / branches 94)を設定",
     },
     securityScores: {
@@ -1041,7 +1046,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-23",
-    updatedAt: "2026-10-11",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/snippet-sprint",
     githubVisibility: "public",
     ogImage: "/og/snippet-sprint.png",
@@ -1061,8 +1066,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 99.5, branches: 97.7, functions: 100, lines: 99.88,
-      tests: 245, measuredAt: "2026-10-13",
+      statements: 99.5, branches: 97.72, functions: 100, lines: 99.88,
+      tests: 250, measuredAt: "2026-11-02",
       notes: "engine(純ロジック)を100%閾値ゲート。ui/input/modes/audio層も96〜98%の閾値で計測(数値は全体)。描画(render)層は対象外",
     },
     securityScores: {
@@ -1086,7 +1091,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-23",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/css-atelier",
     githubVisibility: "public",
     ogImage: "/og/css-atelier.png",
@@ -1103,7 +1108,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🎨",
     testCoverage: {
       statements: 99.68, branches: 97.8, functions: 99.7, lines: 99.84,
-      tests: 2773, measuredAt: "2026-10-13",
+      tests: 2783, measuredAt: "2026-11-02",
       notes: "engine(content/validate/tokenize/viz-map/progress)を100%閾値ゲート。ui/sandbox/viz層も96%前後の閾値で計測(数値は全体)。全248レッスンの解答を実ブラウザ(headless Chrome・CDP)で巡回してPASS確認(2026-10-13)。実ブラウザで記録した矩形と computed 値を再生する recorded-snapshots.test.ts で、新規レッスンは starter 不合格・解答合格を固定",
     },
     securityScores: {
@@ -1131,7 +1136,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers"],
     createdAt: "2026-06-24",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/glsl-atelier",
     githubVisibility: "public",
     ogImage: "/og/glsl-atelier.png",
@@ -1148,7 +1153,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🌌",
     testCoverage: {
       statements: 99.52, branches: 98.91, functions: 98.48, lines: 99.77,
-      tests: 1760, measuredAt: "2026-10-13",
+      tests: 1763, measuredAt: "2026-11-02",
       notes: "engine(content/validate/color/sample/tokenize/progress)を100%閾値ゲート。ui/sandbox層も97%前後の閾値で計測(数値は全体)。全168レッスンの解答が通り初期コードが通らないことを solvable.test.ts(シェーダーはJS移植で採点格子を評価・Three.jsは実threeで実行)で検証し、実ブラウザ(headless Chrome・CDP)でも4種の画面サイズで168/168 PASS(2026-10-13)。サンドボックス隔離（不透明オリジンで親アクセス遮断）も実証",
     },
     securityScores: {
@@ -1177,7 +1182,7 @@ export const rawProjects: RawProject[] = [
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-15",
-    updatedAt: "2026-10-13",
+    updatedAt: "2026-11-02",
     githubUrl: "https://github.com/tktk7l9/ai-primer",
     githubVisibility: "public",
     liveUrl: "https://ai-primer.saitotakuya0719.workers.dev",
@@ -1196,7 +1201,7 @@ export const rawProjects: RawProject[] = [
     emoji: "🧭",
     testCoverage: {
       statements: 99.66, branches: 98.81, functions: 100, lines: 100,
-      tests: 1575, measuredAt: "2026-10-20",
+      tests: 1576, measuredAt: "2026-11-02",
       notes: "engine(content/quiz/progress/freshness/markdown)+i18n+lib層（CSP と nonce の処理）を100%閾値ゲート。content.test.tsが142レッスン+モデル16件+年表162件+用語199語の整合性(id一意・ja/en非空・出典https・lastVerified妥当・日付昇順等)を横断検証。加えてquiz-block中心にUIコンポーネント層のテスト29本(jsdom+testing-library)を追加し、locale-switcherの実装バグ(pathname未検出時のフォールバック不備)を検出・修正。components/app層も95%前後の閾値で計測(数値は全体)。trust-boundary.test.tsx が dangerouslySetInnerHTML を許可リストのファイルに限り、敵対的な入力で生 HTML が出ないことを検証",
     },
     securityScores: {

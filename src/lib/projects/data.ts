@@ -49,7 +49,7 @@ export const rawProjects: RawProject[] = [
     id: "service-anatomy",
     name: "Service Anatomy",
     description:
-      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事129本+2サービスを突き合わせる比較解剖45本。技術1,035件・タグ241件・カテゴリ7件の横断ページを含め2,926ページ（sitemapのURL数）を全てビルド時に生成する。",
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事137本+2サービスを突き合わせる比較解剖50本。技術1,115件・タグ256件・カテゴリ7件の横断ページを含め3,142ページ（sitemapのURL数）を全てビルド時に生成する。",
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
@@ -66,7 +66,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で2,926ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。キャンペーンの終了日のように期限のある記述はfrontmatterのexpiresに登録し、期限を過ぎるとnpm run freshnessとテストのtodoに一覧で出る。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で3,142ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。キャンペーンの終了日のように期限のある記述はfrontmatterのexpiresに登録し、期限を過ぎるとnpm run freshnessとテストのtodoに一覧で出る。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -80,7 +80,7 @@ export const rawProjects: RawProject[] = [
       "人気サービスを技術・UX・ビジネスの4面から解剖する日本語/英語マガジン。記事の整合性はCIで自動検証する。",
     testCoverage: {
       statements: 100, branches: 100, functions: 100, lines: 100,
-      tests: 2805, measuredAt: "2026-11-02",
+      tests: 2965, measuredAt: "2026-11-02",
       notes: "engine(markdown/articles/tech/seo/feed/format)+i18n層を100%閾値ゲート。content.test.tsが全記事の横断整合性(ja/en言語中立フィールド等価・出典https+閲覧日・スコア0-5/0.5刻み・confirmed技術に一次情報URL必須・h2 4本以上・scorecard/techstack各1回・CJK括弧隣接の強調失敗検出・expiresの形式とja/enの日付一致)をCI強制。記事を追加すると自動でテスト対象に入る",
     },
     securityScores: {
@@ -1066,8 +1066,8 @@ export const rawProjects: RawProject[] = [
       measuredAt: "2026-10-27",
     },
     testCoverage: {
-      statements: 99.5, branches: 97.73, functions: 100, lines: 99.88,
-      tests: 251, measuredAt: "2026-11-02",
+      statements: 99.51, branches: 97.58, functions: 100, lines: 99.88,
+      tests: 265, measuredAt: "2026-11-02",
       notes: "engine(純ロジック)を100%閾値ゲート。ui/input/modes/audio層も96〜98%の閾値で計測(数値は全体)。描画(render)層は対象外",
     },
     securityScores: {

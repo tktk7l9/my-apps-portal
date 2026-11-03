@@ -49,13 +49,13 @@ export const rawProjects: RawProject[] = [
     id: "service-anatomy",
     name: "Service Anatomy",
     description:
-      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事137本+2サービスを突き合わせる比較解剖50本。技術1,115件・タグ256件・カテゴリ7件の横断ページを含め3,142ページ（sitemapのURL数）を全てビルド時に生成する。",
+      "人気サービスを解剖する分析マガジン(日本語/英語)。1記事で1つのサービスを取り上げ、サービス解説・UX分析・技術構成の推定・ビジネスモデルの4面から公開情報ベースで読み解く。解剖スコア(4軸)・確度3段階の技術構成テーブル・事実/推測の明示ラベル・出典リスト付き。techStackデータから自動生成する技術データベース(横断ページ)を備える。記事137本+2サービスを突き合わせる比較解剖50本。技術1,123件・タグ256件・カテゴリ7件の横断ページを含め3,158ページ（sitemapのURL数）を全てビルド時に生成する。",
     trackedPackages: ["next", "react", "unified"],
     category: "Other",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare Web Analytics"],
     createdAt: "2026-07-16",
-    updatedAt: "2026-11-02",
+    updatedAt: "2026-11-03",
     githubUrl: "https://github.com/tktk7l9/service-anatomy",
     githubVisibility: "public",
     // Custom domain. The workers.dev root answers a broken redirect (404), so link here directly
@@ -66,7 +66,7 @@ export const rawProjects: RawProject[] = [
     ogImage: "/og/service-anatomy.webp",
     favicon: "/favicons/service-anatomy.svg",
     technicalOverview:
-      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で3,142ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。キャンペーンの終了日のように期限のある記述はfrontmatterのexpiresに登録し、期限を過ぎるとnpm run freshnessとテストのtodoに一覧で出る。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
+      "Next.js 16 (App Router) + React 19。全HTMLルートを全ルートSSG(generateStaticParams + dynamicParams=false)で3,158ページを事前生成し、Cloudflare Workers から配信。CSPはnext.configの静的ヘッダーを基準に、HTMLはWorkerの入口で毎リクエストのnonceへ差し替える（nonceはインラインのJavaScriptだけに付ける）。\n\n記事はcontent/articles/<slug>/{ja,en}.mdのgray-matter frontmatter(解剖スコア・techStack確度3段階・出典)+remark-directive拡張(:::fact/:::guess/:::pull/::scorecard/::techstack)。ディレクティブはマーカーdiv化→純関数split→Reactコンポーネントをinterleave描画(dangerouslySetInnerHTML内にコンポーネントを差し込む問題を回避)。ja/enの言語中立フィールド等価・confirmedへの一次情報URL必須をcontent.test.tsがCI強制。キャンペーンの終了日のように期限のある記述はfrontmatterのexpiresに登録し、期限を過ぎるとnpm run freshnessとテストのtodoに一覧で出る。\n\nヒーローは著作権フリーのシード生成SVG解剖図。エディトリアルデザイン(欧文セリフNewsreader約2KBのみWebフォント・JP明朝はシステム=2026-07-16 の実測で LH perf 72→99)。RSS 2.0/sitemap(hreflang)/BlogPosting JSON-LD/記事別動的OG(スコア入り雑誌表紙風)。",
     architecture: {
       layers: [
         { nodes: [{ label: "ブラウザ", sublabel: "静的HTML中心(クライアントJS最小) / light-dark自動 / 言語切替", kind: "client" }], connector: "HTTPS" },
@@ -443,15 +443,15 @@ export const rawProjects: RawProject[] = [
     name: "Somewhere Now",
     featuredRank: 1,
     highlight:
-      "世界97の国と地域・3,810地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
+      "世界93の国と地域・3,602地点のライブカメラを地図と地球儀で覗く。生存確認はCronが自動で追う。",
     description:
-      "世界97の国と地域・3,810地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
+      "世界93の国と地域・3,602地点のYouTubeライブカメラを地図から選んで覗くアプリ。平面図と地球儀を切り替えられ、どちらにも太陽位置から求めた昼夜の境界(ターミネータ)が引いてあるので「いま夜の場所だけ」で絞り込める。選んだ場所は現地時刻・現在の天気・視聴者数つきで表示され、最大4枚を2×2で同時に眺められる。配信中を視聴の多い順に一覧することもできる。仕事の合間向けに休憩モード(3/5/10分)があり、行き先はアプリが「見る人と逆の時間帯」から選ぶ。ライブ配信は終わり videoId も変わるため、カメラの定義(静的)と生存状態(動的)を分離し、Cloudflare Worker の Cron が YouTube Data API で生存を追い続ける。日本語/英語対応。",
     trackedPackages: ["vite", "typescript", "leaflet", "maplibre-gl"],
     category: "Tool",
     platform: "web",
     services: ["Cloudflare Workers", "Cloudflare KV", "YouTube Data API", "Open-Meteo"],
     createdAt: "2026-08-18",
-    updatedAt: "2026-11-02",
+    updatedAt: "2026-11-03",
     githubUrl: "https://github.com/tktk7l9/somewhere-now",
     githubVisibility: "public",
     liveUrl: "https://somewhere-now.saitotakuya0719.workers.dev",
@@ -461,7 +461,7 @@ export const rawProjects: RawProject[] = [
     favicon: "/favicons/somewhere-now.svg",
     emoji: "\u{1F30D}",
     technicalOverview:
-      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。/api/cams が落ちても地図は出る。\n\nWorkers は1呼び出しあたりのサブリクエストが50で頭打ちになるので、3,810台を50件ずつ割った77回はそのままでは通らない(実際に本番のCronが毎回 Too many subrequests で落ち、状態を書けないまま台帳だけ焼いていた)。1回40回に制限し、確認がいちばん古いカメラから順に詰める。実行のたびに対象がひとりでに入れ替わるので、どこまで見たかを覚えなくても30分で全件を一巡できる。見送ったカメラは offline とは誤判定しない。\n\n3,810台が1,596チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、3,810件を10分ごとに全確認すると11,088 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\nカメラ定義はバンドルに同梱せず静的なJSONとして配る。同梱するとメインバンドルが2.6MBになり、Leafletが地図を作るのはそのJSを実行し終わってからなのでタイル(LCPの対象)が数秒遅れる。切り出してメインJSは231KB(gzip 69KB)になり、地図はマスタを待たずに出る。ピンはmarkerclusterのaddLayersで一括投入する(1台ずつ足すとそのたびにクラスタを組み直して数百msの固まりになる)。あわせて4つのsetterが連続で呼ばれても描き直しを1回にまとめている。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
+      "このアプリの失敗モードは「死んだリンクだらけの地図」なので、設計の中心を生存状態の維持に置いている。カメラ定義(名前・座標・IANAタイムゾーン・配信元・配信タイトル)はバンドル同梱の静的データ、生存状態(解決済みvideoId・live/offline/blocked・視聴者数)は Cloudflare KV に置き、Cron Trigger が10分ごとに videos.list(1 unit/50件)で生存確認、毎時チャンネル単位で再探索する。/api/cams が落ちても地図は出る。\n\nWorkers は1呼び出しあたりのサブリクエストが50で頭打ちになるので、3,602台を50件ずつ割った73回はそのままでは通らない(実際に本番のCronが毎回 Too many subrequests で落ち、状態を書けないまま台帳だけ焼いていた)。1回40回に制限し、確認がいちばん古いカメラから順に詰める。実行のたびに対象がひとりでに入れ替わるので、どこまで見たかを覚えなくても30分で全件を一巡できる。見送ったカメラは offline とは誤判定しない。\n\n3,602台が1,456チャンネルにぶら下がり、1チャンネルが数十本のライブを同時に出しているため(EarthCamだけで47台)、再探索でチャンネルから適当な1本を取ると別の街の映像を割り当ててしまう。マスタに配信タイトルを持たせて見分け、確信が持てなければ映さない(誤った映像を出すより映さない方がよい)。経路は安い順で、uploadsプレイリストを辿り目当てが揃えば打ち切り、見つからないときだけ検索(101 units)に後退する。search.listのeventType=liveは網羅を保証しないことを実測で確認済み。\n\nYouTube Data API の無料枠は10,000 units/日に対し、3,602件を10分ごとに全確認すると10,512 units/日になって収まらない。消費量をKVの日次台帳に積み8,000 unitsで当日の呼び出しを止める。例外時も finally で台帳を書くため、キーが不正なまま Cron が回り続けても枠を焼き切らない。APIキーは Worker の secret のみでブラウザには出ない。\n\n昼夜の境界は太陽赤緯δと時角Hから tanφ = -cosH/tanδ で経度ごとの緯度を求めて描画(分点の特異点はクランプで回避)。太陽位置計算はskydialから移植したMeeus準拠の自前実装で、平面図(Leaflet)と地球儀(MapLibre GL)の両方に同じ計算を使う。地球儀の国境・国名は同梱の Natural Earth から描き、外部のスタイルサーバーに依存しない。\n\nカメラ定義はバンドルに同梱せず静的なJSONとして配る。同梱するとメインバンドルが2.6MBになり、Leafletが地図を作るのはそのJSを実行し終わってからなのでタイル(LCPの対象)が数秒遅れる。切り出してメインJSは231KB(gzip 69KB)になり、地図はマスタを待たずに出る。ピンはmarkerclusterのaddLayersで一括投入する(1台ずつ足すとそのたびにクラスタを組み直して数百msの固まりになる)。あわせて4つのsetterが連続で呼ばれても描き直しを1回にまとめている。\n\n再生はyoutube-nocookieのiframeのみで完結させ、IFrame Player APIの外部スクリプトは読まない(ミュート制御とエラー検知はenablejsapi=1のpostMessageで足りる)ため、CSPのscript-srcは'self'を維持している。カメラデータは推測で書かず、チャンネルページから現在ライブ中の配信を集め、座標とタイムゾーンはOpen-Meteoのジオコーディングで解決し(同名地はadmin1で排除)、埋め込みが禁止された配信はビルド時に除外する。",
     architecture: {
       layers: [
         {
